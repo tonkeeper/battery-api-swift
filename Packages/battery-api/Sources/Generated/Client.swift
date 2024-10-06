@@ -730,6 +730,67 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// - Remark: HTTP `GET /purchase-battery/verify-purchase-promo`.
+    /// - Remark: Generated from `#/paths//purchase-battery/verify-purchase-promo/get(verifyPurchasePromo)`.
+    public func verifyPurchasePromo(_ input: Operations.verifyPurchasePromo.Input) async throws
+        -> Operations.verifyPurchasePromo.Output
+    {
+        try await client.send(
+            input: input,
+            forOperation: Operations.verifyPurchasePromo.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/purchase-battery/verify-purchase-promo",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(soar_path: path, method: .get)
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "promo",
+                    value: input.query.promo
+                )
+                converter.setAcceptHeader(in: &request.headerFields, contentTypes: input.headers.accept)
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.verifyPurchasePromo.Output.Ok.Body
+                    if try contentType == nil
+                        || converter.isMatchingContentType(received: contentType, expectedRaw: "application/json")
+                    {
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.verifyPurchasePromo.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in .json(value) }
+                        )
+                    } else {
+                        throw converter.makeUnexpectedContentTypeError(contentType: contentType)
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    if try contentType == nil
+                        || converter.isMatchingContentType(received: contentType, expectedRaw: "application/json")
+                    {
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in .json(value) }
+                        )
+                    } else {
+                        throw converter.makeUnexpectedContentTypeError(contentType: contentType)
+                    }
+                    return .`default`(statusCode: response.status.code, .init(body: body))
+                }
+            }
+        )
+    }
     /// This method returns on-chain recharge methods.
     ///
     /// - Remark: HTTP `GET /recharge-methods`.
@@ -1137,6 +1198,76 @@ public struct Client: APIProtocol {
             }
         )
     }
+    /// - Remark: HTTP `POST /restricted/users/{user_id}/reset-balance`.
+    /// - Remark: Generated from `#/paths//restricted/users/{user_id}/reset-balance/post(resetUserBalance)`.
+    public func resetUserBalance(_ input: Operations.resetUserBalance.Input) async throws
+        -> Operations.resetUserBalance.Output
+    {
+        try await client.send(
+            input: input,
+            forOperation: Operations.resetUserBalance.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/users/{}/reset-balance",
+                    parameters: [input.path.user_id]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(soar_path: path, method: .post)
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(in: &request.headerFields, contentTypes: input.headers.accept)
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.resetUserBalance.Output.Ok.Body
+                    if try contentType == nil
+                        || converter.isMatchingContentType(received: contentType, expectedRaw: "application/json")
+                    {
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.resetUserBalance.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in .json(value) }
+                        )
+                    } else {
+                        throw converter.makeUnexpectedContentTypeError(contentType: contentType)
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    if try contentType == nil
+                        || converter.isMatchingContentType(received: contentType, expectedRaw: "application/json")
+                    {
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in .json(value) }
+                        )
+                    } else {
+                        throw converter.makeUnexpectedContentTypeError(contentType: contentType)
+                    }
+                    return .`default`(statusCode: response.status.code, .init(body: body))
+                }
+            }
+        )
+    }
     /// - Remark: HTTP `POST /restricted/purchases/{purchase_id}/extend-refund-period`.
     /// - Remark: Generated from `#/paths//restricted/purchases/{purchase_id}/extend-refund-period/post(extendRefundPeriod)`.
     public func extendRefundPeriod(_ input: Operations.extendRefundPeriod.Input) async throws
@@ -1172,6 +1303,60 @@ public struct Client: APIProtocol {
                     {
                         body = try await converter.getResponseBodyAsJSON(
                             Operations.extendRefundPeriod.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in .json(value) }
+                        )
+                    } else {
+                        throw converter.makeUnexpectedContentTypeError(contentType: contentType)
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    if try contentType == nil
+                        || converter.isMatchingContentType(received: contentType, expectedRaw: "application/json")
+                    {
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in .json(value) }
+                        )
+                    } else {
+                        throw converter.makeUnexpectedContentTypeError(contentType: contentType)
+                    }
+                    return .`default`(statusCode: response.status.code, .init(body: body))
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `GET /jetton-metadata/{name}.json`.
+    /// - Remark: Generated from `#/paths//jetton-metadata/{name}.json/get(getJettonMetadata)`.
+    public func getJettonMetadata(_ input: Operations.getJettonMetadata.Input) async throws
+        -> Operations.getJettonMetadata.Output
+    {
+        try await client.send(
+            input: input,
+            forOperation: Operations.getJettonMetadata.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/jetton-metadata/{}.json",
+                    parameters: [input.path.name]
+                )
+                var request: HTTPTypes.HTTPRequest = .init(soar_path: path, method: .get)
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(in: &request.headerFields, contentTypes: input.headers.accept)
+                return (request, nil)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.getJettonMetadata.Output.Ok.Body
+                    if try contentType == nil
+                        || converter.isMatchingContentType(received: contentType, expectedRaw: "application/json")
+                    {
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.getJettonMetadata.Output.Ok.Body.jsonPayload.self,
                             from: responseBody,
                             transforming: { value in .json(value) }
                         )

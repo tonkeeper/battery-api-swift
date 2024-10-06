@@ -213,6 +213,25 @@ paths:
                 $ref: '#/components/schemas/promoCodeBatteryPurchaseStatus'
         'default':
           $ref: '#/components/responses/Error'
+  /purchase-battery/verify-purchase-promo:
+    get:
+      operationId: verifyPurchasePromo
+      parameters:
+        - name: promo
+          in: query
+          schema:
+            type: string
+            maxLength: 100
+      responses:
+        '200':
+          description: "all good"
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                example: { }
+        'default':
+          $ref: '#/components/responses/Error'
   /recharge-methods:
     get:
       description: This method returns on-chain recharge methods.
@@ -327,6 +346,29 @@ paths:
                 example: { }
         'default':
           $ref: '#/components/responses/Error'
+  /restricted/users/{user_id}/reset-balance:
+    post:
+      operationId: resetUserBalance
+      parameters:
+        - $ref: '#/components/parameters/adminToken'
+        - name: user_id
+          in: path
+          schema:
+            type: integer
+            format: int64
+          required: true
+      requestBody:
+        $ref: "#/components/requestBodies/resetUserBalance"
+      responses:
+        '200':
+          description: "all good"
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                example: { }
+        'default':
+          $ref: '#/components/responses/Error'
   /restricted/purchases/{purchase_id}/extend-refund-period:
     post:
       operationId: extendRefundPeriod
@@ -341,6 +383,27 @@ paths:
       responses:
         '200':
           description: "all good"
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                example: { }
+        'default':
+          $ref: '#/components/responses/Error'
+  /jetton-metadata/{name}.json:
+    get:
+      operationId: getJettonMetadata
+      tags:
+        - Emulation
+      parameters:
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: ""
           content:
             application/json:
               schema:
@@ -496,6 +559,9 @@ components:
                     product_id:
                       type: string
                       example: 0:2cf3b5b8c891e517c9addbda1c0386a09ccacbb0e3faf630b51cfc8152325acb
+                    promo:
+                      type: string
+                      example: "HAMSTER"
 
     appStoreNotification:
       required: true
@@ -527,6 +593,9 @@ components:
                   properties:
                     id:
                       type: string
+                    promo:
+                      type: string
+                      example: "HAMSTER"
     gaslessEstimateCost:
       required: true
       content:
@@ -542,17 +611,17 @@ components:
               payload:
                 type: string
 
-    confirmLargeRefund:
+    resetUserBalance:
       required: true
       content:
         application/json:
           schema:
             type: object
             required:
-              - purchase_id
+              - reason
             properties:
-              purchase_id:
-                type: integer
+              reason:
+                type: string
     customRefund:
       required: true
       content:
@@ -636,6 +705,7 @@ components:
       required:
         - excess_account
         - fund_receiver
+        - message_ttl
       properties:
         fund_receiver:
           type: string
@@ -645,6 +715,10 @@ components:
           type: string
           description: when building a message to transfer an NFT or Jetton, use this address to send excess funds back to Battery Service.
           example: 0:da6b1b6663a0e4d18cc8574ccd9db5296e367dd9324706f3bbd9eb1cd2caf0bf
+        message_ttl:
+          type: integer
+          description: "ttl for message in seconds"
+          example: 300
     GaslessEstimation:
       type: object
       required:
@@ -737,6 +811,8 @@ components:
               - charges
               - datetime
             properties:
+              promo:
+                type: string
               for_account_id:
                 type: string
               user_purchase_id:
@@ -968,4 +1044,8 @@ components:
               - error
             properties:
               error:
+                type: string
+              error-key:
+                type: string
+              error-details:
                 type: string

@@ -70,6 +70,10 @@ public protocol APIProtocol: Sendable {
     /// - Remark: Generated from `#/paths//purchase-battery/promo-code/post(promoCodeBatteryPurchase)`.
     func promoCodeBatteryPurchase(_ input: Operations.promoCodeBatteryPurchase.Input) async throws
         -> Operations.promoCodeBatteryPurchase.Output
+    /// - Remark: HTTP `GET /purchase-battery/verify-purchase-promo`.
+    /// - Remark: Generated from `#/paths//purchase-battery/verify-purchase-promo/get(verifyPurchasePromo)`.
+    func verifyPurchasePromo(_ input: Operations.verifyPurchasePromo.Input) async throws
+        -> Operations.verifyPurchasePromo.Output
     /// This method returns on-chain recharge methods.
     ///
     /// - Remark: HTTP `GET /recharge-methods`.
@@ -97,10 +101,17 @@ public protocol APIProtocol: Sendable {
     /// - Remark: Generated from `#/paths//restricted/create-custom-refund/post(createCustomRefund)`.
     func createCustomRefund(_ input: Operations.createCustomRefund.Input) async throws
         -> Operations.createCustomRefund.Output
+    /// - Remark: HTTP `POST /restricted/users/{user_id}/reset-balance`.
+    /// - Remark: Generated from `#/paths//restricted/users/{user_id}/reset-balance/post(resetUserBalance)`.
+    func resetUserBalance(_ input: Operations.resetUserBalance.Input) async throws -> Operations.resetUserBalance.Output
     /// - Remark: HTTP `POST /restricted/purchases/{purchase_id}/extend-refund-period`.
     /// - Remark: Generated from `#/paths//restricted/purchases/{purchase_id}/extend-refund-period/post(extendRefundPeriod)`.
     func extendRefundPeriod(_ input: Operations.extendRefundPeriod.Input) async throws
         -> Operations.extendRefundPeriod.Output
+    /// - Remark: HTTP `GET /jetton-metadata/{name}.json`.
+    /// - Remark: Generated from `#/paths//jetton-metadata/{name}.json/get(getJettonMetadata)`.
+    func getJettonMetadata(_ input: Operations.getJettonMetadata.Input) async throws
+        -> Operations.getJettonMetadata.Output
 }
 /// Convenience overloads for operation inputs.
 extension APIProtocol {
@@ -200,6 +211,14 @@ extension APIProtocol {
     ) async throws -> Operations.promoCodeBatteryPurchase.Output {
         try await promoCodeBatteryPurchase(Operations.promoCodeBatteryPurchase.Input(headers: headers, body: body))
     }
+    /// - Remark: HTTP `GET /purchase-battery/verify-purchase-promo`.
+    /// - Remark: Generated from `#/paths//purchase-battery/verify-purchase-promo/get(verifyPurchasePromo)`.
+    public func verifyPurchasePromo(
+        query: Operations.verifyPurchasePromo.Input.Query = .init(),
+        headers: Operations.verifyPurchasePromo.Input.Headers = .init()
+    ) async throws -> Operations.verifyPurchasePromo.Output {
+        try await verifyPurchasePromo(Operations.verifyPurchasePromo.Input(query: query, headers: headers))
+    }
     /// This method returns on-chain recharge methods.
     ///
     /// - Remark: HTTP `GET /recharge-methods`.
@@ -259,6 +278,18 @@ extension APIProtocol {
     ) async throws -> Operations.createCustomRefund.Output {
         try await createCustomRefund(Operations.createCustomRefund.Input(query: query, headers: headers, body: body))
     }
+    /// - Remark: HTTP `POST /restricted/users/{user_id}/reset-balance`.
+    /// - Remark: Generated from `#/paths//restricted/users/{user_id}/reset-balance/post(resetUserBalance)`.
+    public func resetUserBalance(
+        path: Operations.resetUserBalance.Input.Path,
+        query: Operations.resetUserBalance.Input.Query,
+        headers: Operations.resetUserBalance.Input.Headers = .init(),
+        body: Components.RequestBodies.resetUserBalance
+    ) async throws -> Operations.resetUserBalance.Output {
+        try await resetUserBalance(
+            Operations.resetUserBalance.Input(path: path, query: query, headers: headers, body: body)
+        )
+    }
     /// - Remark: HTTP `POST /restricted/purchases/{purchase_id}/extend-refund-period`.
     /// - Remark: Generated from `#/paths//restricted/purchases/{purchase_id}/extend-refund-period/post(extendRefundPeriod)`.
     public func extendRefundPeriod(
@@ -267,6 +298,14 @@ extension APIProtocol {
         headers: Operations.extendRefundPeriod.Input.Headers = .init()
     ) async throws -> Operations.extendRefundPeriod.Output {
         try await extendRefundPeriod(Operations.extendRefundPeriod.Input(path: path, query: query, headers: headers))
+    }
+    /// - Remark: HTTP `GET /jetton-metadata/{name}.json`.
+    /// - Remark: Generated from `#/paths//jetton-metadata/{name}.json/get(getJettonMetadata)`.
+    public func getJettonMetadata(
+        path: Operations.getJettonMetadata.Input.Path,
+        headers: Operations.getJettonMetadata.Input.Headers = .init()
+    ) async throws -> Operations.getJettonMetadata.Output {
+        try await getJettonMetadata(Operations.getJettonMetadata.Input(path: path, headers: headers))
     }
 }
 /// Server URLs defined in the OpenAPI document.
@@ -330,18 +369,25 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Config/excess_account`.
             public var excess_account: Swift.String
+            /// ttl for message in seconds
+            ///
+            /// - Remark: Generated from `#/components/schemas/Config/message_ttl`.
+            public var message_ttl: Swift.Int
             /// Creates a new `Config`.
             ///
             /// - Parameters:
             ///   - fund_receiver: with zero balance it is possible to transfer some jettons (stablecoins, jusdt, etc) to this address to refill the balance. Such transfers would be paid by Battery Service.
             ///   - excess_account: when building a message to transfer an NFT or Jetton, use this address to send excess funds back to Battery Service.
-            public init(fund_receiver: Swift.String, excess_account: Swift.String) {
+            ///   - message_ttl: ttl for message in seconds
+            public init(fund_receiver: Swift.String, excess_account: Swift.String, message_ttl: Swift.Int) {
                 self.fund_receiver = fund_receiver
                 self.excess_account = excess_account
+                self.message_ttl = message_ttl
             }
             public enum CodingKeys: String, CodingKey {
                 case fund_receiver
                 case excess_account
+                case message_ttl
             }
         }
         /// - Remark: Generated from `#/components/schemas/GaslessEstimation`.
@@ -476,6 +522,8 @@ public enum Components {
             public var total_purchases: Swift.Int
             /// - Remark: Generated from `#/components/schemas/Purchases/purchasesPayload`.
             public struct purchasesPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/Purchases/purchasesPayload/promo`.
+                public var promo: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/Purchases/purchasesPayload/for_account_id`.
                 public var for_account_id: Swift.String?
                 /// - Remark: Generated from `#/components/schemas/Purchases/purchasesPayload/user_purchase_id`.
@@ -597,6 +645,7 @@ public enum Components {
                 /// Creates a new `purchasesPayloadPayload`.
                 ///
                 /// - Parameters:
+                ///   - promo:
                 ///   - for_account_id:
                 ///   - user_purchase_id:
                 ///   - purchase_id:
@@ -607,6 +656,7 @@ public enum Components {
                 ///   - datetime:
                 ///   - refund_information:
                 public init(
+                    promo: Swift.String? = nil,
                     for_account_id: Swift.String? = nil,
                     user_purchase_id: Swift.Int,
                     purchase_id: Swift.Int,
@@ -618,6 +668,7 @@ public enum Components {
                     refund_information: Components.Schemas.Purchases.purchasesPayloadPayload
                         .refund_informationPayload? = nil
                 ) {
+                    self.promo = promo
                     self.for_account_id = for_account_id
                     self.user_purchase_id = user_purchase_id
                     self.purchase_id = purchase_id
@@ -629,6 +680,7 @@ public enum Components {
                     self.refund_information = refund_information
                 }
                 public enum CodingKeys: String, CodingKey {
+                    case promo
                     case for_account_id
                     case user_purchase_id
                     case purchase_id
@@ -1099,18 +1151,23 @@ public enum Components {
                     public var token: Swift.String
                     /// - Remark: Generated from `#/components/requestBodies/AndroidBatteryPurchase/json/purchasesPayload/product_id`.
                     public var product_id: Swift.String
+                    /// - Remark: Generated from `#/components/requestBodies/AndroidBatteryPurchase/json/purchasesPayload/promo`.
+                    public var promo: Swift.String?
                     /// Creates a new `purchasesPayloadPayload`.
                     ///
                     /// - Parameters:
                     ///   - token:
                     ///   - product_id:
-                    public init(token: Swift.String, product_id: Swift.String) {
+                    ///   - promo:
+                    public init(token: Swift.String, product_id: Swift.String, promo: Swift.String? = nil) {
                         self.token = token
                         self.product_id = product_id
+                        self.promo = promo
                     }
                     public enum CodingKeys: String, CodingKey {
                         case token
                         case product_id
+                        case promo
                     }
                 }
                 /// - Remark: Generated from `#/components/requestBodies/AndroidBatteryPurchase/json/purchases`.
@@ -1154,12 +1211,21 @@ public enum Components {
                 public struct transactionsPayloadPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/requestBodies/iOSBatteryPurchase/json/transactionsPayload/id`.
                     public var id: Swift.String
+                    /// - Remark: Generated from `#/components/requestBodies/iOSBatteryPurchase/json/transactionsPayload/promo`.
+                    public var promo: Swift.String?
                     /// Creates a new `transactionsPayloadPayload`.
                     ///
                     /// - Parameters:
                     ///   - id:
-                    public init(id: Swift.String) { self.id = id }
-                    public enum CodingKeys: String, CodingKey { case id }
+                    ///   - promo:
+                    public init(id: Swift.String, promo: Swift.String? = nil) {
+                        self.id = id
+                        self.promo = promo
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case id
+                        case promo
+                    }
                 }
                 /// - Remark: Generated from `#/components/requestBodies/iOSBatteryPurchase/json/transactions`.
                 public typealias transactionsPayload = [Components.RequestBodies.iOSBatteryPurchase.jsonPayload
@@ -1203,21 +1269,21 @@ public enum Components {
             /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateCost/content/application\/json`.
             case json(Components.RequestBodies.gaslessEstimateCost.jsonPayload)
         }
-        /// - Remark: Generated from `#/components/requestBodies/confirmLargeRefund`.
-        @frozen public enum confirmLargeRefund: Sendable, Hashable {
-            /// - Remark: Generated from `#/components/requestBodies/confirmLargeRefund/json`.
+        /// - Remark: Generated from `#/components/requestBodies/resetUserBalance`.
+        @frozen public enum resetUserBalance: Sendable, Hashable {
+            /// - Remark: Generated from `#/components/requestBodies/resetUserBalance/json`.
             public struct jsonPayload: Codable, Hashable, Sendable {
-                /// - Remark: Generated from `#/components/requestBodies/confirmLargeRefund/json/purchase_id`.
-                public var purchase_id: Swift.Int
+                /// - Remark: Generated from `#/components/requestBodies/resetUserBalance/json/reason`.
+                public var reason: Swift.String
                 /// Creates a new `jsonPayload`.
                 ///
                 /// - Parameters:
-                ///   - purchase_id:
-                public init(purchase_id: Swift.Int) { self.purchase_id = purchase_id }
-                public enum CodingKeys: String, CodingKey { case purchase_id }
+                ///   - reason:
+                public init(reason: Swift.String) { self.reason = reason }
+                public enum CodingKeys: String, CodingKey { case reason }
             }
-            /// - Remark: Generated from `#/components/requestBodies/confirmLargeRefund/content/application\/json`.
-            case json(Components.RequestBodies.confirmLargeRefund.jsonPayload)
+            /// - Remark: Generated from `#/components/requestBodies/resetUserBalance/content/application\/json`.
+            case json(Components.RequestBodies.resetUserBalance.jsonPayload)
         }
         /// - Remark: Generated from `#/components/requestBodies/customRefund`.
         @frozen public enum customRefund: Sendable, Hashable {
@@ -1322,12 +1388,30 @@ public enum Components {
                 public struct jsonPayload: Codable, Hashable, Sendable {
                     /// - Remark: Generated from `#/components/responses/Error/content/json/error`.
                     public var error: Swift.String
+                    /// - Remark: Generated from `#/components/responses/Error/content/json/error-key`.
+                    public var error_hyphen_key: Swift.String?
+                    /// - Remark: Generated from `#/components/responses/Error/content/json/error-details`.
+                    public var error_hyphen_details: Swift.String?
                     /// Creates a new `jsonPayload`.
                     ///
                     /// - Parameters:
                     ///   - error:
-                    public init(error: Swift.String) { self.error = error }
-                    public enum CodingKeys: String, CodingKey { case error }
+                    ///   - error_hyphen_key:
+                    ///   - error_hyphen_details:
+                    public init(
+                        error: Swift.String,
+                        error_hyphen_key: Swift.String? = nil,
+                        error_hyphen_details: Swift.String? = nil
+                    ) {
+                        self.error = error
+                        self.error_hyphen_key = error_hyphen_key
+                        self.error_hyphen_details = error_hyphen_details
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case error
+                        case error_hyphen_key = "error-key"
+                        case error_hyphen_details = "error-details"
+                    }
                 }
                 /// - Remark: Generated from `#/components/responses/Error/content/application\/json`.
                 case json(Components.Responses._Error.Body.jsonPayload)
@@ -2730,6 +2814,149 @@ public enum Operations {
             public static var allCases: [Self] { [.json] }
         }
     }
+    /// - Remark: HTTP `GET /purchase-battery/verify-purchase-promo`.
+    /// - Remark: Generated from `#/paths//purchase-battery/verify-purchase-promo/get(verifyPurchasePromo)`.
+    public enum verifyPurchasePromo {
+        public static let id: Swift.String = "verifyPurchasePromo"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/purchase-battery/verify-purchase-promo/GET/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/purchase-battery/verify-purchase-promo/GET/query/promo`.
+                public var promo: Swift.String?
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - promo:
+                public init(promo: Swift.String? = nil) { self.promo = promo }
+            }
+            public var query: Operations.verifyPurchasePromo.Input.Query
+            /// - Remark: Generated from `#/paths/purchase-battery/verify-purchase-promo/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept:
+                    [OpenAPIRuntime.AcceptHeaderContentType<Operations.verifyPurchasePromo.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<
+                        Operations.verifyPurchasePromo.AcceptableContentType
+                    >] = .defaultValues()
+                ) { self.accept = accept }
+            }
+            public var headers: Operations.verifyPurchasePromo.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            public init(
+                query: Operations.verifyPurchasePromo.Input.Query = .init(),
+                headers: Operations.verifyPurchasePromo.Input.Headers = .init()
+            ) {
+                self.query = query
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/purchase-battery/verify-purchase-promo/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/purchase-battery/verify-purchase-promo/GET/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/purchase-battery/verify-purchase-promo/GET/responses/200/content/application\/json`.
+                    case json(Operations.verifyPurchasePromo.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.verifyPurchasePromo.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body): return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.verifyPurchasePromo.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.verifyPurchasePromo.Output.Ok.Body) { self.body = body }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//purchase-battery/verify-purchase-promo/get(verifyPurchasePromo)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.verifyPurchasePromo.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.verifyPurchasePromo.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response): return response
+                    default: try throwUnexpectedResponseStatus(expectedStatus: "ok", response: self)
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//purchase-battery/verify-purchase-promo/get(verifyPurchasePromo)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response): return response
+                    default: try throwUnexpectedResponseStatus(expectedStatus: "default", response: self)
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json": self = .json
+                default: self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string): return string
+                case .json: return "application/json"
+                }
+            }
+            public static var allCases: [Self] { [.json] }
+        }
+    }
     /// This method returns on-chain recharge methods.
     ///
     /// - Remark: HTTP `GET /recharge-methods`.
@@ -3550,6 +3777,167 @@ public enum Operations {
             public static var allCases: [Self] { [.json] }
         }
     }
+    /// - Remark: HTTP `POST /restricted/users/{user_id}/reset-balance`.
+    /// - Remark: Generated from `#/paths//restricted/users/{user_id}/reset-balance/post(resetUserBalance)`.
+    public enum resetUserBalance {
+        public static let id: Swift.String = "resetUserBalance"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/path`.
+            public struct Path: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/path/user_id`.
+                public var user_id: Swift.Int64
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - user_id:
+                public init(user_id: Swift.Int64) { self.user_id = user_id }
+            }
+            public var path: Operations.resetUserBalance.Input.Path
+            /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) { self.token = token }
+            }
+            public var query: Operations.resetUserBalance.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept:
+                    [OpenAPIRuntime.AcceptHeaderContentType<Operations.resetUserBalance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<
+                        Operations.resetUserBalance.AcceptableContentType
+                    >] = .defaultValues()
+                ) { self.accept = accept }
+            }
+            public var headers: Operations.resetUserBalance.Input.Headers
+            public var body: Components.RequestBodies.resetUserBalance
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                path: Operations.resetUserBalance.Input.Path,
+                query: Operations.resetUserBalance.Input.Query,
+                headers: Operations.resetUserBalance.Input.Headers = .init(),
+                body: Components.RequestBodies.resetUserBalance
+            ) {
+                self.path = path
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/users/{user_id}/reset-balance/POST/responses/200/content/application\/json`.
+                    case json(Operations.resetUserBalance.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.resetUserBalance.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body): return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.resetUserBalance.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.resetUserBalance.Output.Ok.Body) { self.body = body }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//restricted/users/{user_id}/reset-balance/post(resetUserBalance)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.resetUserBalance.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.resetUserBalance.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response): return response
+                    default: try throwUnexpectedResponseStatus(expectedStatus: "ok", response: self)
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/users/{user_id}/reset-balance/post(resetUserBalance)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response): return response
+                    default: try throwUnexpectedResponseStatus(expectedStatus: "default", response: self)
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json": self = .json
+                default: self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string): return string
+                case .json: return "application/json"
+                }
+            }
+            public static var allCases: [Self] { [.json] }
+        }
+    }
     /// - Remark: HTTP `POST /restricted/purchases/{purchase_id}/extend-refund-period`.
     /// - Remark: Generated from `#/paths//restricted/purchases/{purchase_id}/extend-refund-period/post(extendRefundPeriod)`.
     public enum extendRefundPeriod {
@@ -3673,6 +4061,149 @@ public enum Operations {
             /// Some error during request processing
             ///
             /// - Remark: Generated from `#/paths//restricted/purchases/{purchase_id}/extend-refund-period/post(extendRefundPeriod)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response): return response
+                    default: try throwUnexpectedResponseStatus(expectedStatus: "default", response: self)
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json": self = .json
+                default: self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string): return string
+                case .json: return "application/json"
+                }
+            }
+            public static var allCases: [Self] { [.json] }
+        }
+    }
+    /// - Remark: HTTP `GET /jetton-metadata/{name}.json`.
+    /// - Remark: Generated from `#/paths//jetton-metadata/{name}.json/get(getJettonMetadata)`.
+    public enum getJettonMetadata {
+        public static let id: Swift.String = "getJettonMetadata"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/jetton-metadata/{name}.json/GET/path`.
+            public struct Path: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/jetton-metadata/{name}.json/GET/path/name`.
+                public var name: Swift.String
+                /// Creates a new `Path`.
+                ///
+                /// - Parameters:
+                ///   - name:
+                public init(name: Swift.String) { self.name = name }
+            }
+            public var path: Operations.getJettonMetadata.Input.Path
+            /// - Remark: Generated from `#/paths/jetton-metadata/{name}.json/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept:
+                    [OpenAPIRuntime.AcceptHeaderContentType<Operations.getJettonMetadata.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<
+                        Operations.getJettonMetadata.AcceptableContentType
+                    >] = .defaultValues()
+                ) { self.accept = accept }
+            }
+            public var headers: Operations.getJettonMetadata.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - path:
+            ///   - headers:
+            public init(
+                path: Operations.getJettonMetadata.Input.Path,
+                headers: Operations.getJettonMetadata.Input.Headers = .init()
+            ) {
+                self.path = path
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/jetton-metadata/{name}.json/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/jetton-metadata/{name}.json/GET/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/jetton-metadata/{name}.json/GET/responses/200/content/application\/json`.
+                    case json(Operations.getJettonMetadata.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.getJettonMetadata.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body): return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.getJettonMetadata.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.getJettonMetadata.Output.Ok.Body) { self.body = body }
+            }
+            ///
+            ///
+            /// - Remark: Generated from `#/paths//jetton-metadata/{name}.json/get(getJettonMetadata)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.getJettonMetadata.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.getJettonMetadata.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response): return response
+                    default: try throwUnexpectedResponseStatus(expectedStatus: "ok", response: self)
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//jetton-metadata/{name}.json/get(getJettonMetadata)/responses/default`.
             ///
             /// HTTP response code: `default`.
             case `default`(statusCode: Swift.Int, Components.Responses._Error)
