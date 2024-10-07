@@ -14,17 +14,14 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-openapi-generator", .upToNextMinor(from: "0.3.0")),
         .package(url: "https://github.com/apple/swift-openapi-runtime", .upToNextMinor(from: "0.3.0")),
+        .package(url: "https://github.com/Flight-School/AnyCodable", .upToNextMajor(from: "0.6.1"))
     ],
     targets: [
         .target(name: "BatteryAPI",
                 dependencies: [
-                    .product(
-                        name: "OpenAPIRuntime",
-                        package: "swift-openapi-runtime"
-                    )
+                  .byName(name: "AnyCodable")
                 ],
                 path: "Packages/battery-api",
-                exclude: ["openapi_generation"],
                 sources: ["Sources"]
                )
     ]
