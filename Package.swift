@@ -4,18 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "BatteryAPI",
+    name: "TKBatteryAPI",
     platforms: [
       .macOS(.v12), .iOS(.v13)
     ],
     products: [
-        .library(name: "BatteryAPI", targets: ["BatteryAPI"])
+        .library(name: "TKBatteryAPI", targets: ["TKBatteryAPI"])
     ],
     dependencies: [
         .package(url: "https://github.com/Flight-School/AnyCodable", .upToNextMajor(from: "0.6.1"))
     ],
     targets: [
-        .target(name: "BatteryAPI",
+        .target(name: "TKBatteryAPI",
                 dependencies: [
                   .byName(name: "AnyCodable")
                 ],
