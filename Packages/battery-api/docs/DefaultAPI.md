@@ -6,20 +6,33 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**androidBatteryPurchase**](DefaultAPI.md#androidbatterypurchase) | **POST** /purchase-battery/android | 
 [**appStoreNotification**](DefaultAPI.md#appstorenotification) | **POST** /purchase-battery/ios/app-store-notification | 
+[**applyPromo**](DefaultAPI.md#applypromo) | **POST** /restricted/apply-promo | 
 [**createCustomRefund**](DefaultAPI.md#createcustomrefund) | **POST** /restricted/create-custom-refund | 
+[**createPromoCampaign**](DefaultAPI.md#createpromocampaign) | **POST** /restricted/promo-campaign | 
+[**enterpriseEstimate**](DefaultAPI.md#enterpriseestimate) | **POST** /enterprise/wallets/{wallet_id}/estimate | 
+[**enterpriseGetMessage**](DefaultAPI.md#enterprisegetmessage) | **GET** /enterprise/messages/{msg_id} | 
+[**enterpriseGetStatus**](DefaultAPI.md#enterprisegetstatus) | **GET** /enterprise/status | 
+[**enterpriseGetWalletConfig**](DefaultAPI.md#enterprisegetwalletconfig) | **GET** /enterprise/wallets/{wallet_id}/config | 
+[**enterpriseSend**](DefaultAPI.md#enterprisesend) | **POST** /enterprise/wallets/{wallet_id}/send | 
 [**estimateGaslessCost**](DefaultAPI.md#estimategaslesscost) | **POST** /gasless/estimate-cost/{jetton_master} | 
 [**extendRefundPeriod**](DefaultAPI.md#extendrefundperiod) | **POST** /restricted/purchases/{purchase_id}/extend-refund-period | 
 [**getBalance**](DefaultAPI.md#getbalance) | **GET** /balance | 
+[**getBatteryCharged**](DefaultAPI.md#getbatterycharged) | **GET** /battery-charged | 
 [**getConfig**](DefaultAPI.md#getconfig) | **GET** /config | 
+[**getPromoUsed**](DefaultAPI.md#getpromoused) | **GET** /promo-used | 
 [**getPurchases**](DefaultAPI.md#getpurchases) | **GET** /purchases | 
 [**getRechargeMethods**](DefaultAPI.md#getrechargemethods) | **GET** /recharge-methods | 
 [**getStatus**](DefaultAPI.md#getstatus) | **GET** /status | 
 [**getTransactions**](DefaultAPI.md#gettransactions) | **GET** /transactions | 
+[**getTronConfig**](DefaultAPI.md#gettronconfig) | **GET** /v0/tron/config | 
+[**getTronTransactions**](DefaultAPI.md#gettrontransactions) | **GET** /v0/tron/transactions | 
 [**iosBatteryPurchase**](DefaultAPI.md#iosbatterypurchase) | **POST** /purchase-battery/ios | 
 [**promoCodeBatteryPurchase**](DefaultAPI.md#promocodebatterypurchase) | **POST** /purchase-battery/promo-code | 
 [**requestRefund**](DefaultAPI.md#requestrefund) | **POST** /request-refund | 
 [**resetUserBalance**](DefaultAPI.md#resetuserbalance) | **POST** /restricted/users/{user_id}/reset-balance | 
 [**sendMessage**](DefaultAPI.md#sendmessage) | **POST** /message | 
+[**tronEstimate**](DefaultAPI.md#tronestimate) | **GET** /v0/tron/estimate | 
+[**tronSend**](DefaultAPI.md#tronsend) | **POST** /v0/tron/send | 
 [**verifyPurchasePromo**](DefaultAPI.md#verifypurchasepromo) | **GET** /purchase-battery/verify-purchase-promo | 
 
 
@@ -121,6 +134,55 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **applyPromo**
+```swift
+    open class func applyPromo(token: String, applyPromoRequest: ApplyPromoRequest, completion: @escaping (_ data: PromoCodeBatteryPurchaseStatus?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let token = "token_example" // String | 
+let applyPromoRequest = applyPromo_request(publicKey: "publicKey_example", promoCode: "promoCode_example") // ApplyPromoRequest | 
+
+DefaultAPI.applyPromo(token: token, applyPromoRequest: applyPromoRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token** | **String** |  | 
+ **applyPromoRequest** | [**ApplyPromoRequest**](ApplyPromoRequest.md) |  | 
+
+### Return type
+
+[**PromoCodeBatteryPurchaseStatus**](PromoCodeBatteryPurchaseStatus.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **createCustomRefund**
 ```swift
     open class func createCustomRefund(token: String, createCustomRefundRequest: CreateCustomRefundRequest, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
@@ -158,6 +220,306 @@ Name | Type | Description  | Notes
 ### Return type
 
 **[String: AnyCodable]**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **createPromoCampaign**
+```swift
+    open class func createPromoCampaign(token: String, createPromoCampaignRequest: CreatePromoCampaignRequest, completion: @escaping (_ data: CreatePromoCampaign200Response?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let token = "token_example" // String | 
+let createPromoCampaignRequest = createPromoCampaign_request(name: "name_example", participants: [createPromoCampaign_request_participants_inner(address: "address_example", amount: "amount_example")]) // CreatePromoCampaignRequest | 
+
+DefaultAPI.createPromoCampaign(token: token, createPromoCampaignRequest: createPromoCampaignRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token** | **String** |  | 
+ **createPromoCampaignRequest** | [**CreatePromoCampaignRequest**](CreatePromoCampaignRequest.md) |  | 
+
+### Return type
+
+[**CreatePromoCampaign200Response**](CreatePromoCampaign200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **enterpriseEstimate**
+```swift
+    open class func enterpriseEstimate(xEnterpriseAuth: String, walletId: String, enterpriseEstimateRequest: EnterpriseEstimateRequest, acceptLanguage: String? = nil, emulate: Bool? = nil, completion: @escaping (_ data: EnterpriseEstimate200Response?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xEnterpriseAuth = "xEnterpriseAuth_example" // String | 
+let walletId = "walletId_example" // String | 
+let enterpriseEstimateRequest = enterpriseEstimate_request(boc: "boc_example", walletPublicKey: "walletPublicKey_example") // EnterpriseEstimateRequest | bag-of-cells serialized to base64
+let acceptLanguage = "acceptLanguage_example" // String |  (optional) (default to "en")
+let emulate = true // Bool |  (optional) (default to false)
+
+DefaultAPI.enterpriseEstimate(xEnterpriseAuth: xEnterpriseAuth, walletId: walletId, enterpriseEstimateRequest: enterpriseEstimateRequest, acceptLanguage: acceptLanguage, emulate: emulate) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xEnterpriseAuth** | **String** |  | 
+ **walletId** | **String** |  | 
+ **enterpriseEstimateRequest** | [**EnterpriseEstimateRequest**](EnterpriseEstimateRequest.md) | bag-of-cells serialized to base64 | 
+ **acceptLanguage** | **String** |  | [optional] [default to &quot;en&quot;]
+ **emulate** | **Bool** |  | [optional] [default to false]
+
+### Return type
+
+[**EnterpriseEstimate200Response**](EnterpriseEstimate200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **enterpriseGetMessage**
+```swift
+    open class func enterpriseGetMessage(xEnterpriseAuth: String, msgId: String, completion: @escaping (_ data: EnterpriseGetMessage200Response?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xEnterpriseAuth = "xEnterpriseAuth_example" // String | 
+let msgId = "msgId_example" // String | 
+
+DefaultAPI.enterpriseGetMessage(xEnterpriseAuth: xEnterpriseAuth, msgId: msgId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xEnterpriseAuth** | **String** |  | 
+ **msgId** | **String** |  | 
+
+### Return type
+
+[**EnterpriseGetMessage200Response**](EnterpriseGetMessage200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **enterpriseGetStatus**
+```swift
+    open class func enterpriseGetStatus(xEnterpriseAuth: String, completion: @escaping (_ data: EnterpriseGetStatus200Response?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xEnterpriseAuth = "xEnterpriseAuth_example" // String | 
+
+DefaultAPI.enterpriseGetStatus(xEnterpriseAuth: xEnterpriseAuth) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xEnterpriseAuth** | **String** |  | 
+
+### Return type
+
+[**EnterpriseGetStatus200Response**](EnterpriseGetStatus200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **enterpriseGetWalletConfig**
+```swift
+    open class func enterpriseGetWalletConfig(xEnterpriseAuth: String, walletId: String, completion: @escaping (_ data: EnterpriseWalletConfig?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xEnterpriseAuth = "xEnterpriseAuth_example" // String | 
+let walletId = "walletId_example" // String | 
+
+DefaultAPI.enterpriseGetWalletConfig(xEnterpriseAuth: xEnterpriseAuth, walletId: walletId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xEnterpriseAuth** | **String** |  | 
+ **walletId** | **String** |  | 
+
+### Return type
+
+[**EnterpriseWalletConfig**](EnterpriseWalletConfig.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **enterpriseSend**
+```swift
+    open class func enterpriseSend(xEnterpriseAuth: String, walletId: String, enterpriseEstimateRequest: EnterpriseEstimateRequest, completion: @escaping (_ data: EnterpriseSend200Response?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xEnterpriseAuth = "xEnterpriseAuth_example" // String | 
+let walletId = "walletId_example" // String | 
+let enterpriseEstimateRequest = enterpriseEstimate_request(boc: "boc_example", walletPublicKey: "walletPublicKey_example") // EnterpriseEstimateRequest | bag-of-cells serialized to base64
+
+DefaultAPI.enterpriseSend(xEnterpriseAuth: xEnterpriseAuth, walletId: walletId, enterpriseEstimateRequest: enterpriseEstimateRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xEnterpriseAuth** | **String** |  | 
+ **walletId** | **String** |  | 
+ **enterpriseEstimateRequest** | [**EnterpriseEstimateRequest**](EnterpriseEstimateRequest.md) | bag-of-cells serialized to base64 | 
+
+### Return type
+
+[**EnterpriseSend200Response**](EnterpriseSend200Response.md)
 
 ### Authorization
 
@@ -325,6 +687,55 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getBatteryCharged**
+```swift
+    open class func getBatteryCharged(accountId: String, completion: @escaping (_ data: BatteryCharged?, _ error: Error?) -> Void)
+```
+
+
+
+This method returns information about a user's balance.
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let accountId = "accountId_example" // String | 
+
+DefaultAPI.getBatteryCharged(accountId: accountId) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **accountId** | **String** |  | 
+
+### Return type
+
+[**BatteryCharged**](BatteryCharged.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **getConfig**
 ```swift
     open class func getConfig(completion: @escaping (_ data: Config?, _ error: Error?) -> Void)
@@ -358,6 +769,53 @@ This endpoint does not need any parameter.
 ### Return type
 
 [**Config**](Config.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getPromoUsed**
+```swift
+    open class func getPromoUsed(promo: String, completion: @escaping (_ data: PromoUsed?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let promo = "promo_example" // String | 
+
+DefaultAPI.getPromoUsed(promo: promo) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **promo** | **String** |  | 
+
+### Return type
+
+[**PromoUsed**](PromoUsed.md)
 
 ### Authorization
 
@@ -564,6 +1022,100 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Transactions**](Transactions.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getTronConfig**
+```swift
+    open class func getTronConfig(completion: @escaping (_ data: GetTronConfig200Response?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+
+DefaultAPI.getTronConfig() { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+This endpoint does not need any parameter.
+
+### Return type
+
+[**GetTronConfig200Response**](GetTronConfig200Response.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **getTronTransactions**
+```swift
+    open class func getTronTransactions(xTonConnectAuth: String, limit: Int? = nil, maxTimestamp: Int64? = nil, completion: @escaping (_ data: TronTransactionsList?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xTonConnectAuth = "xTonConnectAuth_example" // String | 
+let limit = 987 // Int |  (optional) (default to 1000)
+let maxTimestamp = 987 // Int64 |  (optional)
+
+DefaultAPI.getTronTransactions(xTonConnectAuth: xTonConnectAuth, limit: limit, maxTimestamp: maxTimestamp) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xTonConnectAuth** | **String** |  | 
+ **limit** | **Int** |  | [optional] [default to 1000]
+ **maxTimestamp** | **Int64** |  | [optional] 
+
+### Return type
+
+[**TronTransactionsList**](TronTransactionsList.md)
 
 ### Authorization
 
@@ -819,6 +1371,110 @@ Name | Type | Description  | Notes
 ### Return type
 
 Void (empty response body)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tronEstimate**
+```swift
+    open class func tronEstimate(wallet: String, energy: Int? = nil, bandwidth: Int? = nil, completion: @escaping (_ data: EstimatedTronTx?, _ error: Error?) -> Void)
+```
+
+
+
+Estimate cost of sending a tx in Tron network
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let wallet = "wallet_example" // String | 
+let energy = 987 // Int |  (optional)
+let bandwidth = 987 // Int |  (optional)
+
+DefaultAPI.tronEstimate(wallet: wallet, energy: energy, bandwidth: bandwidth) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **wallet** | **String** |  | 
+ **energy** | **Int** |  | [optional] 
+ **bandwidth** | **Int** |  | [optional] 
+
+### Return type
+
+[**EstimatedTronTx**](EstimatedTronTx.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **tronSend**
+```swift
+    open class func tronSend(xTonConnectAuth: String, tronSendRequest: TronSendRequest, completion: @escaping (_ data: SentTronTx?, _ error: Error?) -> Void)
+```
+
+
+
+send TRON tx
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xTonConnectAuth = "xTonConnectAuth_example" // String | 
+let tronSendRequest = tronSend_request(tx: "tx_example", energy: 123, bandwidth: 123, wallet: "wallet_example") // TronSendRequest | 
+
+DefaultAPI.tronSend(xTonConnectAuth: xTonConnectAuth, tronSendRequest: tronSendRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xTonConnectAuth** | **String** |  | 
+ **tronSendRequest** | [**TronSendRequest**](TronSendRequest.md) |  | 
+
+### Return type
+
+[**SentTronTx**](SentTronTx.md)
 
 ### Authorization
 

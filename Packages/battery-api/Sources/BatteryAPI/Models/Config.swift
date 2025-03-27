@@ -12,32 +12,45 @@ import AnyCodable
 
 public struct Config: Codable, JSONEncodable, Hashable {
 
+    /** cost of 1 charge in TON */
+    public var chargeCost: String
     /** with zero balance it is possible to transfer some jettons (stablecoins, jusdt, etc) to this address to refill the balance. Such transfers would be paid by Battery Service. */
     public var fundReceiver: String
     /** when building a message to transfer an NFT or Jetton, use this address to send excess funds back to Battery Service. */
     public var excessAccount: String
     /** ttl for message in seconds */
     public var messageTtl: Int
+    public var gasProxy: [ConfigGasProxyInner]
+    public var meanPrices: ConfigMeanPrices
 
-    public init(fundReceiver: String, excessAccount: String, messageTtl: Int) {
+    public init(chargeCost: String, fundReceiver: String, excessAccount: String, messageTtl: Int, gasProxy: [ConfigGasProxyInner], meanPrices: ConfigMeanPrices) {
+        self.chargeCost = chargeCost
         self.fundReceiver = fundReceiver
         self.excessAccount = excessAccount
         self.messageTtl = messageTtl
+        self.gasProxy = gasProxy
+        self.meanPrices = meanPrices
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
+        case chargeCost = "charge_cost"
         case fundReceiver = "fund_receiver"
         case excessAccount = "excess_account"
         case messageTtl = "message_ttl"
+        case gasProxy = "gas_proxy"
+        case meanPrices = "mean_prices"
     }
 
     // Encodable protocol methods
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(chargeCost, forKey: .chargeCost)
         try container.encode(fundReceiver, forKey: .fundReceiver)
         try container.encode(excessAccount, forKey: .excessAccount)
         try container.encode(messageTtl, forKey: .messageTtl)
+        try container.encode(gasProxy, forKey: .gasProxy)
+        try container.encode(meanPrices, forKey: .meanPrices)
     }
 }
 

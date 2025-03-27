@@ -85,6 +85,44 @@ open class DefaultAPI {
     /**
 
      - parameter token: (query)  
+     - parameter applyPromoRequest: (body)  
+     - returns: PromoCodeBatteryPurchaseStatus
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func applyPromo(token: String, applyPromoRequest: ApplyPromoRequest) async throws -> PromoCodeBatteryPurchaseStatus {
+        return try await applyPromoWithRequestBuilder(token: token, applyPromoRequest: applyPromoRequest).execute().body
+    }
+
+    /**
+     - POST /restricted/apply-promo
+     - parameter token: (query)  
+     - parameter applyPromoRequest: (body)  
+     - returns: RequestBuilder<PromoCodeBatteryPurchaseStatus> 
+     */
+    open class func applyPromoWithRequestBuilder(token: String, applyPromoRequest: ApplyPromoRequest) -> RequestBuilder<PromoCodeBatteryPurchaseStatus> {
+        let localVariablePath = "/restricted/apply-promo"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: applyPromoRequest)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<PromoCodeBatteryPurchaseStatus>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter token: (query)  
      - parameter createCustomRefundRequest: (body)  
      - returns: [String: AnyCodable]
      */
@@ -116,6 +154,243 @@ open class DefaultAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter token: (query)  
+     - parameter createPromoCampaignRequest: (body)  
+     - returns: CreatePromoCampaign200Response
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func createPromoCampaign(token: String, createPromoCampaignRequest: CreatePromoCampaignRequest) async throws -> CreatePromoCampaign200Response {
+        return try await createPromoCampaignWithRequestBuilder(token: token, createPromoCampaignRequest: createPromoCampaignRequest).execute().body
+    }
+
+    /**
+     - POST /restricted/promo-campaign
+     - parameter token: (query)  
+     - parameter createPromoCampaignRequest: (body)  
+     - returns: RequestBuilder<CreatePromoCampaign200Response> 
+     */
+    open class func createPromoCampaignWithRequestBuilder(token: String, createPromoCampaignRequest: CreatePromoCampaignRequest) -> RequestBuilder<CreatePromoCampaign200Response> {
+        let localVariablePath = "/restricted/promo-campaign"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: createPromoCampaignRequest)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<CreatePromoCampaign200Response>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter xEnterpriseAuth: (header)  
+     - parameter walletId: (path)  
+     - parameter enterpriseEstimateRequest: (body) bag-of-cells serialized to base64 
+     - parameter acceptLanguage: (header)  (optional, default to "en")
+     - parameter emulate: (query)  (optional, default to false)
+     - returns: EnterpriseEstimate200Response
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func enterpriseEstimate(xEnterpriseAuth: String, walletId: String, enterpriseEstimateRequest: EnterpriseEstimateRequest, acceptLanguage: String? = nil, emulate: Bool? = nil) async throws -> EnterpriseEstimate200Response {
+        return try await enterpriseEstimateWithRequestBuilder(xEnterpriseAuth: xEnterpriseAuth, walletId: walletId, enterpriseEstimateRequest: enterpriseEstimateRequest, acceptLanguage: acceptLanguage, emulate: emulate).execute().body
+    }
+
+    /**
+     - POST /enterprise/wallets/{wallet_id}/estimate
+     - parameter xEnterpriseAuth: (header)  
+     - parameter walletId: (path)  
+     - parameter enterpriseEstimateRequest: (body) bag-of-cells serialized to base64 
+     - parameter acceptLanguage: (header)  (optional, default to "en")
+     - parameter emulate: (query)  (optional, default to false)
+     - returns: RequestBuilder<EnterpriseEstimate200Response> 
+     */
+    open class func enterpriseEstimateWithRequestBuilder(xEnterpriseAuth: String, walletId: String, enterpriseEstimateRequest: EnterpriseEstimateRequest, acceptLanguage: String? = nil, emulate: Bool? = nil) -> RequestBuilder<EnterpriseEstimate200Response> {
+        var localVariablePath = "/enterprise/wallets/{wallet_id}/estimate"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{wallet_id}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: enterpriseEstimateRequest)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "emulate": (wrappedValue: emulate?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+            "X-Enterprise-Auth": xEnterpriseAuth.encodeToJSON(),
+            "Accept-Language": acceptLanguage?.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<EnterpriseEstimate200Response>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter xEnterpriseAuth: (header)  
+     - parameter msgId: (path)  
+     - returns: EnterpriseGetMessage200Response
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func enterpriseGetMessage(xEnterpriseAuth: String, msgId: String) async throws -> EnterpriseGetMessage200Response {
+        return try await enterpriseGetMessageWithRequestBuilder(xEnterpriseAuth: xEnterpriseAuth, msgId: msgId).execute().body
+    }
+
+    /**
+     - GET /enterprise/messages/{msg_id}
+     - parameter xEnterpriseAuth: (header)  
+     - parameter msgId: (path)  
+     - returns: RequestBuilder<EnterpriseGetMessage200Response> 
+     */
+    open class func enterpriseGetMessageWithRequestBuilder(xEnterpriseAuth: String, msgId: String) -> RequestBuilder<EnterpriseGetMessage200Response> {
+        var localVariablePath = "/enterprise/messages/{msg_id}"
+        let msgIdPreEscape = "\(APIHelper.mapValueToPathItem(msgId))"
+        let msgIdPostEscape = msgIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{msg_id}", with: msgIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-Enterprise-Auth": xEnterpriseAuth.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<EnterpriseGetMessage200Response>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter xEnterpriseAuth: (header)  
+     - returns: EnterpriseGetStatus200Response
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func enterpriseGetStatus(xEnterpriseAuth: String) async throws -> EnterpriseGetStatus200Response {
+        return try await enterpriseGetStatusWithRequestBuilder(xEnterpriseAuth: xEnterpriseAuth).execute().body
+    }
+
+    /**
+     - GET /enterprise/status
+     - parameter xEnterpriseAuth: (header)  
+     - returns: RequestBuilder<EnterpriseGetStatus200Response> 
+     */
+    open class func enterpriseGetStatusWithRequestBuilder(xEnterpriseAuth: String) -> RequestBuilder<EnterpriseGetStatus200Response> {
+        let localVariablePath = "/enterprise/status"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-Enterprise-Auth": xEnterpriseAuth.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<EnterpriseGetStatus200Response>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter xEnterpriseAuth: (header)  
+     - parameter walletId: (path)  
+     - returns: EnterpriseWalletConfig
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func enterpriseGetWalletConfig(xEnterpriseAuth: String, walletId: String) async throws -> EnterpriseWalletConfig {
+        return try await enterpriseGetWalletConfigWithRequestBuilder(xEnterpriseAuth: xEnterpriseAuth, walletId: walletId).execute().body
+    }
+
+    /**
+     - GET /enterprise/wallets/{wallet_id}/config
+     - parameter xEnterpriseAuth: (header)  
+     - parameter walletId: (path)  
+     - returns: RequestBuilder<EnterpriseWalletConfig> 
+     */
+    open class func enterpriseGetWalletConfigWithRequestBuilder(xEnterpriseAuth: String, walletId: String) -> RequestBuilder<EnterpriseWalletConfig> {
+        var localVariablePath = "/enterprise/wallets/{wallet_id}/config"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{wallet_id}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-Enterprise-Auth": xEnterpriseAuth.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<EnterpriseWalletConfig>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter xEnterpriseAuth: (header)  
+     - parameter walletId: (path)  
+     - parameter enterpriseEstimateRequest: (body) bag-of-cells serialized to base64 
+     - returns: EnterpriseSend200Response
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func enterpriseSend(xEnterpriseAuth: String, walletId: String, enterpriseEstimateRequest: EnterpriseEstimateRequest) async throws -> EnterpriseSend200Response {
+        return try await enterpriseSendWithRequestBuilder(xEnterpriseAuth: xEnterpriseAuth, walletId: walletId, enterpriseEstimateRequest: enterpriseEstimateRequest).execute().body
+    }
+
+    /**
+     - POST /enterprise/wallets/{wallet_id}/send
+     - parameter xEnterpriseAuth: (header)  
+     - parameter walletId: (path)  
+     - parameter enterpriseEstimateRequest: (body) bag-of-cells serialized to base64 
+     - returns: RequestBuilder<EnterpriseSend200Response> 
+     */
+    open class func enterpriseSendWithRequestBuilder(xEnterpriseAuth: String, walletId: String, enterpriseEstimateRequest: EnterpriseEstimateRequest) -> RequestBuilder<EnterpriseSend200Response> {
+        var localVariablePath = "/enterprise/wallets/{wallet_id}/send"
+        let walletIdPreEscape = "\(APIHelper.mapValueToPathItem(walletId))"
+        let walletIdPostEscape = walletIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{wallet_id}", with: walletIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: enterpriseEstimateRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+            "X-Enterprise-Auth": xEnterpriseAuth.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<EnterpriseSend200Response>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }
@@ -259,6 +534,43 @@ open class DefaultAPI {
 
     /**
 
+     - parameter accountId: (query)  
+     - returns: BatteryCharged
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getBatteryCharged(accountId: String) async throws -> BatteryCharged {
+        return try await getBatteryChargedWithRequestBuilder(accountId: accountId).execute().body
+    }
+
+    /**
+     - GET /battery-charged
+     - This method returns information about a user's balance.
+     - parameter accountId: (query)  
+     - returns: RequestBuilder<BatteryCharged> 
+     */
+    open class func getBatteryChargedWithRequestBuilder(accountId: String) -> RequestBuilder<BatteryCharged> {
+        let localVariablePath = "/battery-charged"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "account_id": (wrappedValue: accountId.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<BatteryCharged>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
      - returns: Config
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -285,6 +597,42 @@ open class DefaultAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<Config>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter promo: (query)  
+     - returns: PromoUsed
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getPromoUsed(promo: String) async throws -> PromoUsed {
+        return try await getPromoUsedWithRequestBuilder(promo: promo).execute().body
+    }
+
+    /**
+     - GET /promo-used
+     - parameter promo: (query)  
+     - returns: RequestBuilder<PromoUsed> 
+     */
+    open class func getPromoUsedWithRequestBuilder(promo: String) -> RequestBuilder<PromoUsed> {
+        let localVariablePath = "/promo-used"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "promo": (wrappedValue: promo.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<PromoUsed>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }
@@ -443,6 +791,78 @@ open class DefaultAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<Transactions>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - returns: GetTronConfig200Response
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getTronConfig() async throws -> GetTronConfig200Response {
+        return try await getTronConfigWithRequestBuilder().execute().body
+    }
+
+    /**
+     - GET /v0/tron/config
+     - returns: RequestBuilder<GetTronConfig200Response> 
+     */
+    open class func getTronConfigWithRequestBuilder() -> RequestBuilder<GetTronConfig200Response> {
+        let localVariablePath = "/v0/tron/config"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<GetTronConfig200Response>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter xTonConnectAuth: (header)  
+     - parameter limit: (query)  (optional, default to 1000)
+     - parameter maxTimestamp: (query)  (optional)
+     - returns: TronTransactionsList
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getTronTransactions(xTonConnectAuth: String, limit: Int? = nil, maxTimestamp: Int64? = nil) async throws -> TronTransactionsList {
+        return try await getTronTransactionsWithRequestBuilder(xTonConnectAuth: xTonConnectAuth, limit: limit, maxTimestamp: maxTimestamp).execute().body
+    }
+
+    /**
+     - GET /v0/tron/transactions
+     - parameter xTonConnectAuth: (header)  
+     - parameter limit: (query)  (optional, default to 1000)
+     - parameter maxTimestamp: (query)  (optional)
+     - returns: RequestBuilder<TronTransactionsList> 
+     */
+    open class func getTronTransactionsWithRequestBuilder(xTonConnectAuth: String, limit: Int? = nil, maxTimestamp: Int64? = nil) -> RequestBuilder<TronTransactionsList> {
+        let localVariablePath = "/v0/tron/transactions"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "limit": (wrappedValue: limit?.encodeToJSON(), isExplode: true),
+            "max_timestamp": (wrappedValue: maxTimestamp?.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-TonConnect-Auth": xTonConnectAuth.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TronTransactionsList>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }
@@ -617,6 +1037,7 @@ open class DefaultAPI {
     /**
      - POST /message
      - Send message to blockchain
+     - responseHeaders: [X-Battery-Protocol-Name(String)]
      - parameter xTonConnectAuth: (header)  
      - parameter emulateMessageToWalletRequest: (body) bag-of-cells serialized to base64 
      - returns: RequestBuilder<Void> 
@@ -636,6 +1057,86 @@ open class DefaultAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<Void>.Type = BatteryAPIAPI.requestBuilderFactory.getNonDecodableBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter wallet: (query)  
+     - parameter energy: (query)  (optional)
+     - parameter bandwidth: (query)  (optional)
+     - returns: EstimatedTronTx
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func tronEstimate(wallet: String, energy: Int? = nil, bandwidth: Int? = nil) async throws -> EstimatedTronTx {
+        return try await tronEstimateWithRequestBuilder(wallet: wallet, energy: energy, bandwidth: bandwidth).execute().body
+    }
+
+    /**
+     - GET /v0/tron/estimate
+     - Estimate cost of sending a tx in Tron network
+     - parameter wallet: (query)  
+     - parameter energy: (query)  (optional)
+     - parameter bandwidth: (query)  (optional)
+     - returns: RequestBuilder<EstimatedTronTx> 
+     */
+    open class func tronEstimateWithRequestBuilder(wallet: String, energy: Int? = nil, bandwidth: Int? = nil) -> RequestBuilder<EstimatedTronTx> {
+        let localVariablePath = "/v0/tron/estimate"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "energy": (wrappedValue: energy?.encodeToJSON(), isExplode: true),
+            "bandwidth": (wrappedValue: bandwidth?.encodeToJSON(), isExplode: true),
+            "wallet": (wrappedValue: wallet.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<EstimatedTronTx>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter xTonConnectAuth: (header)  
+     - parameter tronSendRequest: (body)  
+     - returns: SentTronTx
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func tronSend(xTonConnectAuth: String, tronSendRequest: TronSendRequest) async throws -> SentTronTx {
+        return try await tronSendWithRequestBuilder(xTonConnectAuth: xTonConnectAuth, tronSendRequest: tronSendRequest).execute().body
+    }
+
+    /**
+     - POST /v0/tron/send
+     - send TRON tx
+     - parameter xTonConnectAuth: (header)  
+     - parameter tronSendRequest: (body)  
+     - returns: RequestBuilder<SentTronTx> 
+     */
+    open class func tronSendWithRequestBuilder(xTonConnectAuth: String, tronSendRequest: TronSendRequest) -> RequestBuilder<SentTronTx> {
+        let localVariablePath = "/v0/tron/send"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tronSendRequest)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+            "X-TonConnect-Auth": xTonConnectAuth.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<SentTronTx>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }

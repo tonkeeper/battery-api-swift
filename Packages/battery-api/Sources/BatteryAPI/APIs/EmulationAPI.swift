@@ -27,7 +27,7 @@ open class EmulationAPI {
     /**
      - POST /wallet/emulate
      - Emulate sending message to blockchain
-     - responseHeaders: [Allowed-By-Battery(Bool), Supported-By-Battery(Bool), Reject-Reason(String)]
+     - responseHeaders: [Allowed-By-Battery(Bool), Supported-By-Battery(Bool), Reject-Reason(String), X-Battery-Protocol-Name(String)]
      - parameter xTonConnectAuth: (header)  
      - parameter emulateMessageToWalletRequest: (body) bag-of-cells serialized to base64 
      - parameter acceptLanguage: (header)  (optional, default to "en")

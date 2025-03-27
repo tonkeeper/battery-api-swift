@@ -36,6 +36,7 @@ open class RequestBuilder<T> {
         self.requiresAuthentication = requiresAuthentication
 
         addHeaders(BatteryAPIAPI.customHeaders)
+        addCredential()
     }
 
     open func addHeaders(_ aHeaders: [String: String]) {
@@ -81,9 +82,8 @@ open class RequestBuilder<T> {
         return self
     }
 
-    open func addCredential() -> Self {
+    open func addCredential() {
         credential = BatteryAPIAPI.credential
-        return self
     }
 }
 
