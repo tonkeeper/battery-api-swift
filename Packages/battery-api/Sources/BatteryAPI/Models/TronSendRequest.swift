@@ -16,12 +16,15 @@ public struct TronSendRequest: Codable, JSONEncodable, Hashable {
     public var energy: Int?
     public var bandwidth: Int?
     public var wallet: String
+    /** base64 encoded payment transaction in the TON network */
+    public var instantFeeTx: String?
 
-    public init(tx: String? = nil, energy: Int? = nil, bandwidth: Int? = nil, wallet: String) {
+    public init(tx: String? = nil, energy: Int? = nil, bandwidth: Int? = nil, wallet: String, instantFeeTx: String? = nil) {
         self.tx = tx
         self.energy = energy
         self.bandwidth = bandwidth
         self.wallet = wallet
+        self.instantFeeTx = instantFeeTx
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -29,6 +32,7 @@ public struct TronSendRequest: Codable, JSONEncodable, Hashable {
         case energy
         case bandwidth
         case wallet
+        case instantFeeTx = "instant_fee_tx"
     }
 
     // Encodable protocol methods
@@ -39,6 +43,7 @@ public struct TronSendRequest: Codable, JSONEncodable, Hashable {
         try container.encodeIfPresent(energy, forKey: .energy)
         try container.encodeIfPresent(bandwidth, forKey: .bandwidth)
         try container.encode(wallet, forKey: .wallet)
+        try container.encodeIfPresent(instantFeeTx, forKey: .instantFeeTx)
     }
 }
 

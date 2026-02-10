@@ -16,12 +16,14 @@ public struct EstimatedTronTx: Codable, JSONEncodable, Hashable {
     public var bandwidthCharges: Int
     public var activationCharges: Int
     public var totalCharges: Int
+    public var instantFee: EstimatedTronTxInstantFee
 
-    public init(energyCharges: Int, bandwidthCharges: Int, activationCharges: Int, totalCharges: Int) {
+    public init(energyCharges: Int, bandwidthCharges: Int, activationCharges: Int, totalCharges: Int, instantFee: EstimatedTronTxInstantFee) {
         self.energyCharges = energyCharges
         self.bandwidthCharges = bandwidthCharges
         self.activationCharges = activationCharges
         self.totalCharges = totalCharges
+        self.instantFee = instantFee
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -29,6 +31,7 @@ public struct EstimatedTronTx: Codable, JSONEncodable, Hashable {
         case bandwidthCharges = "bandwidth_charges"
         case activationCharges = "activation_charges"
         case totalCharges = "total_charges"
+        case instantFee = "instant_fee"
     }
 
     // Encodable protocol methods
@@ -39,6 +42,7 @@ public struct EstimatedTronTx: Codable, JSONEncodable, Hashable {
         try container.encode(bandwidthCharges, forKey: .bandwidthCharges)
         try container.encode(activationCharges, forKey: .activationCharges)
         try container.encode(totalCharges, forKey: .totalCharges)
+        try container.encode(instantFee, forKey: .instantFee)
     }
 }
 

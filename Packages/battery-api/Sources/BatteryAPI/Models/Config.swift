@@ -22,14 +22,17 @@ public struct Config: Codable, JSONEncodable, Hashable {
     public var messageTtl: Int
     public var gasProxy: [ConfigGasProxyInner]
     public var meanPrices: ConfigMeanPrices
+    /** reserved amount in TON that is kept for gas fees */
+    public var batteryReservedAmount: String
 
-    public init(chargeCost: String, fundReceiver: String, excessAccount: String, messageTtl: Int, gasProxy: [ConfigGasProxyInner], meanPrices: ConfigMeanPrices) {
+    public init(chargeCost: String, fundReceiver: String, excessAccount: String, messageTtl: Int, gasProxy: [ConfigGasProxyInner], meanPrices: ConfigMeanPrices, batteryReservedAmount: String) {
         self.chargeCost = chargeCost
         self.fundReceiver = fundReceiver
         self.excessAccount = excessAccount
         self.messageTtl = messageTtl
         self.gasProxy = gasProxy
         self.meanPrices = meanPrices
+        self.batteryReservedAmount = batteryReservedAmount
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -39,6 +42,7 @@ public struct Config: Codable, JSONEncodable, Hashable {
         case messageTtl = "message_ttl"
         case gasProxy = "gas_proxy"
         case meanPrices = "mean_prices"
+        case batteryReservedAmount = "battery_reserved_amount"
     }
 
     // Encodable protocol methods
@@ -51,6 +55,7 @@ public struct Config: Codable, JSONEncodable, Hashable {
         try container.encode(messageTtl, forKey: .messageTtl)
         try container.encode(gasProxy, forKey: .gasProxy)
         try container.encode(meanPrices, forKey: .meanPrices)
+        try container.encode(batteryReservedAmount, forKey: .batteryReservedAmount)
     }
 }
 

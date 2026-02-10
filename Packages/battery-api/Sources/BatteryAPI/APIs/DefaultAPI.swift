@@ -402,11 +402,12 @@ open class DefaultAPI {
      - parameter xTonConnectAuth: (header)  (optional)
      - parameter walletAddress: (query)  (optional)
      - parameter walletPublicKey: (query)  (optional)
+     - parameter enableValidation: (query)  (optional, default to false)
      - returns: GaslessEstimation
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func estimateGaslessCost(jettonMaster: String, estimateGaslessCostRequest: EstimateGaslessCostRequest, xTonConnectAuth: String? = nil, walletAddress: String? = nil, walletPublicKey: String? = nil) async throws -> GaslessEstimation {
-        return try await estimateGaslessCostWithRequestBuilder(jettonMaster: jettonMaster, estimateGaslessCostRequest: estimateGaslessCostRequest, xTonConnectAuth: xTonConnectAuth, walletAddress: walletAddress, walletPublicKey: walletPublicKey).execute().body
+    open class func estimateGaslessCost(jettonMaster: String, estimateGaslessCostRequest: EstimateGaslessCostRequest, xTonConnectAuth: String? = nil, walletAddress: String? = nil, walletPublicKey: String? = nil, enableValidation: Bool? = nil) async throws -> GaslessEstimation {
+        return try await estimateGaslessCostWithRequestBuilder(jettonMaster: jettonMaster, estimateGaslessCostRequest: estimateGaslessCostRequest, xTonConnectAuth: xTonConnectAuth, walletAddress: walletAddress, walletPublicKey: walletPublicKey, enableValidation: enableValidation).execute().body
     }
 
     /**
@@ -416,9 +417,10 @@ open class DefaultAPI {
      - parameter xTonConnectAuth: (header)  (optional)
      - parameter walletAddress: (query)  (optional)
      - parameter walletPublicKey: (query)  (optional)
+     - parameter enableValidation: (query)  (optional, default to false)
      - returns: RequestBuilder<GaslessEstimation> 
      */
-    open class func estimateGaslessCostWithRequestBuilder(jettonMaster: String, estimateGaslessCostRequest: EstimateGaslessCostRequest, xTonConnectAuth: String? = nil, walletAddress: String? = nil, walletPublicKey: String? = nil) -> RequestBuilder<GaslessEstimation> {
+    open class func estimateGaslessCostWithRequestBuilder(jettonMaster: String, estimateGaslessCostRequest: EstimateGaslessCostRequest, xTonConnectAuth: String? = nil, walletAddress: String? = nil, walletPublicKey: String? = nil, enableValidation: Bool? = nil) -> RequestBuilder<GaslessEstimation> {
         var localVariablePath = "/gasless/estimate-cost/{jetton_master}"
         let jettonMasterPreEscape = "\(APIHelper.mapValueToPathItem(jettonMaster))"
         let jettonMasterPostEscape = jettonMasterPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
@@ -430,6 +432,7 @@ open class DefaultAPI {
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "wallet_address": (wrappedValue: walletAddress?.encodeToJSON(), isExplode: true),
             "wallet_public_key": (wrappedValue: walletPublicKey?.encodeToJSON(), isExplode: true),
+            "enable_validation": (wrappedValue: enableValidation?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -497,11 +500,12 @@ open class DefaultAPI {
 
      - parameter xTonConnectAuth: (header)  
      - parameter units: (query)  (optional, default to .usd)
+     - parameter region: (query)  (optional)
      - returns: Balance
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func getBalance(xTonConnectAuth: String, units: Units_getBalance? = nil) async throws -> Balance {
-        return try await getBalanceWithRequestBuilder(xTonConnectAuth: xTonConnectAuth, units: units).execute().body
+    open class func getBalance(xTonConnectAuth: String, units: Units_getBalance? = nil, region: String? = nil) async throws -> Balance {
+        return try await getBalanceWithRequestBuilder(xTonConnectAuth: xTonConnectAuth, units: units, region: region).execute().body
     }
 
     /**
@@ -509,9 +513,10 @@ open class DefaultAPI {
      - This method returns information about a user's balance.
      - parameter xTonConnectAuth: (header)  
      - parameter units: (query)  (optional, default to .usd)
+     - parameter region: (query)  (optional)
      - returns: RequestBuilder<Balance> 
      */
-    open class func getBalanceWithRequestBuilder(xTonConnectAuth: String, units: Units_getBalance? = nil) -> RequestBuilder<Balance> {
+    open class func getBalanceWithRequestBuilder(xTonConnectAuth: String, units: Units_getBalance? = nil, region: String? = nil) -> RequestBuilder<Balance> {
         let localVariablePath = "/balance"
         let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -519,6 +524,7 @@ open class DefaultAPI {
         var localVariableUrlComponents = URLComponents(string: localVariableURLString)
         localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
             "units": (wrappedValue: units?.encodeToJSON(), isExplode: true),
+            "region": (wrappedValue: region?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
@@ -797,6 +803,40 @@ open class DefaultAPI {
 
     /**
 
+     - parameter xProAuth: (header) JWT token from Pro service (Bearer token) 
+     - returns: TronAvailableTransfers
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func getTronAvailableTransfers(xProAuth: String) async throws -> TronAvailableTransfers {
+        return try await getTronAvailableTransfersWithRequestBuilder(xProAuth: xProAuth).execute().body
+    }
+
+    /**
+     - GET /v0/tron/available-transfers
+     - Get number of available TRON free transfers for Pro users
+     - parameter xProAuth: (header) JWT token from Pro service (Bearer token) 
+     - returns: RequestBuilder<TronAvailableTransfers> 
+     */
+    open class func getTronAvailableTransfersWithRequestBuilder(xProAuth: String) -> RequestBuilder<TronAvailableTransfers> {
+        let localVariablePath = "/v0/tron/available-transfers"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "X-Pro-Auth": xProAuth.encodeToJSON(),
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<TronAvailableTransfers>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
      - returns: GetTronConfig200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
@@ -869,6 +909,49 @@ open class DefaultAPI {
 
     /**
 
+     - parameter token: (query)  
+     - parameter userId: (path)  
+     - parameter increaseUserBalanceRequest: (body)  
+     - returns: [String: AnyCodable]
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func increaseUserBalance(token: String, userId: Int64, increaseUserBalanceRequest: IncreaseUserBalanceRequest) async throws -> [String: AnyCodable] {
+        return try await increaseUserBalanceWithRequestBuilder(token: token, userId: userId, increaseUserBalanceRequest: increaseUserBalanceRequest).execute().body
+    }
+
+    /**
+     - POST /restricted/users/{user_id}/increase-balance
+     - parameter token: (query)  
+     - parameter userId: (path)  
+     - parameter increaseUserBalanceRequest: (body)  
+     - returns: RequestBuilder<[String: AnyCodable]> 
+     */
+    open class func increaseUserBalanceWithRequestBuilder(token: String, userId: Int64, increaseUserBalanceRequest: IncreaseUserBalanceRequest) -> RequestBuilder<[String: AnyCodable]> {
+        var localVariablePath = "/restricted/users/{user_id}/increase-balance"
+        let userIdPreEscape = "\(APIHelper.mapValueToPathItem(userId))"
+        let userIdPostEscape = userIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
+        localVariablePath = localVariablePath.replacingOccurrences(of: "{user_id}", with: userIdPostEscape, options: .literal, range: nil)
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: increaseUserBalanceRequest)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
      - parameter xTonConnectAuth: (header)  
      - parameter iosBatteryPurchaseRequest: (body) In-App purchase 
      - returns: IOSBatteryPurchaseStatus
@@ -900,6 +983,123 @@ open class DefaultAPI {
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
         let localVariableRequestBuilder: RequestBuilder<IOSBatteryPurchaseStatus>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter requestBody: (body)  
+     - returns: [String: AnyCodable]
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func itrxIoCallback(requestBody: [String: AnyCodable]) async throws -> [String: AnyCodable] {
+        return try await itrxIoCallbackWithRequestBuilder(requestBody: requestBody).execute().body
+    }
+
+    /**
+     - POST /v0/tron/itrx-io-callback
+     - receive callback from itrx.io
+     - parameter requestBody: (body)  
+     - returns: RequestBuilder<[String: AnyCodable]> 
+     */
+    open class func itrxIoCallbackWithRequestBuilder(requestBody: [String: AnyCodable]) -> RequestBuilder<[String: AnyCodable]> {
+        let localVariablePath = "/v0/tron/itrx-io-callback"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: requestBody)
+
+        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter token: (query)  
+     - parameter manualTransferRequest: (body)  
+     - returns: [String: AnyCodable]
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func manualTransfer(token: String, manualTransferRequest: ManualTransferRequest) async throws -> [String: AnyCodable] {
+        return try await manualTransferWithRequestBuilder(token: token, manualTransferRequest: manualTransferRequest).execute().body
+    }
+
+    /**
+     - POST /restricted/transfer
+     - parameter token: (query)  
+     - parameter manualTransferRequest: (body)  
+     - returns: RequestBuilder<[String: AnyCodable]> 
+     */
+    open class func manualTransferWithRequestBuilder(token: String, manualTransferRequest: ManualTransferRequest) -> RequestBuilder<[String: AnyCodable]> {
+        let localVariablePath = "/restricted/transfer"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: manualTransferRequest)
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            "Content-Type": "application/json",
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+
+        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
+    }
+
+    /**
+
+     - parameter token: (query)  
+     - parameter master0: (query)  
+     - parameter master1: (query)  
+     - parameter fromAmount: (query)  
+     - returns: [String: AnyCodable]
+     */
+    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
+    open class func omnistonSwap(token: String, master0: String, master1: String, fromAmount: String) async throws -> [String: AnyCodable] {
+        return try await omnistonSwapWithRequestBuilder(token: token, master0: master0, master1: master1, fromAmount: fromAmount).execute().body
+    }
+
+    /**
+     - POST /restricted/omniston-swap
+     - parameter token: (query)  
+     - parameter master0: (query)  
+     - parameter master1: (query)  
+     - parameter fromAmount: (query)  
+     - returns: RequestBuilder<[String: AnyCodable]> 
+     */
+    open class func omnistonSwapWithRequestBuilder(token: String, master0: String, master1: String, fromAmount: String) -> RequestBuilder<[String: AnyCodable]> {
+        let localVariablePath = "/restricted/omniston-swap"
+        let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
+        let localVariableParameters: [String: Any]? = nil
+
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "token": (wrappedValue: token.encodeToJSON(), isExplode: true),
+            "master0": (wrappedValue: master0.encodeToJSON(), isExplode: true),
+            "master1": (wrappedValue: master1.encodeToJSON(), isExplode: true),
+            "from_amount": (wrappedValue: fromAmount.encodeToJSON(), isExplode: true),
+        ])
+
+        let localVariableNillableHeaders: [String: Any?] = [
+            :
+        ]
+
+        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
+
+        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }
@@ -1064,24 +1264,30 @@ open class DefaultAPI {
     /**
 
      - parameter wallet: (query)  
+     - parameter xTonConnectAuth: (header)  (optional)
+     - parameter xProAuth: (header) JWT token from Pro service for free charges verification (optional)
      - parameter energy: (query)  (optional)
      - parameter bandwidth: (query)  (optional)
+     - parameter enableValidation: (query) Enable balance validation for battery charges (optional, default to false)
      - returns: EstimatedTronTx
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func tronEstimate(wallet: String, energy: Int? = nil, bandwidth: Int? = nil) async throws -> EstimatedTronTx {
-        return try await tronEstimateWithRequestBuilder(wallet: wallet, energy: energy, bandwidth: bandwidth).execute().body
+    open class func tronEstimate(wallet: String, xTonConnectAuth: String? = nil, xProAuth: String? = nil, energy: Int? = nil, bandwidth: Int? = nil, enableValidation: Bool? = nil) async throws -> EstimatedTronTx {
+        return try await tronEstimateWithRequestBuilder(wallet: wallet, xTonConnectAuth: xTonConnectAuth, xProAuth: xProAuth, energy: energy, bandwidth: bandwidth, enableValidation: enableValidation).execute().body
     }
 
     /**
      - GET /v0/tron/estimate
      - Estimate cost of sending a tx in Tron network
      - parameter wallet: (query)  
+     - parameter xTonConnectAuth: (header)  (optional)
+     - parameter xProAuth: (header) JWT token from Pro service for free charges verification (optional)
      - parameter energy: (query)  (optional)
      - parameter bandwidth: (query)  (optional)
+     - parameter enableValidation: (query) Enable balance validation for battery charges (optional, default to false)
      - returns: RequestBuilder<EstimatedTronTx> 
      */
-    open class func tronEstimateWithRequestBuilder(wallet: String, energy: Int? = nil, bandwidth: Int? = nil) -> RequestBuilder<EstimatedTronTx> {
+    open class func tronEstimateWithRequestBuilder(wallet: String, xTonConnectAuth: String? = nil, xProAuth: String? = nil, energy: Int? = nil, bandwidth: Int? = nil, enableValidation: Bool? = nil) -> RequestBuilder<EstimatedTronTx> {
         let localVariablePath = "/v0/tron/estimate"
         let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -1091,10 +1297,12 @@ open class DefaultAPI {
             "energy": (wrappedValue: energy?.encodeToJSON(), isExplode: true),
             "bandwidth": (wrappedValue: bandwidth?.encodeToJSON(), isExplode: true),
             "wallet": (wrappedValue: wallet.encodeToJSON(), isExplode: true),
+            "enable_validation": (wrappedValue: enableValidation?.encodeToJSON(), isExplode: true),
         ])
 
         let localVariableNillableHeaders: [String: Any?] = [
-            :
+            "X-TonConnect-Auth": xTonConnectAuth?.encodeToJSON(),
+            "X-Pro-Auth": xProAuth?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -1106,32 +1314,40 @@ open class DefaultAPI {
 
     /**
 
-     - parameter xTonConnectAuth: (header)  
      - parameter tronSendRequest: (body)  
+     - parameter xTonConnectAuth: (header)  (optional)
+     - parameter xProAuth: (header) JWT token from Pro service for free charges verification (optional)
+     - parameter userPublicKey: (query) User public key for commission payments (required when instant_fee_tx is provided) (optional)
      - returns: SentTronTx
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func tronSend(xTonConnectAuth: String, tronSendRequest: TronSendRequest) async throws -> SentTronTx {
-        return try await tronSendWithRequestBuilder(xTonConnectAuth: xTonConnectAuth, tronSendRequest: tronSendRequest).execute().body
+    open class func tronSend(tronSendRequest: TronSendRequest, xTonConnectAuth: String? = nil, xProAuth: String? = nil, userPublicKey: String? = nil) async throws -> SentTronTx {
+        return try await tronSendWithRequestBuilder(tronSendRequest: tronSendRequest, xTonConnectAuth: xTonConnectAuth, xProAuth: xProAuth, userPublicKey: userPublicKey).execute().body
     }
 
     /**
      - POST /v0/tron/send
      - send TRON tx
-     - parameter xTonConnectAuth: (header)  
      - parameter tronSendRequest: (body)  
+     - parameter xTonConnectAuth: (header)  (optional)
+     - parameter xProAuth: (header) JWT token from Pro service for free charges verification (optional)
+     - parameter userPublicKey: (query) User public key for commission payments (required when instant_fee_tx is provided) (optional)
      - returns: RequestBuilder<SentTronTx> 
      */
-    open class func tronSendWithRequestBuilder(xTonConnectAuth: String, tronSendRequest: TronSendRequest) -> RequestBuilder<SentTronTx> {
+    open class func tronSendWithRequestBuilder(tronSendRequest: TronSendRequest, xTonConnectAuth: String? = nil, xProAuth: String? = nil, userPublicKey: String? = nil) -> RequestBuilder<SentTronTx> {
         let localVariablePath = "/v0/tron/send"
         let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: tronSendRequest)
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "user_public_key": (wrappedValue: userPublicKey?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/json",
-            "X-TonConnect-Auth": xTonConnectAuth.encodeToJSON(),
+            "X-TonConnect-Auth": xTonConnectAuth?.encodeToJSON(),
+            "X-Pro-Auth": xProAuth?.encodeToJSON(),
         ]
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
@@ -1144,19 +1360,19 @@ open class DefaultAPI {
     /**
 
      - parameter promo: (query)  (optional)
-     - returns: [String: AnyCodable]
+     - returns: VerifyPurchasePromo200Response
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func verifyPurchasePromo(promo: String? = nil) async throws -> [String: AnyCodable] {
+    open class func verifyPurchasePromo(promo: String? = nil) async throws -> VerifyPurchasePromo200Response {
         return try await verifyPurchasePromoWithRequestBuilder(promo: promo).execute().body
     }
 
     /**
      - GET /purchase-battery/verify-purchase-promo
      - parameter promo: (query)  (optional)
-     - returns: RequestBuilder<[String: AnyCodable]> 
+     - returns: RequestBuilder<VerifyPurchasePromo200Response> 
      */
-    open class func verifyPurchasePromoWithRequestBuilder(promo: String? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func verifyPurchasePromoWithRequestBuilder(promo: String? = nil) -> RequestBuilder<VerifyPurchasePromo200Response> {
         let localVariablePath = "/purchase-battery/verify-purchase-promo"
         let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
         let localVariableParameters: [String: Any]? = nil
@@ -1172,7 +1388,7 @@ open class DefaultAPI {
 
         let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
 
-        let localVariableRequestBuilder: RequestBuilder<[String: AnyCodable]>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
+        let localVariableRequestBuilder: RequestBuilder<VerifyPurchasePromo200Response>.Type = BatteryAPIAPI.requestBuilderFactory.getBuilder()
 
         return localVariableRequestBuilder.init(method: "GET", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
     }

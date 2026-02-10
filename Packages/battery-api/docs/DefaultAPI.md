@@ -24,9 +24,14 @@ Method | HTTP request | Description
 [**getRechargeMethods**](DefaultAPI.md#getrechargemethods) | **GET** /recharge-methods | 
 [**getStatus**](DefaultAPI.md#getstatus) | **GET** /status | 
 [**getTransactions**](DefaultAPI.md#gettransactions) | **GET** /transactions | 
+[**getTronAvailableTransfers**](DefaultAPI.md#gettronavailabletransfers) | **GET** /v0/tron/available-transfers | 
 [**getTronConfig**](DefaultAPI.md#gettronconfig) | **GET** /v0/tron/config | 
 [**getTronTransactions**](DefaultAPI.md#gettrontransactions) | **GET** /v0/tron/transactions | 
+[**increaseUserBalance**](DefaultAPI.md#increaseuserbalance) | **POST** /restricted/users/{user_id}/increase-balance | 
 [**iosBatteryPurchase**](DefaultAPI.md#iosbatterypurchase) | **POST** /purchase-battery/ios | 
+[**itrxIoCallback**](DefaultAPI.md#itrxiocallback) | **POST** /v0/tron/itrx-io-callback | 
+[**manualTransfer**](DefaultAPI.md#manualtransfer) | **POST** /restricted/transfer | 
+[**omnistonSwap**](DefaultAPI.md#omnistonswap) | **POST** /restricted/omniston-swap | 
 [**promoCodeBatteryPurchase**](DefaultAPI.md#promocodebatterypurchase) | **POST** /purchase-battery/promo-code | 
 [**requestRefund**](DefaultAPI.md#requestrefund) | **POST** /request-refund | 
 [**resetUserBalance**](DefaultAPI.md#resetuserbalance) | **POST** /restricted/users/{user_id}/reset-balance | 
@@ -534,7 +539,7 @@ No authorization required
 
 # **estimateGaslessCost**
 ```swift
-    open class func estimateGaslessCost(jettonMaster: String, estimateGaslessCostRequest: EstimateGaslessCostRequest, xTonConnectAuth: String? = nil, walletAddress: String? = nil, walletPublicKey: String? = nil, completion: @escaping (_ data: GaslessEstimation?, _ error: Error?) -> Void)
+    open class func estimateGaslessCost(jettonMaster: String, estimateGaslessCostRequest: EstimateGaslessCostRequest, xTonConnectAuth: String? = nil, walletAddress: String? = nil, walletPublicKey: String? = nil, enableValidation: Bool? = nil, completion: @escaping (_ data: GaslessEstimation?, _ error: Error?) -> Void)
 ```
 
 
@@ -549,8 +554,9 @@ let estimateGaslessCostRequest = estimateGaslessCost_request(battery: false, pay
 let xTonConnectAuth = "xTonConnectAuth_example" // String |  (optional)
 let walletAddress = "walletAddress_example" // String |  (optional)
 let walletPublicKey = "walletPublicKey_example" // String |  (optional)
+let enableValidation = true // Bool |  (optional) (default to false)
 
-DefaultAPI.estimateGaslessCost(jettonMaster: jettonMaster, estimateGaslessCostRequest: estimateGaslessCostRequest, xTonConnectAuth: xTonConnectAuth, walletAddress: walletAddress, walletPublicKey: walletPublicKey) { (response, error) in
+DefaultAPI.estimateGaslessCost(jettonMaster: jettonMaster, estimateGaslessCostRequest: estimateGaslessCostRequest, xTonConnectAuth: xTonConnectAuth, walletAddress: walletAddress, walletPublicKey: walletPublicKey, enableValidation: enableValidation) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -571,6 +577,7 @@ Name | Type | Description  | Notes
  **xTonConnectAuth** | **String** |  | [optional] 
  **walletAddress** | **String** |  | [optional] 
  **walletPublicKey** | **String** |  | [optional] 
+ **enableValidation** | **Bool** |  | [optional] [default to false]
 
 ### Return type
 
@@ -638,7 +645,7 @@ No authorization required
 
 # **getBalance**
 ```swift
-    open class func getBalance(xTonConnectAuth: String, units: Units_getBalance? = nil, completion: @escaping (_ data: Balance?, _ error: Error?) -> Void)
+    open class func getBalance(xTonConnectAuth: String, units: Units_getBalance? = nil, region: String? = nil, completion: @escaping (_ data: Balance?, _ error: Error?) -> Void)
 ```
 
 
@@ -652,8 +659,9 @@ import BatteryAPI
 
 let xTonConnectAuth = "xTonConnectAuth_example" // String | 
 let units = "units_example" // String |  (optional) (default to .usd)
+let region = "region_example" // String |  (optional)
 
-DefaultAPI.getBalance(xTonConnectAuth: xTonConnectAuth, units: units) { (response, error) in
+DefaultAPI.getBalance(xTonConnectAuth: xTonConnectAuth, units: units, region: region) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -671,6 +679,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **xTonConnectAuth** | **String** |  | 
  **units** | **String** |  | [optional] [default to .usd]
+ **region** | **String** |  | [optional] 
 
 ### Return type
 
@@ -1034,6 +1043,55 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **getTronAvailableTransfers**
+```swift
+    open class func getTronAvailableTransfers(xProAuth: String, completion: @escaping (_ data: TronAvailableTransfers?, _ error: Error?) -> Void)
+```
+
+
+
+Get number of available TRON free transfers for Pro users
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let xProAuth = "xProAuth_example" // String | JWT token from Pro service (Bearer token)
+
+DefaultAPI.getTronAvailableTransfers(xProAuth: xProAuth) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **xProAuth** | **String** | JWT token from Pro service (Bearer token) | 
+
+### Return type
+
+[**TronAvailableTransfers**](TronAvailableTransfers.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **getTronConfig**
 ```swift
     open class func getTronConfig(completion: @escaping (_ data: GetTronConfig200Response?, _ error: Error?) -> Void)
@@ -1128,6 +1186,57 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **increaseUserBalance**
+```swift
+    open class func increaseUserBalance(token: String, userId: Int64, increaseUserBalanceRequest: IncreaseUserBalanceRequest, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let token = "token_example" // String | 
+let userId = 987 // Int64 | 
+let increaseUserBalanceRequest = increaseUserBalance_request(amount: "amount_example", reason: "reason_example") // IncreaseUserBalanceRequest | 
+
+DefaultAPI.increaseUserBalance(token: token, userId: userId, increaseUserBalanceRequest: increaseUserBalanceRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token** | **String** |  | 
+ **userId** | **Int64** |  | 
+ **increaseUserBalanceRequest** | [**IncreaseUserBalanceRequest**](IncreaseUserBalanceRequest.md) |  | 
+
+### Return type
+
+**[String: AnyCodable]**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **iosBatteryPurchase**
 ```swift
     open class func iosBatteryPurchase(xTonConnectAuth: String, iosBatteryPurchaseRequest: IosBatteryPurchaseRequest, completion: @escaping (_ data: IOSBatteryPurchaseStatus?, _ error: Error?) -> Void)
@@ -1175,6 +1284,157 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **itrxIoCallback**
+```swift
+    open class func itrxIoCallback(requestBody: [String: AnyCodable], completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+```
+
+
+
+receive callback from itrx.io
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let requestBody = "TODO" // [String: AnyCodable] | 
+
+DefaultAPI.itrxIoCallback(requestBody: requestBody) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **requestBody** | [**[String: AnyCodable]**](AnyCodable.md) |  | 
+
+### Return type
+
+**[String: AnyCodable]**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **manualTransfer**
+```swift
+    open class func manualTransfer(token: String, manualTransferRequest: ManualTransferRequest, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let token = "token_example" // String | 
+let manualTransferRequest = manualTransfer_request(relayer: "relayer_example", to: "to_example", currency: "currency_example", amount: "amount_example", comment: "comment_example") // ManualTransferRequest | 
+
+DefaultAPI.manualTransfer(token: token, manualTransferRequest: manualTransferRequest) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token** | **String** |  | 
+ **manualTransferRequest** | [**ManualTransferRequest**](ManualTransferRequest.md) |  | 
+
+### Return type
+
+**[String: AnyCodable]**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **omnistonSwap**
+```swift
+    open class func omnistonSwap(token: String, master0: String, master1: String, fromAmount: String, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+```
+
+
+
+### Example
+```swift
+// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
+import BatteryAPI
+
+let token = "token_example" // String | 
+let master0 = "master0_example" // String | 
+let master1 = "master1_example" // String | 
+let fromAmount = "fromAmount_example" // String | 
+
+DefaultAPI.omnistonSwap(token: token, master0: master0, master1: master1, fromAmount: fromAmount) { (response, error) in
+    guard error == nil else {
+        print(error)
+        return
+    }
+
+    if (response) {
+        dump(response)
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **token** | **String** |  | 
+ **master0** | **String** |  | 
+ **master1** | **String** |  | 
+ **fromAmount** | **String** |  | 
+
+### Return type
+
+**[String: AnyCodable]**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -1385,7 +1645,7 @@ No authorization required
 
 # **tronEstimate**
 ```swift
-    open class func tronEstimate(wallet: String, energy: Int? = nil, bandwidth: Int? = nil, completion: @escaping (_ data: EstimatedTronTx?, _ error: Error?) -> Void)
+    open class func tronEstimate(wallet: String, xTonConnectAuth: String? = nil, xProAuth: String? = nil, energy: Int? = nil, bandwidth: Int? = nil, enableValidation: Bool? = nil, completion: @escaping (_ data: EstimatedTronTx?, _ error: Error?) -> Void)
 ```
 
 
@@ -1398,10 +1658,13 @@ Estimate cost of sending a tx in Tron network
 import BatteryAPI
 
 let wallet = "wallet_example" // String | 
+let xTonConnectAuth = "xTonConnectAuth_example" // String |  (optional)
+let xProAuth = "xProAuth_example" // String | JWT token from Pro service for free charges verification (optional)
 let energy = 987 // Int |  (optional)
 let bandwidth = 987 // Int |  (optional)
+let enableValidation = true // Bool | Enable balance validation for battery charges (optional) (default to false)
 
-DefaultAPI.tronEstimate(wallet: wallet, energy: energy, bandwidth: bandwidth) { (response, error) in
+DefaultAPI.tronEstimate(wallet: wallet, xTonConnectAuth: xTonConnectAuth, xProAuth: xProAuth, energy: energy, bandwidth: bandwidth, enableValidation: enableValidation) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1418,8 +1681,11 @@ DefaultAPI.tronEstimate(wallet: wallet, energy: energy, bandwidth: bandwidth) { 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **wallet** | **String** |  | 
+ **xTonConnectAuth** | **String** |  | [optional] 
+ **xProAuth** | **String** | JWT token from Pro service for free charges verification | [optional] 
  **energy** | **Int** |  | [optional] 
  **bandwidth** | **Int** |  | [optional] 
+ **enableValidation** | **Bool** | Enable balance validation for battery charges | [optional] [default to false]
 
 ### Return type
 
@@ -1438,7 +1704,7 @@ No authorization required
 
 # **tronSend**
 ```swift
-    open class func tronSend(xTonConnectAuth: String, tronSendRequest: TronSendRequest, completion: @escaping (_ data: SentTronTx?, _ error: Error?) -> Void)
+    open class func tronSend(tronSendRequest: TronSendRequest, xTonConnectAuth: String? = nil, xProAuth: String? = nil, userPublicKey: String? = nil, completion: @escaping (_ data: SentTronTx?, _ error: Error?) -> Void)
 ```
 
 
@@ -1450,10 +1716,12 @@ send TRON tx
 // The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
 import BatteryAPI
 
-let xTonConnectAuth = "xTonConnectAuth_example" // String | 
-let tronSendRequest = tronSend_request(tx: "tx_example", energy: 123, bandwidth: 123, wallet: "wallet_example") // TronSendRequest | 
+let tronSendRequest = tronSend_request(tx: "tx_example", energy: 123, bandwidth: 123, wallet: "wallet_example", instantFeeTx: "instantFeeTx_example") // TronSendRequest | 
+let xTonConnectAuth = "xTonConnectAuth_example" // String |  (optional)
+let xProAuth = "xProAuth_example" // String | JWT token from Pro service for free charges verification (optional)
+let userPublicKey = "userPublicKey_example" // String | User public key for commission payments (required when instant_fee_tx is provided) (optional)
 
-DefaultAPI.tronSend(xTonConnectAuth: xTonConnectAuth, tronSendRequest: tronSendRequest) { (response, error) in
+DefaultAPI.tronSend(tronSendRequest: tronSendRequest, xTonConnectAuth: xTonConnectAuth, xProAuth: xProAuth, userPublicKey: userPublicKey) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -1469,8 +1737,10 @@ DefaultAPI.tronSend(xTonConnectAuth: xTonConnectAuth, tronSendRequest: tronSendR
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **xTonConnectAuth** | **String** |  | 
  **tronSendRequest** | [**TronSendRequest**](TronSendRequest.md) |  | 
+ **xTonConnectAuth** | **String** |  | [optional] 
+ **xProAuth** | **String** | JWT token from Pro service for free charges verification | [optional] 
+ **userPublicKey** | **String** | User public key for commission payments (required when instant_fee_tx is provided) | [optional] 
 
 ### Return type
 
@@ -1489,7 +1759,7 @@ No authorization required
 
 # **verifyPurchasePromo**
 ```swift
-    open class func verifyPurchasePromo(promo: String? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+    open class func verifyPurchasePromo(promo: String? = nil, completion: @escaping (_ data: VerifyPurchasePromo200Response?, _ error: Error?) -> Void)
 ```
 
 
@@ -1521,7 +1791,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-**[String: AnyCodable]**
+[**VerifyPurchasePromo200Response**](VerifyPurchasePromo200Response.md)
 
 ### Authorization
 
