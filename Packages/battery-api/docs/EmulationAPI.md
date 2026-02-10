@@ -10,7 +10,7 @@ Method | HTTP request | Description
 
 # **emulateMessageToWallet**
 ```swift
-    open class func emulateMessageToWallet(xTonConnectAuth: String, emulateMessageToWalletRequest: EmulateMessageToWalletRequest, acceptLanguage: String? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
+    open class func emulateMessageToWallet(xTonConnectAuth: String, emulateMessageToWalletRequest: EmulateMessageToWalletRequest, acceptLanguage: String? = nil, enableValidation: Bool? = nil, completion: @escaping (_ data: [String: AnyCodable]?, _ error: Error?) -> Void)
 ```
 
 
@@ -25,8 +25,9 @@ import BatteryAPI
 let xTonConnectAuth = "xTonConnectAuth_example" // String | 
 let emulateMessageToWalletRequest = emulateMessageToWallet_request(boc: "boc_example") // EmulateMessageToWalletRequest | bag-of-cells serialized to base64
 let acceptLanguage = "acceptLanguage_example" // String |  (optional) (default to "en")
+let enableValidation = true // Bool |  (optional) (default to false)
 
-EmulationAPI.emulateMessageToWallet(xTonConnectAuth: xTonConnectAuth, emulateMessageToWalletRequest: emulateMessageToWalletRequest, acceptLanguage: acceptLanguage) { (response, error) in
+EmulationAPI.emulateMessageToWallet(xTonConnectAuth: xTonConnectAuth, emulateMessageToWalletRequest: emulateMessageToWalletRequest, acceptLanguage: acceptLanguage, enableValidation: enableValidation) { (response, error) in
     guard error == nil else {
         print(error)
         return
@@ -45,6 +46,7 @@ Name | Type | Description  | Notes
  **xTonConnectAuth** | **String** |  | 
  **emulateMessageToWalletRequest** | [**EmulateMessageToWalletRequest**](EmulateMessageToWalletRequest.md) | bag-of-cells serialized to base64 | 
  **acceptLanguage** | **String** |  | [optional] [default to &quot;en&quot;]
+ **enableValidation** | **Bool** |  | [optional] [default to false]
 
 ### Return type
 

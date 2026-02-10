@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **batteryMeanPriceJetton** | **Int** |  | 
 **batteryMeanPriceNft** | **Int** |  | 
 **batteryMeanPriceTronUsdt** | **Int** |  | [optional] 
+**tonMeanPriceTronUsdt** | **Float** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

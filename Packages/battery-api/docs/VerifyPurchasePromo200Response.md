@@ -1,13 +1,9 @@
-# EstimatedTronTx
+# VerifyPurchasePromo200Response
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**energyCharges** | **Int** |  | 
-**bandwidthCharges** | **Int** |  | 
-**activationCharges** | **Int** |  | 
-**totalCharges** | **Int** |  | 
-**instantFee** | [**EstimatedTronTxInstantFee**](EstimatedTronTxInstantFee.md) |  | 
+**bonusCharges** | **String** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

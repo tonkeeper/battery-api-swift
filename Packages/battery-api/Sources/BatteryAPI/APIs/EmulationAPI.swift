@@ -17,28 +17,33 @@ open class EmulationAPI {
      - parameter xTonConnectAuth: (header)  
      - parameter emulateMessageToWalletRequest: (body) bag-of-cells serialized to base64 
      - parameter acceptLanguage: (header)  (optional, default to "en")
+     - parameter enableValidation: (query)  (optional, default to false)
      - returns: [String: AnyCodable]
      */
     @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func emulateMessageToWallet(xTonConnectAuth: String, emulateMessageToWalletRequest: EmulateMessageToWalletRequest, acceptLanguage: String? = nil) async throws -> [String: AnyCodable] {
-        return try await emulateMessageToWalletWithRequestBuilder(xTonConnectAuth: xTonConnectAuth, emulateMessageToWalletRequest: emulateMessageToWalletRequest, acceptLanguage: acceptLanguage).execute().body
+    open class func emulateMessageToWallet(xTonConnectAuth: String, emulateMessageToWalletRequest: EmulateMessageToWalletRequest, acceptLanguage: String? = nil, enableValidation: Bool? = nil) async throws -> [String: AnyCodable] {
+        return try await emulateMessageToWalletWithRequestBuilder(xTonConnectAuth: xTonConnectAuth, emulateMessageToWalletRequest: emulateMessageToWalletRequest, acceptLanguage: acceptLanguage, enableValidation: enableValidation).execute().body
     }
 
     /**
      - POST /wallet/emulate
      - Emulate sending message to blockchain
-     - responseHeaders: [Allowed-By-Battery(Bool), Supported-By-Battery(Bool), Reject-Reason(String), X-Battery-Protocol-Name(String)]
+     - responseHeaders: [Allowed-By-Battery(Bool), Supported-By-Battery(Bool), Reject-Reason(String), X-Battery-Protocol-Name(String), Excess(Int64)]
      - parameter xTonConnectAuth: (header)  
      - parameter emulateMessageToWalletRequest: (body) bag-of-cells serialized to base64 
      - parameter acceptLanguage: (header)  (optional, default to "en")
+     - parameter enableValidation: (query)  (optional, default to false)
      - returns: RequestBuilder<[String: AnyCodable]> 
      */
-    open class func emulateMessageToWalletWithRequestBuilder(xTonConnectAuth: String, emulateMessageToWalletRequest: EmulateMessageToWalletRequest, acceptLanguage: String? = nil) -> RequestBuilder<[String: AnyCodable]> {
+    open class func emulateMessageToWalletWithRequestBuilder(xTonConnectAuth: String, emulateMessageToWalletRequest: EmulateMessageToWalletRequest, acceptLanguage: String? = nil, enableValidation: Bool? = nil) -> RequestBuilder<[String: AnyCodable]> {
         let localVariablePath = "/wallet/emulate"
         let localVariableURLString = BatteryAPIAPI.basePath + localVariablePath
         let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: emulateMessageToWalletRequest)
 
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        var localVariableUrlComponents = URLComponents(string: localVariableURLString)
+        localVariableUrlComponents?.queryItems = APIHelper.mapValuesToQueryItems([
+            "enable_validation": (wrappedValue: enableValidation?.encodeToJSON(), isExplode: true),
+        ])
 
         let localVariableNillableHeaders: [String: Any?] = [
             "Content-Type": "application/json",

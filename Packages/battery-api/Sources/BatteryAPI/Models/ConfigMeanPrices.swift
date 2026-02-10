@@ -16,12 +16,14 @@ public struct ConfigMeanPrices: Codable, JSONEncodable, Hashable {
     public var batteryMeanPriceJetton: Int
     public var batteryMeanPriceNft: Int
     public var batteryMeanPriceTronUsdt: Int?
+    public var tonMeanPriceTronUsdt: Float?
 
-    public init(batteryMeanPriceSwap: Int, batteryMeanPriceJetton: Int, batteryMeanPriceNft: Int, batteryMeanPriceTronUsdt: Int? = nil) {
+    public init(batteryMeanPriceSwap: Int, batteryMeanPriceJetton: Int, batteryMeanPriceNft: Int, batteryMeanPriceTronUsdt: Int? = nil, tonMeanPriceTronUsdt: Float? = nil) {
         self.batteryMeanPriceSwap = batteryMeanPriceSwap
         self.batteryMeanPriceJetton = batteryMeanPriceJetton
         self.batteryMeanPriceNft = batteryMeanPriceNft
         self.batteryMeanPriceTronUsdt = batteryMeanPriceTronUsdt
+        self.tonMeanPriceTronUsdt = tonMeanPriceTronUsdt
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -29,6 +31,7 @@ public struct ConfigMeanPrices: Codable, JSONEncodable, Hashable {
         case batteryMeanPriceJetton = "battery_mean_price_jetton"
         case batteryMeanPriceNft = "battery_mean_price_nft"
         case batteryMeanPriceTronUsdt = "battery_mean_price_tron_usdt"
+        case tonMeanPriceTronUsdt = "ton_mean_price_tron_usdt"
     }
 
     // Encodable protocol methods
@@ -39,6 +42,7 @@ public struct ConfigMeanPrices: Codable, JSONEncodable, Hashable {
         try container.encode(batteryMeanPriceJetton, forKey: .batteryMeanPriceJetton)
         try container.encode(batteryMeanPriceNft, forKey: .batteryMeanPriceNft)
         try container.encodeIfPresent(batteryMeanPriceTronUsdt, forKey: .batteryMeanPriceTronUsdt)
+        try container.encodeIfPresent(tonMeanPriceTronUsdt, forKey: .tonMeanPriceTronUsdt)
     }
 }
 

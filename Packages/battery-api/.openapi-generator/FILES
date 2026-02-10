@@ -42,6 +42,8 @@ Sources/BatteryAPI/Models/EnterpriseSend200Response.swift
 Sources/BatteryAPI/Models/EnterpriseWalletConfig.swift
 Sources/BatteryAPI/Models/EstimateGaslessCostRequest.swift
 Sources/BatteryAPI/Models/EstimatedTronTx.swift
+Sources/BatteryAPI/Models/EstimatedTronTxInstantFee.swift
+Sources/BatteryAPI/Models/EstimatedTronTxInstantFeeAcceptedAssetsInner.swift
 Sources/BatteryAPI/Models/GaslessEstimation.swift
 Sources/BatteryAPI/Models/GetTonConnectPayload200Response.swift
 Sources/BatteryAPI/Models/GetTonConnectPayloadDefaultResponse.swift
@@ -49,8 +51,10 @@ Sources/BatteryAPI/Models/GetTronConfig200Response.swift
 Sources/BatteryAPI/Models/IOSBatteryPurchaseStatus.swift
 Sources/BatteryAPI/Models/IOSBatteryPurchaseStatusTransactionsInner.swift
 Sources/BatteryAPI/Models/IOSBatteryPurchaseStatusTransactionsInnerError.swift
+Sources/BatteryAPI/Models/IncreaseUserBalanceRequest.swift
 Sources/BatteryAPI/Models/IosBatteryPurchaseRequest.swift
 Sources/BatteryAPI/Models/IosBatteryPurchaseRequestTransactionsInner.swift
+Sources/BatteryAPI/Models/ManualTransferRequest.swift
 Sources/BatteryAPI/Models/ModelError.swift
 Sources/BatteryAPI/Models/PromoCodeBatteryPurchaseRequest.swift
 Sources/BatteryAPI/Models/PromoCodeBatteryPurchaseStatus.swift
@@ -74,9 +78,11 @@ Sources/BatteryAPI/Models/TonConnectProofRequestProof.swift
 Sources/BatteryAPI/Models/TonConnectProofRequestProofDomain.swift
 Sources/BatteryAPI/Models/Transactions.swift
 Sources/BatteryAPI/Models/TransactionsTransactionsInner.swift
+Sources/BatteryAPI/Models/TronAvailableTransfers.swift
 Sources/BatteryAPI/Models/TronSendRequest.swift
 Sources/BatteryAPI/Models/TronTransactionsList.swift
 Sources/BatteryAPI/Models/TronTransactionsListTransactionsInner.swift
+Sources/BatteryAPI/Models/VerifyPurchasePromo200Response.swift
 Sources/BatteryAPI/OpenISO8601DateFormatter.swift
 Sources/BatteryAPI/SynchronizedDictionary.swift
 Sources/BatteryAPI/URLSessionImplementations.swift
@@ -109,6 +115,8 @@ docs/EnterpriseSend200Response.md
 docs/EnterpriseWalletConfig.md
 docs/EstimateGaslessCostRequest.md
 docs/EstimatedTronTx.md
+docs/EstimatedTronTxInstantFee.md
+docs/EstimatedTronTxInstantFeeAcceptedAssetsInner.md
 docs/GaslessEstimation.md
 docs/GetTonConnectPayload200Response.md
 docs/GetTonConnectPayloadDefaultResponse.md
@@ -116,8 +124,10 @@ docs/GetTronConfig200Response.md
 docs/IOSBatteryPurchaseStatus.md
 docs/IOSBatteryPurchaseStatusTransactionsInner.md
 docs/IOSBatteryPurchaseStatusTransactionsInnerError.md
+docs/IncreaseUserBalanceRequest.md
 docs/IosBatteryPurchaseRequest.md
 docs/IosBatteryPurchaseRequestTransactionsInner.md
+docs/ManualTransferRequest.md
 docs/ModelError.md
 docs/PromoCodeBatteryPurchaseRequest.md
 docs/PromoCodeBatteryPurchaseStatus.md
@@ -141,9 +151,11 @@ docs/TonConnectProofRequestProof.md
 docs/TonConnectProofRequestProofDomain.md
 docs/Transactions.md
 docs/TransactionsTransactionsInner.md
+docs/TronAvailableTransfers.md
 docs/TronSendRequest.md
 docs/TronTransactionsList.md
 docs/TronTransactionsListTransactionsInner.md
+docs/VerifyPurchasePromo200Response.md
 docs/WalletAPI.md
 git_push.sh
 project.yml

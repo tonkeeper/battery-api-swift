@@ -21,8 +21,14 @@ public struct TronTransactionsListTransactionsInner: Codable, JSONEncodable, Has
     public var batteryCharges: Int
     public var timestamp: Int64
     public var trongridResult: Int?
+    /** Type of fee used for this transaction (battery, ton, etc.) */
+    public var feeType: String?
+    /** Fee amount in TON nano units */
+    public var feeTonNano: Int?
+    /** Whether this transaction was made using free pro transfers */
+    public var isFreePro: Bool?
 
-    public init(txid: String, fromAccount: String, toAccount: String, amount: String, isPending: Bool, isFailed: Bool, batteryCharges: Int, timestamp: Int64, trongridResult: Int? = nil) {
+    public init(txid: String, fromAccount: String, toAccount: String, amount: String, isPending: Bool, isFailed: Bool, batteryCharges: Int, timestamp: Int64, trongridResult: Int? = nil, feeType: String? = nil, feeTonNano: Int? = nil, isFreePro: Bool? = nil) {
         self.txid = txid
         self.fromAccount = fromAccount
         self.toAccount = toAccount
@@ -32,6 +38,9 @@ public struct TronTransactionsListTransactionsInner: Codable, JSONEncodable, Has
         self.batteryCharges = batteryCharges
         self.timestamp = timestamp
         self.trongridResult = trongridResult
+        self.feeType = feeType
+        self.feeTonNano = feeTonNano
+        self.isFreePro = isFreePro
     }
 
     public enum CodingKeys: String, CodingKey, CaseIterable {
@@ -44,6 +53,9 @@ public struct TronTransactionsListTransactionsInner: Codable, JSONEncodable, Has
         case batteryCharges = "battery_charges"
         case timestamp
         case trongridResult = "trongrid_result"
+        case feeType = "fee_type"
+        case feeTonNano = "fee_ton_nano"
+        case isFreePro = "is_free_pro"
     }
 
     // Encodable protocol methods
@@ -59,6 +71,9 @@ public struct TronTransactionsListTransactionsInner: Codable, JSONEncodable, Has
         try container.encode(batteryCharges, forKey: .batteryCharges)
         try container.encode(timestamp, forKey: .timestamp)
         try container.encodeIfPresent(trongridResult, forKey: .trongridResult)
+        try container.encodeIfPresent(feeType, forKey: .feeType)
+        try container.encodeIfPresent(feeTonNano, forKey: .feeTonNano)
+        try container.encodeIfPresent(isFreePro, forKey: .isFreePro)
     }
 }
 

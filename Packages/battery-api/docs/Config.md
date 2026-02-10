@@ -9,6 +9,7 @@ Name | Type | Description | Notes
 **messageTtl** | **Int** | ttl for message in seconds | 
 **gasProxy** | [ConfigGasProxyInner] |  | 
 **meanPrices** | [**ConfigMeanPrices**](ConfigMeanPrices.md) |  | 
+**batteryReservedAmount** | **String** | reserved amount in TON that is kept for gas fees | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
