@@ -1,12 +1,21 @@
 {
   "pins" : [
     {
-      "identity" : "anycodable",
+      "identity" : "swift-http-types",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Flight-School/AnyCodable",
+      "location" : "https://github.com/apple/swift-http-types",
       "state" : {
-        "revision" : "862808b2070cd908cb04f9aafe7de83d35f81b05",
-        "version" : "0.6.7"
+        "revision" : "45eb0224913ea070ec4fba17291b9e7ecf4749ca",
+        "version" : "1.5.1"
+      }
+    },
+    {
+      "identity" : "swift-openapi-runtime",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-runtime",
+      "state" : {
+        "revision" : "a51b3bd6f2151e9a6f792ca6937a7242c4758768",
+        "version" : "0.3.6"
       }
     }
   ],
