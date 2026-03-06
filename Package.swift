@@ -12,15 +12,15 @@ let package = Package(
         .library(name: "TKBatteryAPI", targets: ["TKBatteryAPI"])
     ],
     dependencies: [
-        .package(url: "https://github.com/Flight-School/AnyCodable", .upToNextMajor(from: "0.6.1"))
+        .package(url: "https://github.com/apple/swift-openapi-runtime", .upToNextMinor(from: "0.3.0"))
     ],
     targets: [
         .target(name: "TKBatteryAPI",
                 dependencies: [
-                  .byName(name: "AnyCodable")
+                  .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime")
                 ],
-                path: "Packages/battery-api",
-                sources: ["Sources"]
+                path: "Packages/battery-api/Sources",
+                sources: ["BatteryAPI"]
                )
     ]
 )
