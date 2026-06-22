@@ -814,6 +814,66 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Config/battery_reserved_amount`.
             public var battery_reserved_amount: Swift.String
+            /// - Remark: Generated from `#/components/schemas/Config/transfer_cost`.
+            public struct transfer_costPayload: Codable, Hashable, Sendable {
+                /// default transfer cost in TON
+                ///
+                /// - Remark: Generated from `#/components/schemas/Config/transfer_cost/default`.
+                public var _default: Swift.String
+                /// - Remark: Generated from `#/components/schemas/Config/transfer_cost/jettonsPayload`.
+                public struct jettonsPayloadPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/schemas/Config/transfer_cost/jettonsPayload/jetton_master`.
+                    public var jetton_master: Swift.String
+                    /// - Remark: Generated from `#/components/schemas/Config/transfer_cost/jettonsPayload/symbol`.
+                    public var symbol: Swift.String
+                    /// transfer cost in TON
+                    ///
+                    /// - Remark: Generated from `#/components/schemas/Config/transfer_cost/jettonsPayload/value`.
+                    public var value: Swift.String
+                    /// Creates a new `jettonsPayloadPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - jetton_master:
+                    ///   - symbol:
+                    ///   - value: transfer cost in TON
+                    public init(
+                        jetton_master: Swift.String,
+                        symbol: Swift.String,
+                        value: Swift.String
+                    ) {
+                        self.jetton_master = jetton_master
+                        self.symbol = symbol
+                        self.value = value
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case jetton_master
+                        case symbol
+                        case value
+                    }
+                }
+                /// - Remark: Generated from `#/components/schemas/Config/transfer_cost/jettons`.
+                public typealias jettonsPayload = [Components.Schemas.Config.transfer_costPayload.jettonsPayloadPayload]
+                /// - Remark: Generated from `#/components/schemas/Config/transfer_cost/jettons`.
+                public var jettons: Components.Schemas.Config.transfer_costPayload.jettonsPayload
+                /// Creates a new `transfer_costPayload`.
+                ///
+                /// - Parameters:
+                ///   - _default: default transfer cost in TON
+                ///   - jettons:
+                public init(
+                    _default: Swift.String,
+                    jettons: Components.Schemas.Config.transfer_costPayload.jettonsPayload
+                ) {
+                    self._default = _default
+                    self.jettons = jettons
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case _default = "default"
+                    case jettons
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/Config/transfer_cost`.
+            public var transfer_cost: Components.Schemas.Config.transfer_costPayload?
             /// Creates a new `Config`.
             ///
             /// - Parameters:
@@ -824,6 +884,7 @@ public enum Components {
             ///   - gas_proxy:
             ///   - mean_prices:
             ///   - battery_reserved_amount: reserved amount in TON that is kept for gas fees
+            ///   - transfer_cost:
             public init(
                 charge_cost: Swift.String,
                 fund_receiver: Swift.String,
@@ -831,7 +892,8 @@ public enum Components {
                 message_ttl: Swift.Int,
                 gas_proxy: Components.Schemas.Config.gas_proxyPayload,
                 mean_prices: Components.Schemas.Config.mean_pricesPayload,
-                battery_reserved_amount: Swift.String
+                battery_reserved_amount: Swift.String,
+                transfer_cost: Components.Schemas.Config.transfer_costPayload? = nil
             ) {
                 self.charge_cost = charge_cost
                 self.fund_receiver = fund_receiver
@@ -840,6 +902,7 @@ public enum Components {
                 self.gas_proxy = gas_proxy
                 self.mean_prices = mean_prices
                 self.battery_reserved_amount = battery_reserved_amount
+                self.transfer_cost = transfer_cost
             }
             public enum CodingKeys: String, CodingKey {
                 case charge_cost
@@ -849,6 +912,7 @@ public enum Components {
                 case gas_proxy
                 case mean_prices
                 case battery_reserved_amount
+                case transfer_cost
             }
         }
         /// - Remark: Generated from `#/components/schemas/GaslessEstimation`.

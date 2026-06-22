@@ -1383,6 +1383,34 @@ components:
           type: string
           description: "reserved amount in TON that is kept for gas fees"
           example: "0.065"
+        transfer_cost:
+          type: object
+          required:
+            - default
+            - jettons
+          properties:
+            default:
+              type: string
+              description: "default transfer cost in TON"
+              example: "0.05"
+            jettons:
+              type: array
+              items:
+                type: object
+                required:
+                  - jetton_master
+                  - symbol
+                  - value
+                properties:
+                  jetton_master:
+                    type: string
+                  symbol:
+                    type: string
+                    example: "USD₮"
+                  value:
+                    type: string
+                    description: "transfer cost in TON"
+                    example: "0.002"
     GaslessEstimation:
       type: object
       required:
