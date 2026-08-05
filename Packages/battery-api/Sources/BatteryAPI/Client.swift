@@ -224,6 +224,21 @@ public struct Client: APIProtocol {
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
                 )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -549,6 +564,21 @@ public struct Client: APIProtocol {
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
                 )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
@@ -649,6 +679,21 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 try converter.setQueryItemAsURI(
                     in: &request,
@@ -777,6 +822,21 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
@@ -931,6 +991,26 @@ public struct Client: APIProtocol {
                 )
                 try converter.setHeaderFieldAsURI(
                     in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Enterprise-Auth",
+                    value: input.headers.X_hyphen_Enterprise_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
                     name: "X-Pro-Auth",
                     value: input.headers.X_hyphen_Pro_hyphen_Auth
                 )
@@ -1046,6 +1126,26 @@ public struct Client: APIProtocol {
                 )
                 try converter.setHeaderFieldAsURI(
                     in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Enterprise-Auth",
+                    value: input.headers.X_hyphen_Enterprise_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
                     name: "X-Pro-Auth",
                     value: input.headers.X_hyphen_Pro_hyphen_Auth
                 )
@@ -1144,6 +1244,21 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 try converter.setQueryItemAsURI(
                     in: &request,
@@ -1318,6 +1433,16 @@ public struct Client: APIProtocol {
                     method: .post
                 )
                 suppressMutabilityWarning(&request)
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "SIGNATURE",
+                    value: input.headers.SIGNATURE
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "TIMESTAMP",
+                    value: input.headers.TIMESTAMP
+                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -1408,6 +1533,21 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
@@ -1584,6 +1724,21 @@ public struct Client: APIProtocol {
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
                 )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -1679,6 +1834,21 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
@@ -1935,6 +2105,21 @@ public struct Client: APIProtocol {
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
                 )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -2005,6 +2190,21 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 try converter.setQueryItemAsURI(
                     in: &request,
@@ -2109,6 +2309,21 @@ public struct Client: APIProtocol {
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
                 )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
@@ -2205,6 +2420,21 @@ public struct Client: APIProtocol {
                     name: "X-TonConnect-Auth",
                     value: input.headers.X_hyphen_TonConnect_hyphen_Auth
                 )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-ID",
+                    value: input.headers.X_hyphen_Wallet_hyphen_ID
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Token",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Token
+                )
+                try converter.setHeaderFieldAsURI(
+                    in: &request.headerFields,
+                    name: "X-Wallet-Public-Key",
+                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
@@ -2256,6 +2486,92 @@ public struct Client: APIProtocol {
                     case "application/json":
                         body = try await converter.getResponseBodyAsJSON(
                             Components.Schemas.GaslessEstimation.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// Estimate gasless commission for a jetton transfer by its parameters
+    ///
+    /// - Remark: HTTP `POST /gasless/estimate/jetton-transfer`.
+    /// - Remark: Generated from `#/paths//gasless/estimate/jetton-transfer/post(EstimateGaslessJettonTransfer)`.
+    public func EstimateGaslessJettonTransfer(_ input: Operations.EstimateGaslessJettonTransfer.Input) async throws -> Operations.EstimateGaslessJettonTransfer.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.EstimateGaslessJettonTransfer.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/gasless/estimate/jetton-transfer",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.EstimateGaslessJettonTransfer.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Schemas.GaslessCommissionJettonTransfer.self,
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
@@ -2347,6 +2663,97 @@ public struct Client: APIProtocol {
                     case "application/json":
                         body = try await converter.getResponseBodyAsJSON(
                             Operations.createPromoCampaign.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `POST /restricted/promo-campaign-by-user`.
+    /// - Remark: Generated from `#/paths//restricted/promo-campaign-by-user/post(createPromoCampaignByUser)`.
+    public func createPromoCampaignByUser(_ input: Operations.createPromoCampaignByUser.Input) async throws -> Operations.createPromoCampaignByUser.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.createPromoCampaignByUser.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/promo-campaign-by-user",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.createPromoCampaignByUser.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.createPromoCampaignByUser.Output.Ok.Body.jsonPayload.self,
                             from: responseBody,
                             transforming: { value in
                                 .json(value)
@@ -2567,15 +2974,15 @@ public struct Client: APIProtocol {
             }
         )
     }
-    /// - Remark: HTTP `POST /restricted/transfer`.
-    /// - Remark: Generated from `#/paths//restricted/transfer/post(manualTransfer)`.
-    public func manualTransfer(_ input: Operations.manualTransfer.Input) async throws -> Operations.manualTransfer.Output {
+    /// - Remark: HTTP `POST /restricted/battery-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-transfer/post(batteryTransfer)`.
+    public func batteryTransfer(_ input: Operations.batteryTransfer.Input) async throws -> Operations.batteryTransfer.Output {
         try await client.send(
             input: input,
-            forOperation: Operations.manualTransfer.id,
+            forOperation: Operations.batteryTransfer.id,
             serializer: { input in
                 let path = try converter.renderedPath(
-                    template: "/restricted/transfer",
+                    template: "/restricted/battery-transfer",
                     parameters: []
                 )
                 var request: HTTPTypes.HTTPRequest = .init(
@@ -2609,7 +3016,7 @@ public struct Client: APIProtocol {
                 switch response.status.code {
                 case 200:
                     let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
-                    let body: Operations.manualTransfer.Output.Ok.Body
+                    let body: Operations.batteryTransfer.Output.Ok.Body
                     let chosenContentType = try converter.bestContentType(
                         received: contentType,
                         options: [
@@ -2619,7 +3026,553 @@ public struct Client: APIProtocol {
                     switch chosenContentType {
                     case "application/json":
                         body = try await converter.getResponseBodyAsJSON(
-                            Operations.manualTransfer.Output.Ok.Body.jsonPayload.self,
+                            Operations.batteryTransfer.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `POST /restricted/battery-swap-ton-to-usdt`.
+    /// - Remark: Generated from `#/paths//restricted/battery-swap-ton-to-usdt/post(batterySwapTonToUsdt)`.
+    public func batterySwapTonToUsdt(_ input: Operations.batterySwapTonToUsdt.Input) async throws -> Operations.batterySwapTonToUsdt.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.batterySwapTonToUsdt.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/battery-swap-ton-to-usdt",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.batterySwapTonToUsdt.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.batterySwapTonToUsdt.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `POST /restricted/battery-nft-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-nft-transfer/post(batteryNftTransfer)`.
+    public func batteryNftTransfer(_ input: Operations.batteryNftTransfer.Input) async throws -> Operations.batteryNftTransfer.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.batteryNftTransfer.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/battery-nft-transfer",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.batteryNftTransfer.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.batteryNftTransfer.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `POST /restricted/okx-deposit`.
+    /// - Remark: Generated from `#/paths//restricted/okx-deposit/post(replenishOKXBalance)`.
+    public func replenishOKXBalance(_ input: Operations.replenishOKXBalance.Input) async throws -> Operations.replenishOKXBalance.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.replenishOKXBalance.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/okx-deposit",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.replenishOKXBalance.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.replenishOKXBalance.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `POST /restricted/relayer-to-battery`.
+    /// - Remark: Generated from `#/paths//restricted/relayer-to-battery/post(relayerToBattery)`.
+    public func relayerToBattery(_ input: Operations.relayerToBattery.Input) async throws -> Operations.relayerToBattery.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.relayerToBattery.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/relayer-to-battery",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.relayerToBattery.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.relayerToBattery.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `POST /restricted/migrate-old-battery`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-old-battery/post(migrateOldBattery)`.
+    public func migrateOldBattery(_ input: Operations.migrateOldBattery.Input) async throws -> Operations.migrateOldBattery.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.migrateOldBattery.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/migrate-old-battery",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.migrateOldBattery.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.migrateOldBattery.Output.Ok.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .ok(.init(body: body))
+                default:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Components.Responses._Error.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Components.Responses._Error.Body.jsonPayload.self,
+                            from: responseBody,
+                            transforming: { value in
+                                .json(value)
+                            }
+                        )
+                    default:
+                        preconditionFailure("bestContentType chose an invalid content type.")
+                    }
+                    return .`default`(
+                        statusCode: response.status.code,
+                        .init(body: body)
+                    )
+                }
+            }
+        )
+    }
+    /// - Remark: HTTP `POST /restricted/migrate-relayer`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-relayer/post(migrateRelayer)`.
+    public func migrateRelayer(_ input: Operations.migrateRelayer.Input) async throws -> Operations.migrateRelayer.Output {
+        try await client.send(
+            input: input,
+            forOperation: Operations.migrateRelayer.id,
+            serializer: { input in
+                let path = try converter.renderedPath(
+                    template: "/restricted/migrate-relayer",
+                    parameters: []
+                )
+                var request: HTTPTypes.HTTPRequest = .init(
+                    soar_path: path,
+                    method: .post
+                )
+                suppressMutabilityWarning(&request)
+                try converter.setQueryItemAsURI(
+                    in: &request,
+                    style: .form,
+                    explode: true,
+                    name: "token",
+                    value: input.query.token
+                )
+                converter.setAcceptHeader(
+                    in: &request.headerFields,
+                    contentTypes: input.headers.accept
+                )
+                let body: OpenAPIRuntime.HTTPBody?
+                switch input.body {
+                case let .json(value):
+                    body = try converter.setRequiredRequestBodyAsJSON(
+                        value,
+                        headerFields: &request.headerFields,
+                        contentType: "application/json; charset=utf-8"
+                    )
+                }
+                return (request, body)
+            },
+            deserializer: { response, responseBody in
+                switch response.status.code {
+                case 200:
+                    let contentType = converter.extractContentTypeIfPresent(in: response.headerFields)
+                    let body: Operations.migrateRelayer.Output.Ok.Body
+                    let chosenContentType = try converter.bestContentType(
+                        received: contentType,
+                        options: [
+                            "application/json"
+                        ]
+                    )
+                    switch chosenContentType {
+                    case "application/json":
+                        body = try await converter.getResponseBodyAsJSON(
+                            Operations.migrateRelayer.Output.Ok.Body.jsonPayload.self,
                             from: responseBody,
                             transforming: { value in
                                 .json(value)

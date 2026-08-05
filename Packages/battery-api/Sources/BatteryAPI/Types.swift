@@ -122,18 +122,44 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `POST /gasless/estimate-cost/{jetton_master}`.
     /// - Remark: Generated from `#/paths//gasless/estimate-cost/{jetton_master}/post(estimateGaslessCost)`.
     func estimateGaslessCost(_ input: Operations.estimateGaslessCost.Input) async throws -> Operations.estimateGaslessCost.Output
+    /// Estimate gasless commission for a jetton transfer by its parameters
+    ///
+    /// - Remark: HTTP `POST /gasless/estimate/jetton-transfer`.
+    /// - Remark: Generated from `#/paths//gasless/estimate/jetton-transfer/post(EstimateGaslessJettonTransfer)`.
+    func EstimateGaslessJettonTransfer(_ input: Operations.EstimateGaslessJettonTransfer.Input) async throws -> Operations.EstimateGaslessJettonTransfer.Output
     /// - Remark: HTTP `POST /restricted/promo-campaign`.
     /// - Remark: Generated from `#/paths//restricted/promo-campaign/post(createPromoCampaign)`.
     func createPromoCampaign(_ input: Operations.createPromoCampaign.Input) async throws -> Operations.createPromoCampaign.Output
+    /// - Remark: HTTP `POST /restricted/promo-campaign-by-user`.
+    /// - Remark: Generated from `#/paths//restricted/promo-campaign-by-user/post(createPromoCampaignByUser)`.
+    func createPromoCampaignByUser(_ input: Operations.createPromoCampaignByUser.Input) async throws -> Operations.createPromoCampaignByUser.Output
     /// - Remark: HTTP `POST /restricted/apply-promo`.
     /// - Remark: Generated from `#/paths//restricted/apply-promo/post(applyPromo)`.
     func applyPromo(_ input: Operations.applyPromo.Input) async throws -> Operations.applyPromo.Output
     /// - Remark: HTTP `POST /restricted/create-custom-refund`.
     /// - Remark: Generated from `#/paths//restricted/create-custom-refund/post(createCustomRefund)`.
     func createCustomRefund(_ input: Operations.createCustomRefund.Input) async throws -> Operations.createCustomRefund.Output
-    /// - Remark: HTTP `POST /restricted/transfer`.
-    /// - Remark: Generated from `#/paths//restricted/transfer/post(manualTransfer)`.
-    func manualTransfer(_ input: Operations.manualTransfer.Input) async throws -> Operations.manualTransfer.Output
+    /// - Remark: HTTP `POST /restricted/battery-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-transfer/post(batteryTransfer)`.
+    func batteryTransfer(_ input: Operations.batteryTransfer.Input) async throws -> Operations.batteryTransfer.Output
+    /// - Remark: HTTP `POST /restricted/battery-swap-ton-to-usdt`.
+    /// - Remark: Generated from `#/paths//restricted/battery-swap-ton-to-usdt/post(batterySwapTonToUsdt)`.
+    func batterySwapTonToUsdt(_ input: Operations.batterySwapTonToUsdt.Input) async throws -> Operations.batterySwapTonToUsdt.Output
+    /// - Remark: HTTP `POST /restricted/battery-nft-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-nft-transfer/post(batteryNftTransfer)`.
+    func batteryNftTransfer(_ input: Operations.batteryNftTransfer.Input) async throws -> Operations.batteryNftTransfer.Output
+    /// - Remark: HTTP `POST /restricted/okx-deposit`.
+    /// - Remark: Generated from `#/paths//restricted/okx-deposit/post(replenishOKXBalance)`.
+    func replenishOKXBalance(_ input: Operations.replenishOKXBalance.Input) async throws -> Operations.replenishOKXBalance.Output
+    /// - Remark: HTTP `POST /restricted/relayer-to-battery`.
+    /// - Remark: Generated from `#/paths//restricted/relayer-to-battery/post(relayerToBattery)`.
+    func relayerToBattery(_ input: Operations.relayerToBattery.Input) async throws -> Operations.relayerToBattery.Output
+    /// - Remark: HTTP `POST /restricted/migrate-old-battery`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-old-battery/post(migrateOldBattery)`.
+    func migrateOldBattery(_ input: Operations.migrateOldBattery.Input) async throws -> Operations.migrateOldBattery.Output
+    /// - Remark: HTTP `POST /restricted/migrate-relayer`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-relayer/post(migrateRelayer)`.
+    func migrateRelayer(_ input: Operations.migrateRelayer.Input) async throws -> Operations.migrateRelayer.Output
     /// - Remark: HTTP `POST /restricted/omniston-swap`.
     /// - Remark: Generated from `#/paths//restricted/omniston-swap/post(omnistonSwap)`.
     func omnistonSwap(_ input: Operations.omnistonSwap.Input) async throws -> Operations.omnistonSwap.Output
@@ -192,7 +218,7 @@ extension APIProtocol {
     ///
     /// - Remark: HTTP `GET /status`.
     /// - Remark: Generated from `#/paths//status/get(getStatus)`.
-    public func getStatus(headers: Operations.getStatus.Input.Headers) async throws -> Operations.getStatus.Output {
+    public func getStatus(headers: Operations.getStatus.Input.Headers = .init()) async throws -> Operations.getStatus.Output {
         try await getStatus(Operations.getStatus.Input(headers: headers))
     }
     /// This method returns information about Battery Service.
@@ -232,7 +258,7 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//balance/get(getBalance)`.
     public func getBalance(
         query: Operations.getBalance.Input.Query = .init(),
-        headers: Operations.getBalance.Input.Headers
+        headers: Operations.getBalance.Input.Headers = .init()
     ) async throws -> Operations.getBalance.Output {
         try await getBalance(Operations.getBalance.Input(
             query: query,
@@ -245,7 +271,7 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//wallet/emulate/post(emulateMessageToWallet)`.
     public func emulateMessageToWallet(
         query: Operations.emulateMessageToWallet.Input.Query = .init(),
-        headers: Operations.emulateMessageToWallet.Input.Headers,
+        headers: Operations.emulateMessageToWallet.Input.Headers = .init(),
         body: Components.RequestBodies.Boc
     ) async throws -> Operations.emulateMessageToWallet.Output {
         try await emulateMessageToWallet(Operations.emulateMessageToWallet.Input(
@@ -259,7 +285,7 @@ extension APIProtocol {
     /// - Remark: HTTP `POST /message`.
     /// - Remark: Generated from `#/paths//message/post(sendMessage)`.
     public func sendMessage(
-        headers: Operations.sendMessage.Input.Headers,
+        headers: Operations.sendMessage.Input.Headers = .init(),
         body: Components.RequestBodies.Boc
     ) async throws -> Operations.sendMessage.Output {
         try await sendMessage(Operations.sendMessage.Input(
@@ -304,7 +330,7 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//v0/tron/transactions/get(getTronTransactions)`.
     public func getTronTransactions(
         query: Operations.getTronTransactions.Input.Query = .init(),
-        headers: Operations.getTronTransactions.Input.Headers
+        headers: Operations.getTronTransactions.Input.Headers = .init()
     ) async throws -> Operations.getTronTransactions.Output {
         try await getTronTransactions(Operations.getTronTransactions.Input(
             query: query,
@@ -323,7 +349,7 @@ extension APIProtocol {
     /// - Remark: HTTP `POST /v0/tron/itrx-io-callback`.
     /// - Remark: Generated from `#/paths//v0/tron/itrx-io-callback/post(itrxIoCallback)`.
     public func itrxIoCallback(
-        headers: Operations.itrxIoCallback.Input.Headers = .init(),
+        headers: Operations.itrxIoCallback.Input.Headers,
         body: Operations.itrxIoCallback.Input.Body
     ) async throws -> Operations.itrxIoCallback.Output {
         try await itrxIoCallback(Operations.itrxIoCallback.Input(
@@ -336,7 +362,7 @@ extension APIProtocol {
     /// - Remark: HTTP `POST /purchase-battery/android`.
     /// - Remark: Generated from `#/paths//purchase-battery/android/post(androidBatteryPurchase)`.
     public func androidBatteryPurchase(
-        headers: Operations.androidBatteryPurchase.Input.Headers,
+        headers: Operations.androidBatteryPurchase.Input.Headers = .init(),
         body: Components.RequestBodies.AndroidBatteryPurchase
     ) async throws -> Operations.androidBatteryPurchase.Output {
         try await androidBatteryPurchase(Operations.androidBatteryPurchase.Input(
@@ -360,7 +386,7 @@ extension APIProtocol {
     /// - Remark: HTTP `POST /purchase-battery/ios`.
     /// - Remark: Generated from `#/paths//purchase-battery/ios/post(iosBatteryPurchase)`.
     public func iosBatteryPurchase(
-        headers: Operations.iosBatteryPurchase.Input.Headers,
+        headers: Operations.iosBatteryPurchase.Input.Headers = .init(),
         body: Components.RequestBodies.iOSBatteryPurchase
     ) async throws -> Operations.iosBatteryPurchase.Output {
         try await iosBatteryPurchase(Operations.iosBatteryPurchase.Input(
@@ -373,7 +399,7 @@ extension APIProtocol {
     /// - Remark: HTTP `POST /purchase-battery/promo-code`.
     /// - Remark: Generated from `#/paths//purchase-battery/promo-code/post(promoCodeBatteryPurchase)`.
     public func promoCodeBatteryPurchase(
-        headers: Operations.promoCodeBatteryPurchase.Input.Headers,
+        headers: Operations.promoCodeBatteryPurchase.Input.Headers = .init(),
         body: Components.RequestBodies.promoCodeBatteryPurchase
     ) async throws -> Operations.promoCodeBatteryPurchase.Output {
         try await promoCodeBatteryPurchase(Operations.promoCodeBatteryPurchase.Input(
@@ -408,7 +434,7 @@ extension APIProtocol {
     /// - Remark: HTTP `POST /request-refund`.
     /// - Remark: Generated from `#/paths//request-refund/post(requestRefund)`.
     public func requestRefund(
-        headers: Operations.requestRefund.Input.Headers,
+        headers: Operations.requestRefund.Input.Headers = .init(),
         body: Components.RequestBodies.requestRefund
     ) async throws -> Operations.requestRefund.Output {
         try await requestRefund(Operations.requestRefund.Input(
@@ -422,7 +448,7 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//purchases/get(getPurchases)`.
     public func getPurchases(
         query: Operations.getPurchases.Input.Query = .init(),
-        headers: Operations.getPurchases.Input.Headers
+        headers: Operations.getPurchases.Input.Headers = .init()
     ) async throws -> Operations.getPurchases.Output {
         try await getPurchases(Operations.getPurchases.Input(
             query: query,
@@ -435,7 +461,7 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//transactions/get(getTransactions)`.
     public func getTransactions(
         query: Operations.getTransactions.Input.Query = .init(),
-        headers: Operations.getTransactions.Input.Headers
+        headers: Operations.getTransactions.Input.Headers = .init()
     ) async throws -> Operations.getTransactions.Output {
         try await getTransactions(Operations.getTransactions.Input(
             query: query,
@@ -457,6 +483,19 @@ extension APIProtocol {
             body: body
         ))
     }
+    /// Estimate gasless commission for a jetton transfer by its parameters
+    ///
+    /// - Remark: HTTP `POST /gasless/estimate/jetton-transfer`.
+    /// - Remark: Generated from `#/paths//gasless/estimate/jetton-transfer/post(EstimateGaslessJettonTransfer)`.
+    public func EstimateGaslessJettonTransfer(
+        headers: Operations.EstimateGaslessJettonTransfer.Input.Headers = .init(),
+        body: Components.RequestBodies.gaslessEstimateJettonTransfer
+    ) async throws -> Operations.EstimateGaslessJettonTransfer.Output {
+        try await EstimateGaslessJettonTransfer(Operations.EstimateGaslessJettonTransfer.Input(
+            headers: headers,
+            body: body
+        ))
+    }
     /// - Remark: HTTP `POST /restricted/promo-campaign`.
     /// - Remark: Generated from `#/paths//restricted/promo-campaign/post(createPromoCampaign)`.
     public func createPromoCampaign(
@@ -465,6 +504,19 @@ extension APIProtocol {
         body: Operations.createPromoCampaign.Input.Body
     ) async throws -> Operations.createPromoCampaign.Output {
         try await createPromoCampaign(Operations.createPromoCampaign.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /restricted/promo-campaign-by-user`.
+    /// - Remark: Generated from `#/paths//restricted/promo-campaign-by-user/post(createPromoCampaignByUser)`.
+    public func createPromoCampaignByUser(
+        query: Operations.createPromoCampaignByUser.Input.Query,
+        headers: Operations.createPromoCampaignByUser.Input.Headers = .init(),
+        body: Operations.createPromoCampaignByUser.Input.Body
+    ) async throws -> Operations.createPromoCampaignByUser.Output {
+        try await createPromoCampaignByUser(Operations.createPromoCampaignByUser.Input(
             query: query,
             headers: headers,
             body: body
@@ -496,14 +548,92 @@ extension APIProtocol {
             body: body
         ))
     }
-    /// - Remark: HTTP `POST /restricted/transfer`.
-    /// - Remark: Generated from `#/paths//restricted/transfer/post(manualTransfer)`.
-    public func manualTransfer(
-        query: Operations.manualTransfer.Input.Query,
-        headers: Operations.manualTransfer.Input.Headers = .init(),
-        body: Operations.manualTransfer.Input.Body
-    ) async throws -> Operations.manualTransfer.Output {
-        try await manualTransfer(Operations.manualTransfer.Input(
+    /// - Remark: HTTP `POST /restricted/battery-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-transfer/post(batteryTransfer)`.
+    public func batteryTransfer(
+        query: Operations.batteryTransfer.Input.Query,
+        headers: Operations.batteryTransfer.Input.Headers = .init(),
+        body: Operations.batteryTransfer.Input.Body
+    ) async throws -> Operations.batteryTransfer.Output {
+        try await batteryTransfer(Operations.batteryTransfer.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /restricted/battery-swap-ton-to-usdt`.
+    /// - Remark: Generated from `#/paths//restricted/battery-swap-ton-to-usdt/post(batterySwapTonToUsdt)`.
+    public func batterySwapTonToUsdt(
+        query: Operations.batterySwapTonToUsdt.Input.Query,
+        headers: Operations.batterySwapTonToUsdt.Input.Headers = .init(),
+        body: Operations.batterySwapTonToUsdt.Input.Body
+    ) async throws -> Operations.batterySwapTonToUsdt.Output {
+        try await batterySwapTonToUsdt(Operations.batterySwapTonToUsdt.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /restricted/battery-nft-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-nft-transfer/post(batteryNftTransfer)`.
+    public func batteryNftTransfer(
+        query: Operations.batteryNftTransfer.Input.Query,
+        headers: Operations.batteryNftTransfer.Input.Headers = .init(),
+        body: Operations.batteryNftTransfer.Input.Body
+    ) async throws -> Operations.batteryNftTransfer.Output {
+        try await batteryNftTransfer(Operations.batteryNftTransfer.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /restricted/okx-deposit`.
+    /// - Remark: Generated from `#/paths//restricted/okx-deposit/post(replenishOKXBalance)`.
+    public func replenishOKXBalance(
+        query: Operations.replenishOKXBalance.Input.Query,
+        headers: Operations.replenishOKXBalance.Input.Headers = .init(),
+        body: Operations.replenishOKXBalance.Input.Body
+    ) async throws -> Operations.replenishOKXBalance.Output {
+        try await replenishOKXBalance(Operations.replenishOKXBalance.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /restricted/relayer-to-battery`.
+    /// - Remark: Generated from `#/paths//restricted/relayer-to-battery/post(relayerToBattery)`.
+    public func relayerToBattery(
+        query: Operations.relayerToBattery.Input.Query,
+        headers: Operations.relayerToBattery.Input.Headers = .init(),
+        body: Operations.relayerToBattery.Input.Body
+    ) async throws -> Operations.relayerToBattery.Output {
+        try await relayerToBattery(Operations.relayerToBattery.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /restricted/migrate-old-battery`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-old-battery/post(migrateOldBattery)`.
+    public func migrateOldBattery(
+        query: Operations.migrateOldBattery.Input.Query,
+        headers: Operations.migrateOldBattery.Input.Headers = .init(),
+        body: Operations.migrateOldBattery.Input.Body
+    ) async throws -> Operations.migrateOldBattery.Output {
+        try await migrateOldBattery(Operations.migrateOldBattery.Input(
+            query: query,
+            headers: headers,
+            body: body
+        ))
+    }
+    /// - Remark: HTTP `POST /restricted/migrate-relayer`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-relayer/post(migrateRelayer)`.
+    public func migrateRelayer(
+        query: Operations.migrateRelayer.Input.Query,
+        headers: Operations.migrateRelayer.Input.Headers = .init(),
+        body: Operations.migrateRelayer.Input.Body
+    ) async throws -> Operations.migrateRelayer.Output {
+        try await migrateRelayer(Operations.migrateRelayer.Input(
             query: query,
             headers: headers,
             body: body
@@ -814,6 +944,8 @@ public enum Components {
             ///
             /// - Remark: Generated from `#/components/schemas/Config/battery_reserved_amount`.
             public var battery_reserved_amount: Swift.String
+            /// - Remark: Generated from `#/components/schemas/Config/packages`.
+            public var packages: [Components.Schemas.PackageItem]
             /// - Remark: Generated from `#/components/schemas/Config/transfer_cost`.
             public struct transfer_costPayload: Codable, Hashable, Sendable {
                 /// default transfer cost in TON
@@ -873,7 +1005,7 @@ public enum Components {
                 }
             }
             /// - Remark: Generated from `#/components/schemas/Config/transfer_cost`.
-            public var transfer_cost: Components.Schemas.Config.transfer_costPayload?
+            public var transfer_cost: Components.Schemas.Config.transfer_costPayload
             /// Creates a new `Config`.
             ///
             /// - Parameters:
@@ -884,6 +1016,7 @@ public enum Components {
             ///   - gas_proxy:
             ///   - mean_prices:
             ///   - battery_reserved_amount: reserved amount in TON that is kept for gas fees
+            ///   - packages:
             ///   - transfer_cost:
             public init(
                 charge_cost: Swift.String,
@@ -893,7 +1026,8 @@ public enum Components {
                 gas_proxy: Components.Schemas.Config.gas_proxyPayload,
                 mean_prices: Components.Schemas.Config.mean_pricesPayload,
                 battery_reserved_amount: Swift.String,
-                transfer_cost: Components.Schemas.Config.transfer_costPayload? = nil
+                packages: [Components.Schemas.PackageItem],
+                transfer_cost: Components.Schemas.Config.transfer_costPayload
             ) {
                 self.charge_cost = charge_cost
                 self.fund_receiver = fund_receiver
@@ -902,6 +1036,7 @@ public enum Components {
                 self.gas_proxy = gas_proxy
                 self.mean_prices = mean_prices
                 self.battery_reserved_amount = battery_reserved_amount
+                self.packages = packages
                 self.transfer_cost = transfer_cost
             }
             public enum CodingKeys: String, CodingKey {
@@ -912,7 +1047,44 @@ public enum Components {
                 case gas_proxy
                 case mean_prices
                 case battery_reserved_amount
+                case packages
                 case transfer_cost
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/PackageItem`.
+        public struct PackageItem: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/PackageItem/name`.
+            @frozen public enum namePayload: String, Codable, Hashable, Sendable {
+                case large = "large"
+                case medium = "medium"
+                case small = "small"
+                case other = "other"
+            }
+            /// - Remark: Generated from `#/components/schemas/PackageItem/name`.
+            public var name: Components.Schemas.PackageItem.namePayload
+            /// - Remark: Generated from `#/components/schemas/PackageItem/image`.
+            public var image: Swift.String
+            /// - Remark: Generated from `#/components/schemas/PackageItem/charges`.
+            public var charges: Swift.Int
+            /// Creates a new `PackageItem`.
+            ///
+            /// - Parameters:
+            ///   - name:
+            ///   - image:
+            ///   - charges:
+            public init(
+                name: Components.Schemas.PackageItem.namePayload,
+                image: Swift.String,
+                charges: Swift.Int
+            ) {
+                self.name = name
+                self.image = image
+                self.charges = charges
+            }
+            public enum CodingKeys: String, CodingKey {
+                case name
+                case image
+                case charges
             }
         }
         /// - Remark: Generated from `#/components/schemas/GaslessEstimation`.
@@ -930,27 +1102,77 @@ public enum Components {
                 case commission
             }
         }
+        /// - Remark: Generated from `#/components/schemas/GaslessCommissionJettonTransfer`.
+        public struct GaslessCommissionJettonTransfer: Codable, Hashable, Sendable {
+            /// Destination of commission jetton transfer (usually relayer)
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessCommissionJettonTransfer/destination`.
+            public var destination: Swift.String
+            /// Commission amount in smallest jetton units (nano-jettons)
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessCommissionJettonTransfer/amount`.
+            public var amount: Swift.String
+            /// Creates a new `GaslessCommissionJettonTransfer`.
+            ///
+            /// - Parameters:
+            ///   - destination: Destination of commission jetton transfer (usually relayer)
+            ///   - amount: Commission amount in smallest jetton units (nano-jettons)
+            public init(
+                destination: Swift.String,
+                amount: Swift.String
+            ) {
+                self.destination = destination
+                self.amount = amount
+            }
+            public enum CodingKeys: String, CodingKey {
+                case destination
+                case amount
+            }
+        }
         /// - Remark: Generated from `#/components/schemas/PromoUsed`.
         public struct PromoUsed: Codable, Hashable, Sendable {
             /// - Remark: Generated from `#/components/schemas/PromoUsed/promo_used`.
             public var promo_used: Swift.Bool
             /// - Remark: Generated from `#/components/schemas/PromoUsed/bonus_charges`.
             public var bonus_charges: Swift.String
+            /// - Remark: Generated from `#/components/schemas/PromoUsed/purchasesPayload`.
+            public struct purchasesPayloadPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/schemas/PromoUsed/purchasesPayload/charges`.
+                public var charges: Swift.Int
+                /// Creates a new `purchasesPayloadPayload`.
+                ///
+                /// - Parameters:
+                ///   - charges:
+                public init(charges: Swift.Int) {
+                    self.charges = charges
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case charges
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/PromoUsed/purchases`.
+            public typealias purchasesPayload = [Components.Schemas.PromoUsed.purchasesPayloadPayload]
+            /// - Remark: Generated from `#/components/schemas/PromoUsed/purchases`.
+            public var purchases: Components.Schemas.PromoUsed.purchasesPayload?
             /// Creates a new `PromoUsed`.
             ///
             /// - Parameters:
             ///   - promo_used:
             ///   - bonus_charges:
+            ///   - purchases:
             public init(
                 promo_used: Swift.Bool,
-                bonus_charges: Swift.String
+                bonus_charges: Swift.String,
+                purchases: Components.Schemas.PromoUsed.purchasesPayload? = nil
             ) {
                 self.promo_used = promo_used
                 self.bonus_charges = bonus_charges
+                self.purchases = purchases
             }
             public enum CodingKeys: String, CodingKey {
                 case promo_used
                 case bonus_charges
+                case purchases
             }
         }
         /// - Remark: Generated from `#/components/schemas/BatteryCharged`.
@@ -1858,10 +2080,30 @@ public enum Components {
     public enum Parameters {
         /// - Remark: Generated from `#/components/parameters/enterpriseAccessToken`.
         public typealias enterpriseAccessToken = Swift.String
+        /// - Remark: Generated from `#/components/parameters/itrxSignature`.
+        public typealias itrxSignature = Swift.String
+        /// - Remark: Generated from `#/components/parameters/itrxTimestamp`.
+        public typealias itrxTimestamp = Swift.String
         /// - Remark: Generated from `#/components/parameters/token`.
         public typealias token = Swift.String
         /// - Remark: Generated from `#/components/parameters/optionalToken`.
         public typealias optionalToken = Swift.String
+        /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+        ///
+        /// - Remark: Generated from `#/components/parameters/walletId`.
+        public typealias walletId = Swift.String
+        /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+        ///
+        /// - Remark: Generated from `#/components/parameters/walletToken`.
+        public typealias walletToken = Swift.String
+        /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+        ///
+        /// - Remark: Generated from `#/components/parameters/walletPublicKey`.
+        public typealias walletPublicKey = Swift.String
+        /// Enterprise access token; use with Tron battery billing for enterprise accounts
+        ///
+        /// - Remark: Generated from `#/components/parameters/optionalEnterpriseAccessToken`.
+        public typealias optionalEnterpriseAccessToken = Swift.String
         /// - Remark: Generated from `#/components/parameters/adminToken`.
         public typealias adminToken = Swift.String
         /// - Remark: Generated from `#/components/parameters/jettonMasterParameter`.
@@ -2219,6 +2461,62 @@ public enum Components {
             }
             /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateCost/content/application\/json`.
             case json(Components.RequestBodies.gaslessEstimateCost.jsonPayload)
+        }
+        /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer`.
+        @frozen public enum gaslessEstimateJettonTransfer: Sendable, Hashable {
+            /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer/json`.
+            public struct jsonPayload: Codable, Hashable, Sendable {
+                /// Jetton master address
+                ///
+                /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer/json/jetton_master`.
+                public var jetton_master: Swift.String
+                /// Destination wallet address
+                ///
+                /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer/json/destination`.
+                public var destination: Swift.String
+                /// Optional response/excess address
+                ///
+                /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer/json/response_destination`.
+                public var response_destination: Swift.String?
+                /// Optional attached TON amount in nanoTONs
+                ///
+                /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer/json/attached_ton`.
+                public var attached_ton: Swift.String?
+                /// Optional forward TON amount in nanoTONs
+                ///
+                /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer/json/forward_ton_amount`.
+                public var forward_ton_amount: Swift.String?
+                /// Creates a new `jsonPayload`.
+                ///
+                /// - Parameters:
+                ///   - jetton_master: Jetton master address
+                ///   - destination: Destination wallet address
+                ///   - response_destination: Optional response/excess address
+                ///   - attached_ton: Optional attached TON amount in nanoTONs
+                ///   - forward_ton_amount: Optional forward TON amount in nanoTONs
+                public init(
+                    jetton_master: Swift.String,
+                    destination: Swift.String,
+                    response_destination: Swift.String? = nil,
+                    attached_ton: Swift.String? = nil,
+                    forward_ton_amount: Swift.String? = nil
+                ) {
+                    self.jetton_master = jetton_master
+                    self.destination = destination
+                    self.response_destination = response_destination
+                    self.attached_ton = attached_ton
+                    self.forward_ton_amount = forward_ton_amount
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case jetton_master
+                    case destination
+                    case response_destination
+                    case attached_ton
+                    case forward_ton_amount
+                }
+            }
+            /// - Remark: Generated from `#/components/requestBodies/gaslessEstimateJettonTransfer/content/application\/json`.
+            case json(Components.RequestBodies.gaslessEstimateJettonTransfer.jsonPayload)
         }
         /// - Remark: Generated from `#/components/requestBodies/resetUserBalance`.
         @frozen public enum resetUserBalance: Sendable, Hashable {
@@ -2712,18 +3010,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/status/GET/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/status/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/status/GET/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/status/GET/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/status/GET/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getStatus.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getStatus.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -2732,7 +3051,7 @@ public enum Operations {
             ///
             /// - Parameters:
             ///   - headers:
-            public init(headers: Operations.getStatus.Input.Headers) {
+            public init(headers: Operations.getStatus.Input.Headers = .init()) {
                 self.headers = headers
             }
         }
@@ -3294,18 +3613,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/balance/GET/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/balance/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/balance/GET/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/balance/GET/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/balance/GET/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getBalance.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getBalance.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -3317,7 +3657,7 @@ public enum Operations {
             ///   - headers:
             public init(
                 query: Operations.getBalance.Input.Query = .init(),
-                headers: Operations.getBalance.Input.Headers
+                headers: Operations.getBalance.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -3450,21 +3790,42 @@ public enum Operations {
                 /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/Accept-Language`.
                 public var Accept_hyphen_Language: Components.Parameters.i18n?
                 /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.emulateMessageToWallet.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - Accept_hyphen_Language:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
                     Accept_hyphen_Language: Components.Parameters.i18n? = nil,
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.emulateMessageToWallet.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.Accept_hyphen_Language = Accept_hyphen_Language
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -3478,7 +3839,7 @@ public enum Operations {
             ///   - body:
             public init(
                 query: Operations.emulateMessageToWallet.Input.Query = .init(),
-                headers: Operations.emulateMessageToWallet.Input.Headers,
+                headers: Operations.emulateMessageToWallet.Input.Headers = .init(),
                 body: Components.RequestBodies.Boc
             ) {
                 self.query = query
@@ -3657,18 +4018,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/message/POST/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/message/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/message/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/message/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/message/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.sendMessage.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.sendMessage.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -3680,7 +4062,7 @@ public enum Operations {
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.sendMessage.Input.Headers,
+                headers: Operations.sendMessage.Input.Headers = .init(),
                 body: Components.RequestBodies.Boc
             ) {
                 self.headers = headers
@@ -3969,6 +4351,22 @@ public enum Operations {
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-TonConnect-Auth`.
                 public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
+                /// Enterprise access token; use with Tron battery billing for enterprise accounts
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Enterprise-Auth`.
+                public var X_hyphen_Enterprise_hyphen_Auth: Components.Parameters.optionalEnterpriseAccessToken?
                 /// JWT token from Pro service for free charges verification
                 ///
                 /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Pro-Auth`.
@@ -3978,14 +4376,26 @@ public enum Operations {
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///   - X_hyphen_Enterprise_hyphen_Auth: Enterprise access token; use with Tron battery billing for enterprise accounts
                 ///   - X_hyphen_Pro_hyphen_Auth: JWT token from Pro service for free charges verification
                 ///   - accept:
                 public init(
                     X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
+                    X_hyphen_Enterprise_hyphen_Auth: Components.Parameters.optionalEnterpriseAccessToken? = nil,
                     X_hyphen_Pro_hyphen_Auth: Swift.String? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.tronEstimate.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                    self.X_hyphen_Enterprise_hyphen_Auth = X_hyphen_Enterprise_hyphen_Auth
                     self.X_hyphen_Pro_hyphen_Auth = X_hyphen_Pro_hyphen_Auth
                     self.accept = accept
                 }
@@ -4132,6 +4542,22 @@ public enum Operations {
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-TonConnect-Auth`.
                 public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
+                /// Enterprise access token; use with Tron battery billing for enterprise accounts
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Enterprise-Auth`.
+                public var X_hyphen_Enterprise_hyphen_Auth: Components.Parameters.optionalEnterpriseAccessToken?
                 /// JWT token from Pro service for free charges verification
                 ///
                 /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Pro-Auth`.
@@ -4141,14 +4567,26 @@ public enum Operations {
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///   - X_hyphen_Enterprise_hyphen_Auth: Enterprise access token; use with Tron battery billing for enterprise accounts
                 ///   - X_hyphen_Pro_hyphen_Auth: JWT token from Pro service for free charges verification
                 ///   - accept:
                 public init(
                     X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
+                    X_hyphen_Enterprise_hyphen_Auth: Components.Parameters.optionalEnterpriseAccessToken? = nil,
                     X_hyphen_Pro_hyphen_Auth: Swift.String? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.tronSend.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                    self.X_hyphen_Enterprise_hyphen_Auth = X_hyphen_Enterprise_hyphen_Auth
                     self.X_hyphen_Pro_hyphen_Auth = X_hyphen_Pro_hyphen_Auth
                     self.accept = accept
                 }
@@ -4301,18 +4739,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTronTransactions.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTronTransactions.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -4324,7 +4783,7 @@ public enum Operations {
             ///   - headers:
             public init(
                 query: Operations.getTronTransactions.Input.Query = .init(),
-                headers: Operations.getTronTransactions.Input.Headers
+                headers: Operations.getTronTransactions.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -4579,12 +5038,24 @@ public enum Operations {
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/v0/tron/itrx-io-callback/POST/header`.
             public struct Headers: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/v0/tron/itrx-io-callback/POST/header/SIGNATURE`.
+                public var SIGNATURE: Components.Parameters.itrxSignature
+                /// - Remark: Generated from `#/paths/v0/tron/itrx-io-callback/POST/header/TIMESTAMP`.
+                public var TIMESTAMP: Components.Parameters.itrxTimestamp
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.itrxIoCallback.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
+                ///   - SIGNATURE:
+                ///   - TIMESTAMP:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.itrxIoCallback.AcceptableContentType>] = .defaultValues()) {
+                public init(
+                    SIGNATURE: Components.Parameters.itrxSignature,
+                    TIMESTAMP: Components.Parameters.itrxTimestamp,
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.itrxIoCallback.AcceptableContentType>] = .defaultValues()
+                ) {
+                    self.SIGNATURE = SIGNATURE
+                    self.TIMESTAMP = TIMESTAMP
                     self.accept = accept
                 }
             }
@@ -4619,7 +5090,7 @@ public enum Operations {
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.itrxIoCallback.Input.Headers = .init(),
+                headers: Operations.itrxIoCallback.Input.Headers,
                 body: Operations.itrxIoCallback.Input.Body
             ) {
                 self.headers = headers
@@ -4756,18 +5227,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.androidBatteryPurchase.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.androidBatteryPurchase.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -4779,7 +5271,7 @@ public enum Operations {
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.androidBatteryPurchase.Input.Headers,
+                headers: Operations.androidBatteryPurchase.Input.Headers = .init(),
                 body: Components.RequestBodies.AndroidBatteryPurchase
             ) {
                 self.headers = headers
@@ -5031,18 +5523,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.iosBatteryPurchase.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.iosBatteryPurchase.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -5054,7 +5567,7 @@ public enum Operations {
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.iosBatteryPurchase.Input.Headers,
+                headers: Operations.iosBatteryPurchase.Input.Headers = .init(),
                 body: Components.RequestBodies.iOSBatteryPurchase
             ) {
                 self.headers = headers
@@ -5175,21 +5688,42 @@ public enum Operations {
                 /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/Accept-Language`.
                 public var Accept_hyphen_Language: Components.Parameters.i18n?
                 /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.promoCodeBatteryPurchase.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - Accept_hyphen_Language:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
                     Accept_hyphen_Language: Components.Parameters.i18n? = nil,
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.promoCodeBatteryPurchase.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.Accept_hyphen_Language = Accept_hyphen_Language
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -5201,7 +5735,7 @@ public enum Operations {
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.promoCodeBatteryPurchase.Input.Headers,
+                headers: Operations.promoCodeBatteryPurchase.Input.Headers = .init(),
                 body: Components.RequestBodies.promoCodeBatteryPurchase
             ) {
                 self.headers = headers
@@ -5625,18 +6159,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/request-refund/POST/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/request-refund/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/request-refund/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/request-refund/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/request-refund/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.requestRefund.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.requestRefund.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -5648,7 +6203,7 @@ public enum Operations {
             ///   - headers:
             ///   - body:
             public init(
-                headers: Operations.requestRefund.Input.Headers,
+                headers: Operations.requestRefund.Input.Headers = .init(),
                 body: Components.RequestBodies.requestRefund
             ) {
                 self.headers = headers
@@ -5768,18 +6323,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/purchases/GET/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/purchases/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/purchases/GET/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/purchases/GET/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/purchases/GET/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getPurchases.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getPurchases.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -5791,7 +6367,7 @@ public enum Operations {
             ///   - headers:
             public init(
                 query: Operations.getPurchases.Input.Query = .init(),
-                headers: Operations.getPurchases.Input.Headers
+                headers: Operations.getPurchases.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -5929,18 +6505,39 @@ public enum Operations {
             /// - Remark: Generated from `#/paths/transactions/GET/header`.
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/transactions/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token
+                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/transactions/GET/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/transactions/GET/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/transactions/GET/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTransactions.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.token,
+                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTransactions.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -5952,7 +6549,7 @@ public enum Operations {
             ///   - headers:
             public init(
                 query: Operations.getTransactions.Input.Query = .init(),
-                headers: Operations.getTransactions.Input.Headers
+                headers: Operations.getTransactions.Input.Headers = .init()
             ) {
                 self.query = query
                 self.headers = headers
@@ -6107,17 +6704,38 @@ public enum Operations {
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-TonConnect-Auth`.
                 public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
+                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///
+                /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-Wallet-ID`.
+                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
+                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///
+                /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-Wallet-Token`.
+                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
+                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///
+                /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-Wallet-Public-Key`.
+                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.estimateGaslessCost.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - X_hyphen_TonConnect_hyphen_Auth:
+                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
+                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
                     X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
+                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
+                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
+                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.estimateGaslessCost.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
+                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
+                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
+                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -6197,6 +6815,141 @@ public enum Operations {
             /// Some error during request processing
             ///
             /// - Remark: Generated from `#/paths//gasless/estimate-cost/{jetton_master}/post(estimateGaslessCost)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Estimate gasless commission for a jetton transfer by its parameters
+    ///
+    /// - Remark: HTTP `POST /gasless/estimate/jetton-transfer`.
+    /// - Remark: Generated from `#/paths//gasless/estimate/jetton-transfer/post(EstimateGaslessJettonTransfer)`.
+    public enum EstimateGaslessJettonTransfer {
+        public static let id: Swift.String = "EstimateGaslessJettonTransfer"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/gasless/estimate/jetton-transfer/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.EstimateGaslessJettonTransfer.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.EstimateGaslessJettonTransfer.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.EstimateGaslessJettonTransfer.Input.Headers
+            public var body: Components.RequestBodies.gaslessEstimateJettonTransfer
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.EstimateGaslessJettonTransfer.Input.Headers = .init(),
+                body: Components.RequestBodies.gaslessEstimateJettonTransfer
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/estimate/jetton-transfer/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/gasless/estimate/jetton-transfer/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.GaslessCommissionJettonTransfer)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.GaslessCommissionJettonTransfer {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.EstimateGaslessJettonTransfer.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.EstimateGaslessJettonTransfer.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// Gasless commission transfer parameters
+            ///
+            /// - Remark: Generated from `#/paths//gasless/estimate/jetton-transfer/post(EstimateGaslessJettonTransfer)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.EstimateGaslessJettonTransfer.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.EstimateGaslessJettonTransfer.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//gasless/estimate/jetton-transfer/post(EstimateGaslessJettonTransfer)/responses/default`.
             ///
             /// HTTP response code: `default`.
             case `default`(statusCode: Swift.Int, Components.Responses._Error)
@@ -6447,6 +7200,256 @@ public enum Operations {
             /// Some error during request processing
             ///
             /// - Remark: Generated from `#/paths//restricted/promo-campaign/post(createPromoCampaign)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /restricted/promo-campaign-by-user`.
+    /// - Remark: Generated from `#/paths//restricted/promo-campaign-by-user/post(createPromoCampaignByUser)`.
+    public enum createPromoCampaignByUser {
+        public static let id: Swift.String = "createPromoCampaignByUser"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) {
+                    self.token = token
+                }
+            }
+            public var query: Operations.createPromoCampaignByUser.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.createPromoCampaignByUser.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.createPromoCampaignByUser.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.createPromoCampaignByUser.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/json/name`.
+                    public var name: Swift.String
+                    /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/json/participantsPayload`.
+                    public struct participantsPayloadPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/json/participantsPayload/user_id`.
+                        public var user_id: Swift.Int64
+                        /// amount in TON
+                        ///
+                        /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/json/participantsPayload/amount`.
+                        public var amount: Swift.String
+                        /// Creates a new `participantsPayloadPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - user_id:
+                        ///   - amount: amount in TON
+                        public init(
+                            user_id: Swift.Int64,
+                            amount: Swift.String
+                        ) {
+                            self.user_id = user_id
+                            self.amount = amount
+                        }
+                        public enum CodingKeys: String, CodingKey {
+                            case user_id
+                            case amount
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/json/participants`.
+                    public typealias participantsPayload = [Operations.createPromoCampaignByUser.Input.Body.jsonPayload.participantsPayloadPayload]
+                    /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/json/participants`.
+                    public var participants: Operations.createPromoCampaignByUser.Input.Body.jsonPayload.participantsPayload
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - name:
+                    ///   - participants:
+                    public init(
+                        name: Swift.String,
+                        participants: Operations.createPromoCampaignByUser.Input.Body.jsonPayload.participantsPayload
+                    ) {
+                        self.name = name
+                        self.participants = participants
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case name
+                        case participants
+                    }
+                }
+                /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/requestBody/content/application\/json`.
+                case json(Operations.createPromoCampaignByUser.Input.Body.jsonPayload)
+            }
+            public var body: Operations.createPromoCampaignByUser.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                query: Operations.createPromoCampaignByUser.Input.Query,
+                headers: Operations.createPromoCampaignByUser.Input.Headers = .init(),
+                body: Operations.createPromoCampaignByUser.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/json/participantsPayload`.
+                        public struct participantsPayloadPayload: Codable, Hashable, Sendable {
+                            /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/json/participantsPayload/user_id`.
+                            public var user_id: Swift.Int64
+                            /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/json/participantsPayload/balance_increased`.
+                            public var balance_increased: Swift.String?
+                            /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/json/participantsPayload/error`.
+                            public var error: Swift.String?
+                            /// Creates a new `participantsPayloadPayload`.
+                            ///
+                            /// - Parameters:
+                            ///   - user_id:
+                            ///   - balance_increased:
+                            ///   - error:
+                            public init(
+                                user_id: Swift.Int64,
+                                balance_increased: Swift.String? = nil,
+                                error: Swift.String? = nil
+                            ) {
+                                self.user_id = user_id
+                                self.balance_increased = balance_increased
+                                self.error = error
+                            }
+                            public enum CodingKeys: String, CodingKey {
+                                case user_id
+                                case balance_increased
+                                case error
+                            }
+                        }
+                        /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/json/participants`.
+                        public typealias participantsPayload = [Operations.createPromoCampaignByUser.Output.Ok.Body.jsonPayload.participantsPayloadPayload]
+                        /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/json/participants`.
+                        public var participants: Operations.createPromoCampaignByUser.Output.Ok.Body.jsonPayload.participantsPayload
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - participants:
+                        public init(participants: Operations.createPromoCampaignByUser.Output.Ok.Body.jsonPayload.participantsPayload) {
+                            self.participants = participants
+                        }
+                        public enum CodingKeys: String, CodingKey {
+                            case participants
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/promo-campaign-by-user/POST/responses/200/content/application\/json`.
+                    case json(Operations.createPromoCampaignByUser.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.createPromoCampaignByUser.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.createPromoCampaignByUser.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.createPromoCampaignByUser.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// success
+            ///
+            /// - Remark: Generated from `#/paths//restricted/promo-campaign-by-user/post(createPromoCampaignByUser)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.createPromoCampaignByUser.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.createPromoCampaignByUser.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/promo-campaign-by-user/post(createPromoCampaignByUser)/responses/default`.
             ///
             /// HTTP response code: `default`.
             case `default`(statusCode: Swift.Int, Components.Responses._Error)
@@ -6838,14 +7841,14 @@ public enum Operations {
             }
         }
     }
-    /// - Remark: HTTP `POST /restricted/transfer`.
-    /// - Remark: Generated from `#/paths//restricted/transfer/post(manualTransfer)`.
-    public enum manualTransfer {
-        public static let id: Swift.String = "manualTransfer"
+    /// - Remark: HTTP `POST /restricted/battery-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-transfer/post(batteryTransfer)`.
+    public enum batteryTransfer {
+        public static let id: Swift.String = "batteryTransfer"
         public struct Input: Sendable, Hashable {
-            /// - Remark: Generated from `#/paths/restricted/transfer/POST/query`.
+            /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/query`.
             public struct Query: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/restricted/transfer/POST/query/token`.
+                /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/query/token`.
                 public var token: Components.Parameters.adminToken
                 /// Creates a new `Query`.
                 ///
@@ -6855,76 +7858,52 @@ public enum Operations {
                     self.token = token
                 }
             }
-            public var query: Operations.manualTransfer.Input.Query
-            /// - Remark: Generated from `#/paths/restricted/transfer/POST/header`.
+            public var query: Operations.batteryTransfer.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/header`.
             public struct Headers: Sendable, Hashable {
-                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.manualTransfer.AcceptableContentType>]
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.batteryTransfer.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - accept:
-                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.manualTransfer.AcceptableContentType>] = .defaultValues()) {
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.batteryTransfer.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
-            public var headers: Operations.manualTransfer.Input.Headers
-            /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody`.
+            public var headers: Operations.batteryTransfer.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/requestBody`.
             @frozen public enum Body: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody/json`.
+                /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/requestBody/json`.
                 public struct jsonPayload: Codable, Hashable, Sendable {
-                    /// Relayer wallet address to send from
+                    /// Amount in TON (not nano)
                     ///
-                    /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody/json/relayer`.
-                    public var relayer: Swift.String
-                    /// Recipient address
-                    ///
-                    /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody/json/to`.
-                    public var to: Swift.String
-                    /// Currency code ('TON', 'USD₮', 'jUSDT', etc.)
-                    ///
-                    /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody/json/currency`.
-                    public var currency: Swift.String
-                    /// Amount in currency units (not nano)
-                    ///
-                    /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody/json/amount`.
+                    /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/requestBody/json/amount`.
                     public var amount: Swift.String
-                    /// Optional text comment for TON transfers
+                    /// Optional text comment for TON transfer
                     ///
-                    /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody/json/comment`.
+                    /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/requestBody/json/comment`.
                     public var comment: Swift.String?
                     /// Creates a new `jsonPayload`.
                     ///
                     /// - Parameters:
-                    ///   - relayer: Relayer wallet address to send from
-                    ///   - to: Recipient address
-                    ///   - currency: Currency code ('TON', 'USD₮', 'jUSDT', etc.)
-                    ///   - amount: Amount in currency units (not nano)
-                    ///   - comment: Optional text comment for TON transfers
+                    ///   - amount: Amount in TON (not nano)
+                    ///   - comment: Optional text comment for TON transfer
                     public init(
-                        relayer: Swift.String,
-                        to: Swift.String,
-                        currency: Swift.String,
                         amount: Swift.String,
                         comment: Swift.String? = nil
                     ) {
-                        self.relayer = relayer
-                        self.to = to
-                        self.currency = currency
                         self.amount = amount
                         self.comment = comment
                     }
                     public enum CodingKeys: String, CodingKey {
-                        case relayer
-                        case to
-                        case currency
                         case amount
                         case comment
                     }
                 }
-                /// - Remark: Generated from `#/paths/restricted/transfer/POST/requestBody/content/application\/json`.
-                case json(Operations.manualTransfer.Input.Body.jsonPayload)
+                /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/requestBody/content/application\/json`.
+                case json(Operations.batteryTransfer.Input.Body.jsonPayload)
             }
-            public var body: Operations.manualTransfer.Input.Body
+            public var body: Operations.batteryTransfer.Input.Body
             /// Creates a new `Input`.
             ///
             /// - Parameters:
@@ -6932,9 +7911,9 @@ public enum Operations {
             ///   - headers:
             ///   - body:
             public init(
-                query: Operations.manualTransfer.Input.Query,
-                headers: Operations.manualTransfer.Input.Headers = .init(),
-                body: Operations.manualTransfer.Input.Body
+                query: Operations.batteryTransfer.Input.Query,
+                headers: Operations.batteryTransfer.Input.Headers = .init(),
+                body: Operations.batteryTransfer.Input.Body
             ) {
                 self.query = query
                 self.headers = headers
@@ -6943,9 +7922,9 @@ public enum Operations {
         }
         @frozen public enum Output: Sendable, Hashable {
             public struct Ok: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/restricted/transfer/POST/responses/200/content`.
+                /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/responses/200/content`.
                 @frozen public enum Body: Sendable, Hashable {
-                    /// - Remark: Generated from `#/paths/restricted/transfer/POST/responses/200/content/json`.
+                    /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/responses/200/content/json`.
                     public struct jsonPayload: Codable, Hashable, Sendable {
                         /// A container of undocumented properties.
                         public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
@@ -6963,13 +7942,13 @@ public enum Operations {
                             try encoder.encodeAdditionalProperties(additionalProperties)
                         }
                     }
-                    /// - Remark: Generated from `#/paths/restricted/transfer/POST/responses/200/content/application\/json`.
-                    case json(Operations.manualTransfer.Output.Ok.Body.jsonPayload)
+                    /// - Remark: Generated from `#/paths/restricted/battery-transfer/POST/responses/200/content/application\/json`.
+                    case json(Operations.batteryTransfer.Output.Ok.Body.jsonPayload)
                     /// The associated value of the enum case if `self` is `.json`.
                     ///
                     /// - Throws: An error if `self` is not `.json`.
                     /// - SeeAlso: `.json`.
-                    public var json: Operations.manualTransfer.Output.Ok.Body.jsonPayload {
+                    public var json: Operations.batteryTransfer.Output.Ok.Body.jsonPayload {
                         get throws {
                             switch self {
                             case let .json(body):
@@ -6979,26 +7958,26 @@ public enum Operations {
                     }
                 }
                 /// Received HTTP response body
-                public var body: Operations.manualTransfer.Output.Ok.Body
+                public var body: Operations.batteryTransfer.Output.Ok.Body
                 /// Creates a new `Ok`.
                 ///
                 /// - Parameters:
                 ///   - body: Received HTTP response body
-                public init(body: Operations.manualTransfer.Output.Ok.Body) {
+                public init(body: Operations.batteryTransfer.Output.Ok.Body) {
                     self.body = body
                 }
             }
             /// all good
             ///
-            /// - Remark: Generated from `#/paths//restricted/transfer/post(manualTransfer)/responses/200`.
+            /// - Remark: Generated from `#/paths//restricted/battery-transfer/post(batteryTransfer)/responses/200`.
             ///
             /// HTTP response code: `200 ok`.
-            case ok(Operations.manualTransfer.Output.Ok)
+            case ok(Operations.batteryTransfer.Output.Ok)
             /// The associated value of the enum case if `self` is `.ok`.
             ///
             /// - Throws: An error if `self` is not `.ok`.
             /// - SeeAlso: `.ok`.
-            public var ok: Operations.manualTransfer.Output.Ok {
+            public var ok: Operations.batteryTransfer.Output.Ok {
                 get throws {
                     switch self {
                     case let .ok(response):
@@ -7013,7 +7992,1161 @@ public enum Operations {
             }
             /// Some error during request processing
             ///
-            /// - Remark: Generated from `#/paths//restricted/transfer/post(manualTransfer)/responses/default`.
+            /// - Remark: Generated from `#/paths//restricted/battery-transfer/post(batteryTransfer)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /restricted/battery-swap-ton-to-usdt`.
+    /// - Remark: Generated from `#/paths//restricted/battery-swap-ton-to-usdt/post(batterySwapTonToUsdt)`.
+    public enum batterySwapTonToUsdt {
+        public static let id: Swift.String = "batterySwapTonToUsdt"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) {
+                    self.token = token
+                }
+            }
+            public var query: Operations.batterySwapTonToUsdt.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.batterySwapTonToUsdt.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.batterySwapTonToUsdt.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.batterySwapTonToUsdt.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// Amount in TON (not nano) to swap to USDT on battery.ton
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/requestBody/json/amount`.
+                    public var amount: Swift.String
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - amount: Amount in TON (not nano) to swap to USDT on battery.ton
+                    public init(amount: Swift.String) {
+                        self.amount = amount
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case amount
+                    }
+                }
+                /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/requestBody/content/application\/json`.
+                case json(Operations.batterySwapTonToUsdt.Input.Body.jsonPayload)
+            }
+            public var body: Operations.batterySwapTonToUsdt.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                query: Operations.batterySwapTonToUsdt.Input.Query,
+                headers: Operations.batterySwapTonToUsdt.Input.Headers = .init(),
+                body: Operations.batterySwapTonToUsdt.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/battery-swap-ton-to-usdt/POST/responses/200/content/application\/json`.
+                    case json(Operations.batterySwapTonToUsdt.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.batterySwapTonToUsdt.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.batterySwapTonToUsdt.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.batterySwapTonToUsdt.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//restricted/battery-swap-ton-to-usdt/post(batterySwapTonToUsdt)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.batterySwapTonToUsdt.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.batterySwapTonToUsdt.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/battery-swap-ton-to-usdt/post(batterySwapTonToUsdt)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /restricted/battery-nft-transfer`.
+    /// - Remark: Generated from `#/paths//restricted/battery-nft-transfer/post(batteryNftTransfer)`.
+    public enum batteryNftTransfer {
+        public static let id: Swift.String = "batteryNftTransfer"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) {
+                    self.token = token
+                }
+            }
+            public var query: Operations.batteryNftTransfer.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.batteryNftTransfer.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.batteryNftTransfer.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.batteryNftTransfer.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// NFT item address to transfer
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/requestBody/json/nft`.
+                    public var nft: Swift.String
+                    /// New NFT owner address
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/requestBody/json/to`.
+                    public var to: Swift.String
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - nft: NFT item address to transfer
+                    ///   - to: New NFT owner address
+                    public init(
+                        nft: Swift.String,
+                        to: Swift.String
+                    ) {
+                        self.nft = nft
+                        self.to = to
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case nft
+                        case to
+                    }
+                }
+                /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/requestBody/content/application\/json`.
+                case json(Operations.batteryNftTransfer.Input.Body.jsonPayload)
+            }
+            public var body: Operations.batteryNftTransfer.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                query: Operations.batteryNftTransfer.Input.Query,
+                headers: Operations.batteryNftTransfer.Input.Headers = .init(),
+                body: Operations.batteryNftTransfer.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/battery-nft-transfer/POST/responses/200/content/application\/json`.
+                    case json(Operations.batteryNftTransfer.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.batteryNftTransfer.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.batteryNftTransfer.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.batteryNftTransfer.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//restricted/battery-nft-transfer/post(batteryNftTransfer)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.batteryNftTransfer.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.batteryNftTransfer.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/battery-nft-transfer/post(batteryNftTransfer)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /restricted/okx-deposit`.
+    /// - Remark: Generated from `#/paths//restricted/okx-deposit/post(replenishOKXBalance)`.
+    public enum replenishOKXBalance {
+        public static let id: Swift.String = "replenishOKXBalance"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) {
+                    self.token = token
+                }
+            }
+            public var query: Operations.replenishOKXBalance.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.replenishOKXBalance.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.replenishOKXBalance.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.replenishOKXBalance.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// Amount in TON
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/requestBody/json/amount`.
+                    public var amount: Swift.String
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - amount: Amount in TON
+                    public init(amount: Swift.String) {
+                        self.amount = amount
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case amount
+                    }
+                }
+                /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/requestBody/content/application\/json`.
+                case json(Operations.replenishOKXBalance.Input.Body.jsonPayload)
+            }
+            public var body: Operations.replenishOKXBalance.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                query: Operations.replenishOKXBalance.Input.Query,
+                headers: Operations.replenishOKXBalance.Input.Headers = .init(),
+                body: Operations.replenishOKXBalance.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/okx-deposit/POST/responses/200/content/application\/json`.
+                    case json(Operations.replenishOKXBalance.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.replenishOKXBalance.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.replenishOKXBalance.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.replenishOKXBalance.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//restricted/okx-deposit/post(replenishOKXBalance)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.replenishOKXBalance.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.replenishOKXBalance.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/okx-deposit/post(replenishOKXBalance)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /restricted/relayer-to-battery`.
+    /// - Remark: Generated from `#/paths//restricted/relayer-to-battery/post(relayerToBattery)`.
+    public enum relayerToBattery {
+        public static let id: Swift.String = "relayerToBattery"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) {
+                    self.token = token
+                }
+            }
+            public var query: Operations.relayerToBattery.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.relayerToBattery.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.relayerToBattery.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.relayerToBattery.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// Amount in TON (not nano) to transfer from main relayer to battery.ton
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/requestBody/json/amount`.
+                    public var amount: Swift.String
+                    /// Optional text comment for TON transfer
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/requestBody/json/comment`.
+                    public var comment: Swift.String?
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - amount: Amount in TON (not nano) to transfer from main relayer to battery.ton
+                    ///   - comment: Optional text comment for TON transfer
+                    public init(
+                        amount: Swift.String,
+                        comment: Swift.String? = nil
+                    ) {
+                        self.amount = amount
+                        self.comment = comment
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case amount
+                        case comment
+                    }
+                }
+                /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/requestBody/content/application\/json`.
+                case json(Operations.relayerToBattery.Input.Body.jsonPayload)
+            }
+            public var body: Operations.relayerToBattery.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                query: Operations.relayerToBattery.Input.Query,
+                headers: Operations.relayerToBattery.Input.Headers = .init(),
+                body: Operations.relayerToBattery.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/relayer-to-battery/POST/responses/200/content/application\/json`.
+                    case json(Operations.relayerToBattery.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.relayerToBattery.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.relayerToBattery.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.relayerToBattery.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//restricted/relayer-to-battery/post(relayerToBattery)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.relayerToBattery.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.relayerToBattery.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/relayer-to-battery/post(relayerToBattery)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /restricted/migrate-old-battery`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-old-battery/post(migrateOldBattery)`.
+    public enum migrateOldBattery {
+        public static let id: Swift.String = "migrateOldBattery"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) {
+                    self.token = token
+                }
+            }
+            public var query: Operations.migrateOldBattery.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.migrateOldBattery.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.migrateOldBattery.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.migrateOldBattery.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// Old battery wallet mnemonic (seed phrase)
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/requestBody/json/seed`.
+                    public var seed: Swift.String
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - seed: Old battery wallet mnemonic (seed phrase)
+                    public init(seed: Swift.String) {
+                        self.seed = seed
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case seed
+                    }
+                }
+                /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/requestBody/content/application\/json`.
+                case json(Operations.migrateOldBattery.Input.Body.jsonPayload)
+            }
+            public var body: Operations.migrateOldBattery.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                query: Operations.migrateOldBattery.Input.Query,
+                headers: Operations.migrateOldBattery.Input.Headers = .init(),
+                body: Operations.migrateOldBattery.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/migrate-old-battery/POST/responses/200/content/application\/json`.
+                    case json(Operations.migrateOldBattery.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.migrateOldBattery.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.migrateOldBattery.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.migrateOldBattery.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//restricted/migrate-old-battery/post(migrateOldBattery)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.migrateOldBattery.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.migrateOldBattery.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/migrate-old-battery/post(migrateOldBattery)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// - Remark: HTTP `POST /restricted/migrate-relayer`.
+    /// - Remark: Generated from `#/paths//restricted/migrate-relayer/post(migrateRelayer)`.
+    public enum migrateRelayer {
+        public static let id: Swift.String = "migrateRelayer"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/query`.
+            public struct Query: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/query/token`.
+                public var token: Components.Parameters.adminToken
+                /// Creates a new `Query`.
+                ///
+                /// - Parameters:
+                ///   - token:
+                public init(token: Components.Parameters.adminToken) {
+                    self.token = token
+                }
+            }
+            public var query: Operations.migrateRelayer.Input.Query
+            /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.migrateRelayer.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.migrateRelayer.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.migrateRelayer.Input.Headers
+            /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/requestBody/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// Old relayer mnemonic (seed phrase)
+                    ///
+                    /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/requestBody/json/seed`.
+                    public var seed: Swift.String
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - seed: Old relayer mnemonic (seed phrase)
+                    public init(seed: Swift.String) {
+                        self.seed = seed
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case seed
+                    }
+                }
+                /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/requestBody/content/application\/json`.
+                case json(Operations.migrateRelayer.Input.Body.jsonPayload)
+            }
+            public var body: Operations.migrateRelayer.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - query:
+            ///   - headers:
+            ///   - body:
+            public init(
+                query: Operations.migrateRelayer.Input.Query,
+                headers: Operations.migrateRelayer.Input.Headers = .init(),
+                body: Operations.migrateRelayer.Input.Body
+            ) {
+                self.query = query
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/responses/200/content/json`.
+                    public struct jsonPayload: Codable, Hashable, Sendable {
+                        /// A container of undocumented properties.
+                        public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                        /// Creates a new `jsonPayload`.
+                        ///
+                        /// - Parameters:
+                        ///   - additionalProperties: A container of undocumented properties.
+                        public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                            self.additionalProperties = additionalProperties
+                        }
+                        public init(from decoder: any Decoder) throws {
+                            additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                        }
+                        public func encode(to encoder: any Encoder) throws {
+                            try encoder.encodeAdditionalProperties(additionalProperties)
+                        }
+                    }
+                    /// - Remark: Generated from `#/paths/restricted/migrate-relayer/POST/responses/200/content/application\/json`.
+                    case json(Operations.migrateRelayer.Output.Ok.Body.jsonPayload)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Operations.migrateRelayer.Output.Ok.Body.jsonPayload {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.migrateRelayer.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.migrateRelayer.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// all good
+            ///
+            /// - Remark: Generated from `#/paths//restricted/migrate-relayer/post(migrateRelayer)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.migrateRelayer.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.migrateRelayer.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//restricted/migrate-relayer/post(migrateRelayer)/responses/default`.
             ///
             /// HTTP response code: `default`.
             case `default`(statusCode: Swift.Int, Components.Responses._Error)
@@ -8397,15 +10530,25 @@ public enum Operations {
                     public struct jsonPayload: Codable, Hashable, Sendable {
                         /// - Remark: Generated from `#/paths/enterprise/wallets/{wallet_id}/send/POST/responses/200/content/json/msg_id`.
                         public var msg_id: Swift.String
+                        /// base64 encoded external message (signed) that was sent to the network
+                        ///
+                        /// - Remark: Generated from `#/paths/enterprise/wallets/{wallet_id}/send/POST/responses/200/content/json/external`.
+                        public var external: Swift.String?
                         /// Creates a new `jsonPayload`.
                         ///
                         /// - Parameters:
                         ///   - msg_id:
-                        public init(msg_id: Swift.String) {
+                        ///   - external: base64 encoded external message (signed) that was sent to the network
+                        public init(
+                            msg_id: Swift.String,
+                            external: Swift.String? = nil
+                        ) {
                             self.msg_id = msg_id
+                            self.external = external
                         }
                         public enum CodingKeys: String, CodingKey {
                             case msg_id
+                            case external
                         }
                     }
                     /// - Remark: Generated from `#/paths/enterprise/wallets/{wallet_id}/send/POST/responses/200/content/application\/json`.
