@@ -9,6 +9,7 @@ info:
 servers:
   - url: "https://battery.tonkeeper.com"
   - url: "https://testnet-battery.tonkeeper.com"
+
 paths:
   /tonconnect/payload:
     get:
@@ -58,11 +59,11 @@ paths:
     get:
       description: This method returns information about the current status of Battery Service.
       operationId: getStatus
-      parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       responses:
         '200':
           description: TBD
@@ -126,11 +127,12 @@ paths:
     get:
       description: This method returns information about a user's balance.
       operationId: getBalance
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - $ref: '#/components/parameters/balanceUnits'
         - $ref: '#/components/parameters/region'
       responses:
@@ -146,14 +148,15 @@ paths:
     post:
       description: Emulate sending message to blockchain
       operationId: emulateMessageToWallet
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       tags:
         - Emulation
       parameters:
         - $ref: '#/components/parameters/i18n'
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - name: enable_validation
           in: query
           schema:
@@ -199,13 +202,15 @@ paths:
     post:
       description: Send message to blockchain
       operationId: sendMessage
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
+        - $ref: '#/components/parameters/promo'
       requestBody:
-        $ref: "#/components/requestBodies/Boc"
+        $ref: "#/components/requestBodies/BocWithProof"
       responses:
         '200':
           description: "success"
@@ -237,11 +242,12 @@ paths:
     get:
       description: Estimate cost of sending a tx in Tron network
       operationId: tronEstimate
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - $ref: '#/components/parameters/optionalEnterpriseAccessToken'
         - name: X-Pro-Auth
           in: header
@@ -288,11 +294,12 @@ paths:
     post:
       description: send TRON tx
       operationId: tronSend
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - $ref: '#/components/parameters/optionalEnterpriseAccessToken'
         - name: X-Pro-Auth
           in: header
@@ -320,11 +327,12 @@ paths:
   /v0/tron/transactions:
     get:
       operationId: getTronTransactions
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - $ref: '#/components/parameters/limitQuery'
         - $ref: '#/components/parameters/maxTimestamp'
       responses:
@@ -384,11 +392,11 @@ paths:
     post:
       description: verify an in-app purchase
       operationId: androidBatteryPurchase
-      parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       requestBody:
         $ref: "#/components/requestBodies/AndroidBatteryPurchase"
       responses:
@@ -418,11 +426,11 @@ paths:
     post:
       description: verify an in-app purchase
       operationId: iosBatteryPurchase
-      parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       requestBody:
         $ref: "#/components/requestBodies/iOSBatteryPurchase"
       responses:
@@ -438,12 +446,13 @@ paths:
     post:
       description: charge battery with promo code
       operationId: promoCodeBatteryPurchase
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
         - $ref: '#/components/parameters/i18n'
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
       requestBody:
         $ref: "#/components/requestBodies/promoCodeBatteryPurchase"
       responses:
@@ -501,11 +510,11 @@ paths:
   /request-refund:
     post:
       operationId: requestRefund
-      parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       requestBody:
         $ref: "#/components/requestBodies/requestRefund"
       responses:
@@ -517,11 +526,12 @@ paths:
     get:
       description: This method returns a list of purchases made by a specific user.
       operationId: getPurchases
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - $ref: '#/components/parameters/limitQuery'
         - $ref: '#/components/parameters/offsetQuery'
         - name: include_gifts_on_the_way
@@ -542,11 +552,12 @@ paths:
     get:
       description: This method returns a list of transactions made by a specific user.
       operationId: getTransactions
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - $ref: '#/components/parameters/limitQuery'
         - $ref: '#/components/parameters/offsetQuery'
       responses:
@@ -561,12 +572,13 @@ paths:
   /gasless/estimate-cost/{jetton_master}:
     post:
       operationId: estimateGaslessCost
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+        - tonConnectAuth: [ ]
       parameters:
         - $ref: '#/components/parameters/jettonMasterParameter'
-        - $ref: '#/components/parameters/optionalToken'
-        - $ref: '#/components/parameters/walletId'
-        - $ref: '#/components/parameters/walletToken'
-        - $ref: '#/components/parameters/walletPublicKey'
         - name: wallet_address
           in: query
           schema:
@@ -1243,6 +1255,41 @@ paths:
         'default':
           $ref: '#/components/responses/Error'
 components:
+  securitySchemes:
+    deviceJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Device access token issued by the multichain backend. The client attaches and refreshes it; the `Authorization` header parameter below is legacy and gets overwritten."
+    walletAuth:
+      type: apiKey
+      in: header
+      name: X-Wallet-Authorization
+      x-wallet-auth: true
+      description: "Wallet-scoped token signed by the wallet's app key over the device access token. Always accompanies `xWalletId`, which names the wallet being asserted."
+    tonConnectAuth:
+      type: apiKey
+      in: header
+      name: X-TonConnect-Auth
+      x-client-parameter: true
+      description: "TonConnect proof for legacy TON wallets. Mutually exclusive in practice with deviceJWT + walletAuth, which is how multichain wallets authenticate — they have no tonProof."
+    xWalletId:
+      type: apiKey
+      in: header
+      name: X-Wallet-ID
+      x-client-parameter: true
+      x-wallet-id: true
+      description: |
+        Names the wallet `walletAuth` is asserting, and is checked rather than trusted: the id is
+        `base32(format ‖ kind_byte ‖ blake2b160(LP("keeper.wallet.id.v2") ‖ LP(kind) ‖ LP(wallet_pub)))`,
+        so the verifier reads the format and kind bytes from here, recomputes the id from the key
+        recovered out of the signature, and rejects on mismatch. Recovery alone cannot produce the
+        id — the signature carries the public key, not the framing bytes.
+
+        `x-client-parameter` makes the generated client take this as an argument and send it, and
+        `x-wallet-id` marks it as the value `walletAuth` signs for. No operation declares it as a
+        parameter of its own, so there is exactly one on the wire. Absent for legacy TON wallets,
+        which authenticate with `X-TonConnect-Auth` and have no wallet id.
   parameters:
     enterpriseAccessToken:
       in: header
@@ -1263,51 +1310,16 @@ components:
       schema:
         type: string
       required: true
-    token:
+    promo:
       in: header
-      name: X-TonConnect-Auth
-      schema:
-        type: string
-        example: NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODQ3...
-      required: true
-    optionalToken:
-      in: header
-      name: X-TonConnect-Auth
-      schema:
-        type: string
-        example: NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODQ3...
-      required: false
-    walletId:
-      in: header
-      name: X-Wallet-ID
+      name: X-Promo
       required: false
       description: >-
-        Tonkeeper WalletID identifying the wallet. Two formats are accepted:
-        hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only
-        accepted (not yet used for authentication).
+        Promo code the client wants applied. For now it is only accepted, nothing
+        is redeemed by it.
       schema:
         type: string
-        pattern: '^([a-f0-9]{64}|[a-z2-7]{32})$'
-        example: "abcdefghijklmnopqrstuvwxyz234567"
-    walletToken:
-      in: header
-      name: X-Wallet-Token
-      required: false
-      description: >-
-        Access token for WalletID-based requests. For now it is only compared
-        against the server-configured token (WALLET_ID_TOKEN).
-      schema:
-        type: string
-    walletPublicKey:
-      in: header
-      name: X-Wallet-Public-Key
-      required: false
-      description: >-
-        Public key of the wallet identified by X-Wallet-ID. Required together
-        with X-Wallet-ID.
-      schema:
-        type: string
-        example: NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODQ3...
+        example: "HAMSTER"
     optionalEnterpriseAccessToken:
       in: header
       name: X-Enterprise-Auth
@@ -1478,6 +1490,27 @@ components:
               boc:
                 type: string
                 example: te6ccgECBQEAARUAAkWIAWTtae+KgtbrX26Bep8JSq8lFLfGOoyGR/xwdjfvpvEaHg
+
+    BocWithProof:
+      description: bag-of-cells serialized to base64, with a proof of the wallet's consent
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - boc
+            properties:
+              boc:
+                type: string
+                example: te6ccgECBQEAARUAAkWIAWTtae+KgtbrX26Bep8JSq8lFLfGOoyGR/xwdjfvpvEaHg
+              proof:
+                description: >-
+                  Ed25519 signature made with the WalletID key over
+                  LP("keeper.battery.send.v1") | LP(wallet_id) | LP(chain) | LP(blake2b256(boc)),
+                  hex-encoded. For now it is only accepted, nothing is verified with it.
+                type: string
+                example: "3a7f1c9e00000000000000000000000000000000000000000000000000000000d204a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90"
 
     AndroidBatteryPurchase:
       description: In-App purchase

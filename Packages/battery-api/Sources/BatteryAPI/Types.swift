@@ -286,7 +286,7 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//message/post(sendMessage)`.
     public func sendMessage(
         headers: Operations.sendMessage.Input.Headers = .init(),
-        body: Components.RequestBodies.Boc
+        body: Components.RequestBodies.BocWithProof
     ) async throws -> Operations.sendMessage.Output {
         try await sendMessage(Operations.sendMessage.Input(
             headers: headers,
@@ -2084,22 +2084,10 @@ public enum Components {
         public typealias itrxSignature = Swift.String
         /// - Remark: Generated from `#/components/parameters/itrxTimestamp`.
         public typealias itrxTimestamp = Swift.String
-        /// - Remark: Generated from `#/components/parameters/token`.
-        public typealias token = Swift.String
-        /// - Remark: Generated from `#/components/parameters/optionalToken`.
-        public typealias optionalToken = Swift.String
-        /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+        /// Promo code the client wants applied. For now it is only accepted, nothing is redeemed by it.
         ///
-        /// - Remark: Generated from `#/components/parameters/walletId`.
-        public typealias walletId = Swift.String
-        /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-        ///
-        /// - Remark: Generated from `#/components/parameters/walletToken`.
-        public typealias walletToken = Swift.String
-        /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-        ///
-        /// - Remark: Generated from `#/components/parameters/walletPublicKey`.
-        public typealias walletPublicKey = Swift.String
+        /// - Remark: Generated from `#/components/parameters/promo`.
+        public typealias promo = Swift.String
         /// Enterprise access token; use with Tron battery billing for enterprise accounts
         ///
         /// - Remark: Generated from `#/components/parameters/optionalEnterpriseAccessToken`.
@@ -2317,6 +2305,36 @@ public enum Components {
             }
             /// - Remark: Generated from `#/components/requestBodies/Boc/content/application\/json`.
             case json(Components.RequestBodies.Boc.jsonPayload)
+        }
+        /// - Remark: Generated from `#/components/requestBodies/BocWithProof`.
+        @frozen public enum BocWithProof: Sendable, Hashable {
+            /// - Remark: Generated from `#/components/requestBodies/BocWithProof/json`.
+            public struct jsonPayload: Codable, Hashable, Sendable {
+                /// - Remark: Generated from `#/components/requestBodies/BocWithProof/json/boc`.
+                public var boc: Swift.String
+                /// Ed25519 signature made with the WalletID key over LP("keeper.battery.send.v1") | LP(wallet_id) | LP(chain) | LP(blake2b256(boc)), hex-encoded. For now it is only accepted, nothing is verified with it.
+                ///
+                /// - Remark: Generated from `#/components/requestBodies/BocWithProof/json/proof`.
+                public var proof: Swift.String?
+                /// Creates a new `jsonPayload`.
+                ///
+                /// - Parameters:
+                ///   - boc:
+                ///   - proof: Ed25519 signature made with the WalletID key over LP("keeper.battery.send.v1") | LP(wallet_id) | LP(chain) | LP(blake2b256(boc)), hex-encoded. For now it is only accepted, nothing is verified with it.
+                public init(
+                    boc: Swift.String,
+                    proof: Swift.String? = nil
+                ) {
+                    self.boc = boc
+                    self.proof = proof
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case boc
+                    case proof
+                }
+            }
+            /// - Remark: Generated from `#/components/requestBodies/BocWithProof/content/application\/json`.
+            case json(Components.RequestBodies.BocWithProof.jsonPayload)
         }
         /// - Remark: Generated from `#/components/requestBodies/AndroidBatteryPurchase`.
         @frozen public enum AndroidBatteryPurchase: Sendable, Hashable {
@@ -3009,40 +3027,12 @@ public enum Operations {
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/status/GET/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/status/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/status/GET/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/status/GET/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/status/GET/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getStatus.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getStatus.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getStatus.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -3612,40 +3602,12 @@ public enum Operations {
             public var query: Operations.getBalance.Input.Query
             /// - Remark: Generated from `#/paths/balance/GET/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/balance/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/balance/GET/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/balance/GET/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/balance/GET/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getBalance.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getBalance.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getBalance.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -3789,43 +3751,17 @@ public enum Operations {
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/Accept-Language`.
                 public var Accept_hyphen_Language: Components.Parameters.i18n?
-                /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/wallet/emulate/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.emulateMessageToWallet.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - Accept_hyphen_Language:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
                     Accept_hyphen_Language: Components.Parameters.i18n? = nil,
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.emulateMessageToWallet.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.Accept_hyphen_Language = Accept_hyphen_Language
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -4017,45 +3953,26 @@ public enum Operations {
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/message/POST/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/message/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
+                /// Promo code the client wants applied. For now it is only accepted, nothing is redeemed by it.
                 ///
-                /// - Remark: Generated from `#/paths/message/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/message/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/message/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
+                /// - Remark: Generated from `#/paths/message/POST/header/X-Promo`.
+                public var X_hyphen_Promo: Components.Parameters.promo?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.sendMessage.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
+                ///   - X_hyphen_Promo: Promo code the client wants applied. For now it is only accepted, nothing is redeemed by it.
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
+                    X_hyphen_Promo: Components.Parameters.promo? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.sendMessage.AcceptableContentType>] = .defaultValues()
                 ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                    self.X_hyphen_Promo = X_hyphen_Promo
                     self.accept = accept
                 }
             }
             public var headers: Operations.sendMessage.Input.Headers
-            public var body: Components.RequestBodies.Boc
+            public var body: Components.RequestBodies.BocWithProof
             /// Creates a new `Input`.
             ///
             /// - Parameters:
@@ -4063,7 +3980,7 @@ public enum Operations {
             ///   - body:
             public init(
                 headers: Operations.sendMessage.Input.Headers = .init(),
-                body: Components.RequestBodies.Boc
+                body: Components.RequestBodies.BocWithProof
             ) {
                 self.headers = headers
                 self.body = body
@@ -4349,20 +4266,6 @@ public enum Operations {
             public var query: Operations.tronEstimate.Input.Query
             /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 /// Enterprise access token; use with Tron battery billing for enterprise accounts
                 ///
                 /// - Remark: Generated from `#/paths/v0/tron/estimate/GET/header/X-Enterprise-Auth`.
@@ -4375,26 +4278,14 @@ public enum Operations {
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - X_hyphen_Enterprise_hyphen_Auth: Enterprise access token; use with Tron battery billing for enterprise accounts
                 ///   - X_hyphen_Pro_hyphen_Auth: JWT token from Pro service for free charges verification
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     X_hyphen_Enterprise_hyphen_Auth: Components.Parameters.optionalEnterpriseAccessToken? = nil,
                     X_hyphen_Pro_hyphen_Auth: Swift.String? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.tronEstimate.AcceptableContentType>] = .defaultValues()
                 ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.X_hyphen_Enterprise_hyphen_Auth = X_hyphen_Enterprise_hyphen_Auth
                     self.X_hyphen_Pro_hyphen_Auth = X_hyphen_Pro_hyphen_Auth
                     self.accept = accept
@@ -4540,20 +4431,6 @@ public enum Operations {
             public var query: Operations.tronSend.Input.Query
             /// - Remark: Generated from `#/paths/v0/tron/send/POST/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 /// Enterprise access token; use with Tron battery billing for enterprise accounts
                 ///
                 /// - Remark: Generated from `#/paths/v0/tron/send/POST/header/X-Enterprise-Auth`.
@@ -4566,26 +4443,14 @@ public enum Operations {
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - X_hyphen_Enterprise_hyphen_Auth: Enterprise access token; use with Tron battery billing for enterprise accounts
                 ///   - X_hyphen_Pro_hyphen_Auth: JWT token from Pro service for free charges verification
                 ///   - accept:
                 public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     X_hyphen_Enterprise_hyphen_Auth: Components.Parameters.optionalEnterpriseAccessToken? = nil,
                     X_hyphen_Pro_hyphen_Auth: Swift.String? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.tronSend.AcceptableContentType>] = .defaultValues()
                 ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.X_hyphen_Enterprise_hyphen_Auth = X_hyphen_Enterprise_hyphen_Auth
                     self.X_hyphen_Pro_hyphen_Auth = X_hyphen_Pro_hyphen_Auth
                     self.accept = accept
@@ -4738,40 +4603,12 @@ public enum Operations {
             public var query: Operations.getTronTransactions.Input.Query
             /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/v0/tron/transactions/GET/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTronTransactions.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTronTransactions.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTronTransactions.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -5226,40 +5063,12 @@ public enum Operations {
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/android/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.androidBatteryPurchase.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.androidBatteryPurchase.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.androidBatteryPurchase.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -5522,40 +5331,12 @@ public enum Operations {
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/ios/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.iosBatteryPurchase.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.iosBatteryPurchase.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.iosBatteryPurchase.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -5687,43 +5468,17 @@ public enum Operations {
             public struct Headers: Sendable, Hashable {
                 /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/Accept-Language`.
                 public var Accept_hyphen_Language: Components.Parameters.i18n?
-                /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/purchase-battery/promo-code/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.promoCodeBatteryPurchase.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
                 ///   - Accept_hyphen_Language:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
                 public init(
                     Accept_hyphen_Language: Components.Parameters.i18n? = nil,
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
                     accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.promoCodeBatteryPurchase.AcceptableContentType>] = .defaultValues()
                 ) {
                     self.Accept_hyphen_Language = Accept_hyphen_Language
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
                     self.accept = accept
                 }
             }
@@ -6158,40 +5913,12 @@ public enum Operations {
         public struct Input: Sendable, Hashable {
             /// - Remark: Generated from `#/paths/request-refund/POST/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/request-refund/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/request-refund/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/request-refund/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/request-refund/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.requestRefund.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.requestRefund.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.requestRefund.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -6322,40 +6049,12 @@ public enum Operations {
             public var query: Operations.getPurchases.Input.Query
             /// - Remark: Generated from `#/paths/purchases/GET/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/purchases/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/purchases/GET/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/purchases/GET/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/purchases/GET/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getPurchases.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getPurchases.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getPurchases.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -6504,40 +6203,12 @@ public enum Operations {
             public var query: Operations.getTransactions.Input.Query
             /// - Remark: Generated from `#/paths/transactions/GET/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/transactions/GET/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/transactions/GET/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/transactions/GET/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/transactions/GET/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTransactions.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTransactions.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.getTransactions.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }
@@ -6702,40 +6373,12 @@ public enum Operations {
             public var query: Operations.estimateGaslessCost.Input.Query
             /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header`.
             public struct Headers: Sendable, Hashable {
-                /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-TonConnect-Auth`.
-                public var X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken?
-                /// Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///
-                /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-Wallet-ID`.
-                public var X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId?
-                /// Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///
-                /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-Wallet-Token`.
-                public var X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken?
-                /// Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
-                ///
-                /// - Remark: Generated from `#/paths/gasless/estimate-cost/{jetton_master}/POST/header/X-Wallet-Public-Key`.
-                public var X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey?
                 public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.estimateGaslessCost.AcceptableContentType>]
                 /// Creates a new `Headers`.
                 ///
                 /// - Parameters:
-                ///   - X_hyphen_TonConnect_hyphen_Auth:
-                ///   - X_hyphen_Wallet_hyphen_ID: Tonkeeper WalletID identifying the wallet. Two formats are accepted: hex64 (legacy v1) or base32 lowercase 32-char (v2). For now it is only accepted (not yet used for authentication).
-                ///   - X_hyphen_Wallet_hyphen_Token: Access token for WalletID-based requests. For now it is only compared against the server-configured token (WALLET_ID_TOKEN).
-                ///   - X_hyphen_Wallet_hyphen_Public_hyphen_Key: Public key of the wallet identified by X-Wallet-ID. Required together with X-Wallet-ID.
                 ///   - accept:
-                public init(
-                    X_hyphen_TonConnect_hyphen_Auth: Components.Parameters.optionalToken? = nil,
-                    X_hyphen_Wallet_hyphen_ID: Components.Parameters.walletId? = nil,
-                    X_hyphen_Wallet_hyphen_Token: Components.Parameters.walletToken? = nil,
-                    X_hyphen_Wallet_hyphen_Public_hyphen_Key: Components.Parameters.walletPublicKey? = nil,
-                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.estimateGaslessCost.AcceptableContentType>] = .defaultValues()
-                ) {
-                    self.X_hyphen_TonConnect_hyphen_Auth = X_hyphen_TonConnect_hyphen_Auth
-                    self.X_hyphen_Wallet_hyphen_ID = X_hyphen_Wallet_hyphen_ID
-                    self.X_hyphen_Wallet_hyphen_Token = X_hyphen_Wallet_hyphen_Token
-                    self.X_hyphen_Wallet_hyphen_Public_hyphen_Key = X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.estimateGaslessCost.AcceptableContentType>] = .defaultValues()) {
                     self.accept = accept
                 }
             }

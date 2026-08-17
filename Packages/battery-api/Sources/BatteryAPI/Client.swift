@@ -219,26 +219,6 @@ public struct Client: APIProtocol {
                     method: .get
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -559,26 +539,6 @@ public struct Client: APIProtocol {
                     method: .get
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
@@ -674,26 +634,6 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "Accept-Language",
                     value: input.headers.Accept_hyphen_Language
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 try converter.setQueryItemAsURI(
                     in: &request,
@@ -820,23 +760,8 @@ public struct Client: APIProtocol {
                 suppressMutabilityWarning(&request)
                 try converter.setHeaderFieldAsURI(
                     in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
+                    name: "X-Promo",
+                    value: input.headers.X_hyphen_Promo
                 )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
@@ -986,26 +911,6 @@ public struct Client: APIProtocol {
                 suppressMutabilityWarning(&request)
                 try converter.setHeaderFieldAsURI(
                     in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
                     name: "X-Enterprise-Auth",
                     value: input.headers.X_hyphen_Enterprise_hyphen_Auth
                 )
@@ -1121,26 +1026,6 @@ public struct Client: APIProtocol {
                 suppressMutabilityWarning(&request)
                 try converter.setHeaderFieldAsURI(
                     in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
                     name: "X-Enterprise-Auth",
                     value: input.headers.X_hyphen_Enterprise_hyphen_Auth
                 )
@@ -1240,26 +1125,6 @@ public struct Client: APIProtocol {
                     method: .get
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
@@ -1529,26 +1394,6 @@ public struct Client: APIProtocol {
                     method: .post
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -1719,26 +1564,6 @@ public struct Client: APIProtocol {
                     method: .post
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -1829,26 +1654,6 @@ public struct Client: APIProtocol {
                     in: &request.headerFields,
                     name: "Accept-Language",
                     value: input.headers.Accept_hyphen_Language
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
                 )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
@@ -2100,26 +1905,6 @@ public struct Client: APIProtocol {
                     method: .post
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 converter.setAcceptHeader(
                     in: &request.headerFields,
                     contentTypes: input.headers.accept
@@ -2186,26 +1971,6 @@ public struct Client: APIProtocol {
                     method: .get
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
@@ -2304,26 +2069,6 @@ public struct Client: APIProtocol {
                     method: .get
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
@@ -2415,26 +2160,6 @@ public struct Client: APIProtocol {
                     method: .post
                 )
                 suppressMutabilityWarning(&request)
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-TonConnect-Auth",
-                    value: input.headers.X_hyphen_TonConnect_hyphen_Auth
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-ID",
-                    value: input.headers.X_hyphen_Wallet_hyphen_ID
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Token",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Token
-                )
-                try converter.setHeaderFieldAsURI(
-                    in: &request.headerFields,
-                    name: "X-Wallet-Public-Key",
-                    value: input.headers.X_hyphen_Wallet_hyphen_Public_hyphen_Key
-                )
                 try converter.setQueryItemAsURI(
                     in: &request,
                     style: .form,
