@@ -26,6 +26,26 @@ public protocol APIProtocol: Sendable {
     /// - Remark: HTTP `GET /status`.
     /// - Remark: Generated from `#/paths//status/get(getStatus)`.
     func getStatus(_ input: Operations.getStatus.Input) async throws -> Operations.getStatus.Output
+    /// What the gasless 2.0 flow serves: the chains, the payload types each of them accepts, and the assets that can pay the relayer there. "battery" is the user's charges.
+    ///
+    /// - Remark: HTTP `GET /gasless/battery/config`.
+    /// - Remark: Generated from `#/paths//gasless/battery/config/get(gaslessBatteryConfig)`.
+    func gaslessBatteryConfig(_ input: Operations.gaslessBatteryConfig.Input) async throws -> Operations.gaslessBatteryConfig.Output
+    /// Prices one payload in every asset that can pay the relayer on its chain, and says which of them the sender can afford.
+    ///
+    /// - Remark: HTTP `POST /gasless/estimate`.
+    /// - Remark: Generated from `#/paths//gasless/estimate/post(gaslessEstimate)`.
+    func gaslessEstimate(_ input: Operations.gaslessEstimate.Input) async throws -> Operations.gaslessEstimate.Output
+    /// Builds the operation to sign from unsigned payloads and the asset chosen to pay the relayer, and emulates it. The operation is kept until expires_at and /gasless/send checks the signatures against it.
+    ///
+    /// - Remark: HTTP `POST /gasless/emulate`.
+    /// - Remark: Generated from `#/paths//gasless/emulate/post(gaslessEmulate)`.
+    func gaslessEmulate(_ input: Operations.gaslessEmulate.Input) async throws -> Operations.gaslessEmulate.Output
+    /// Takes the signed payloads of an emulated operation, checks them against it one to one, and broadcasts.
+    ///
+    /// - Remark: HTTP `POST /gasless/send`.
+    /// - Remark: Generated from `#/paths//gasless/send/post(gaslessSend)`.
+    func gaslessSend(_ input: Operations.gaslessSend.Input) async throws -> Operations.gaslessSend.Output
     /// This method returns information about Battery Service.
     ///
     /// - Remark: HTTP `GET /config`.
@@ -220,6 +240,52 @@ extension APIProtocol {
     /// - Remark: Generated from `#/paths//status/get(getStatus)`.
     public func getStatus(headers: Operations.getStatus.Input.Headers = .init()) async throws -> Operations.getStatus.Output {
         try await getStatus(Operations.getStatus.Input(headers: headers))
+    }
+    /// What the gasless 2.0 flow serves: the chains, the payload types each of them accepts, and the assets that can pay the relayer there. "battery" is the user's charges.
+    ///
+    /// - Remark: HTTP `GET /gasless/battery/config`.
+    /// - Remark: Generated from `#/paths//gasless/battery/config/get(gaslessBatteryConfig)`.
+    public func gaslessBatteryConfig(headers: Operations.gaslessBatteryConfig.Input.Headers = .init()) async throws -> Operations.gaslessBatteryConfig.Output {
+        try await gaslessBatteryConfig(Operations.gaslessBatteryConfig.Input(headers: headers))
+    }
+    /// Prices one payload in every asset that can pay the relayer on its chain, and says which of them the sender can afford.
+    ///
+    /// - Remark: HTTP `POST /gasless/estimate`.
+    /// - Remark: Generated from `#/paths//gasless/estimate/post(gaslessEstimate)`.
+    public func gaslessEstimate(
+        headers: Operations.gaslessEstimate.Input.Headers = .init(),
+        body: Operations.gaslessEstimate.Input.Body
+    ) async throws -> Operations.gaslessEstimate.Output {
+        try await gaslessEstimate(Operations.gaslessEstimate.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// Builds the operation to sign from unsigned payloads and the asset chosen to pay the relayer, and emulates it. The operation is kept until expires_at and /gasless/send checks the signatures against it.
+    ///
+    /// - Remark: HTTP `POST /gasless/emulate`.
+    /// - Remark: Generated from `#/paths//gasless/emulate/post(gaslessEmulate)`.
+    public func gaslessEmulate(
+        headers: Operations.gaslessEmulate.Input.Headers = .init(),
+        body: Operations.gaslessEmulate.Input.Body
+    ) async throws -> Operations.gaslessEmulate.Output {
+        try await gaslessEmulate(Operations.gaslessEmulate.Input(
+            headers: headers,
+            body: body
+        ))
+    }
+    /// Takes the signed payloads of an emulated operation, checks them against it one to one, and broadcasts.
+    ///
+    /// - Remark: HTTP `POST /gasless/send`.
+    /// - Remark: Generated from `#/paths//gasless/send/post(gaslessSend)`.
+    public func gaslessSend(
+        headers: Operations.gaslessSend.Input.Headers = .init(),
+        body: Operations.gaslessSend.Input.Body
+    ) async throws -> Operations.gaslessSend.Output {
+        try await gaslessSend(Operations.gaslessSend.Input(
+            headers: headers,
+            body: body
+        ))
     }
     /// This method returns information about Battery Service.
     ///
@@ -2075,6 +2141,616 @@ public enum Components {
                 case transactions
             }
         }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2Fee`.
+        public struct GaslessV2Fee: Codable, Hashable, Sendable {
+            /// value
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Fee/type`.
+            public var _type: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Fee/asset_id`.
+            public var asset_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Fee/data`.
+            public struct dataPayload: Codable, Hashable, Sendable {
+                /// In the asset's smallest units; charges for "battery".
+                ///
+                /// - Remark: Generated from `#/components/schemas/GaslessV2Fee/data/amount`.
+                public var amount: Swift.String
+                /// Creates a new `dataPayload`.
+                ///
+                /// - Parameters:
+                ///   - amount: In the asset's smallest units; charges for "battery".
+                public init(amount: Swift.String) {
+                    self.amount = amount
+                }
+                public enum CodingKeys: String, CodingKey {
+                    case amount
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Fee/data`.
+            public var data: Components.Schemas.GaslessV2Fee.dataPayload
+            /// Creates a new `GaslessV2Fee`.
+            ///
+            /// - Parameters:
+            ///   - _type: value
+            ///   - asset_id:
+            ///   - data:
+            public init(
+                _type: Swift.String,
+                asset_id: Swift.String,
+                data: Components.Schemas.GaslessV2Fee.dataPayload
+            ) {
+                self._type = _type
+                self.asset_id = asset_id
+                self.data = data
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case asset_id
+                case data
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2Payload`.
+        public struct GaslessV2Payload: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Payload/id`.
+            public var id: Swift.String
+            /// main | prebuild | batch | eip7702/authorization | eip7821/hermes/delegate
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Payload/type`.
+            public var _type: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Payload/chain_id`.
+            public var chain_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Payload/version`.
+            public var version: Swift.Int
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Payload/fee`.
+            public var fee: Components.Schemas.GaslessV2Fee?
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Payload/meta`.
+            public struct metaPayload: Codable, Hashable, Sendable {
+                /// A container of undocumented properties.
+                public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                /// Creates a new `metaPayload`.
+                ///
+                /// - Parameters:
+                ///   - additionalProperties: A container of undocumented properties.
+                public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                    self.additionalProperties = additionalProperties
+                }
+                public init(from decoder: any Decoder) throws {
+                    additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try encoder.encodeAdditionalProperties(additionalProperties)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Payload/meta`.
+            public var meta: Components.Schemas.GaslessV2Payload.metaPayload
+            /// Creates a new `GaslessV2Payload`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - _type: main | prebuild | batch | eip7702/authorization | eip7821/hermes/delegate
+            ///   - chain_id:
+            ///   - version:
+            ///   - fee:
+            ///   - meta:
+            public init(
+                id: Swift.String,
+                _type: Swift.String,
+                chain_id: Swift.String,
+                version: Swift.Int,
+                fee: Components.Schemas.GaslessV2Fee? = nil,
+                meta: Components.Schemas.GaslessV2Payload.metaPayload
+            ) {
+                self.id = id
+                self._type = _type
+                self.chain_id = chain_id
+                self.version = version
+                self.fee = fee
+                self.meta = meta
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case _type = "type"
+                case chain_id
+                case version
+                case fee
+                case meta
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2Operation`.
+        public struct GaslessV2Operation: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Operation/id`.
+            public var id: Swift.String
+            /// transfer | swap | call | message | auth | stake | unstake
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Operation/type`.
+            public var _type: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Operation/payloads`.
+            public var payloads: [Components.Schemas.GaslessV2Payload]
+            /// Creates a new `GaslessV2Operation`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - _type: transfer | swap | call | message | auth | stake | unstake
+            ///   - payloads:
+            public init(
+                id: Swift.String,
+                _type: Swift.String,
+                payloads: [Components.Schemas.GaslessV2Payload]
+            ) {
+                self.id = id
+                self._type = _type
+                self.payloads = payloads
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case _type = "type"
+                case payloads
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2SignedPayload`.
+        public struct GaslessV2SignedPayload: Codable, Hashable, Sendable {
+            /// signed | eip7702/authorization/signed | eip7821/hermes/1/signed
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SignedPayload/type`.
+            public var _type: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SignedPayload/chain_id`.
+            public var chain_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SignedPayload/payload_id`.
+            public var payload_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SignedPayload/meta`.
+            public struct metaPayload: Codable, Hashable, Sendable {
+                /// A container of undocumented properties.
+                public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                /// Creates a new `metaPayload`.
+                ///
+                /// - Parameters:
+                ///   - additionalProperties: A container of undocumented properties.
+                public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                    self.additionalProperties = additionalProperties
+                }
+                public init(from decoder: any Decoder) throws {
+                    additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try encoder.encodeAdditionalProperties(additionalProperties)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SignedPayload/meta`.
+            public var meta: Components.Schemas.GaslessV2SignedPayload.metaPayload
+            /// Creates a new `GaslessV2SignedPayload`.
+            ///
+            /// - Parameters:
+            ///   - _type: signed | eip7702/authorization/signed | eip7821/hermes/1/signed
+            ///   - chain_id:
+            ///   - payload_id:
+            ///   - meta:
+            public init(
+                _type: Swift.String,
+                chain_id: Swift.String,
+                payload_id: Swift.String,
+                meta: Components.Schemas.GaslessV2SignedPayload.metaPayload
+            ) {
+                self._type = _type
+                self.chain_id = chain_id
+                self.payload_id = payload_id
+                self.meta = meta
+            }
+            public enum CodingKeys: String, CodingKey {
+                case _type = "type"
+                case chain_id
+                case payload_id
+                case meta
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2SignedOperation`.
+        public struct GaslessV2SignedOperation: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SignedOperation/id`.
+            public var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SignedOperation/payloads`.
+            public var payloads: [Components.Schemas.GaslessV2SignedPayload]
+            /// Creates a new `GaslessV2SignedOperation`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - payloads:
+            public init(
+                id: Swift.String,
+                payloads: [Components.Schemas.GaslessV2SignedPayload]
+            ) {
+                self.id = id
+                self.payloads = payloads
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case payloads
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2Asset`.
+        public struct GaslessV2Asset: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Asset/id`.
+            public var id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Asset/name`.
+            public var name: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Asset/symbol`.
+            public var symbol: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Asset/decimals`.
+            public var decimals: Swift.Int
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Asset/image`.
+            public var image: Swift.String?
+            /// null for battery, which is not chain-scoped
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Asset/chain`.
+            public var chain: Swift.String?
+            /// Creates a new `GaslessV2Asset`.
+            ///
+            /// - Parameters:
+            ///   - id:
+            ///   - name:
+            ///   - symbol:
+            ///   - decimals:
+            ///   - image:
+            ///   - chain: null for battery, which is not chain-scoped
+            public init(
+                id: Swift.String,
+                name: Swift.String,
+                symbol: Swift.String,
+                decimals: Swift.Int,
+                image: Swift.String? = nil,
+                chain: Swift.String? = nil
+            ) {
+                self.id = id
+                self.name = name
+                self.symbol = symbol
+                self.decimals = decimals
+                self.image = image
+                self.chain = chain
+            }
+            public enum CodingKeys: String, CodingKey {
+                case id
+                case name
+                case symbol
+                case decimals
+                case image
+                case chain
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2ErrorBody`.
+        public struct GaslessV2ErrorBody: Codable, Hashable, Sendable {
+            /// unsupported_chain | unsupported_asset | unsupported_payload | insufficient_funds | emulation_failed | emulation_expired | payload_mismatch | invalid_signature | broadcast_failed | operation_not_found | already_sent | bad_request | unauthorized | not_implemented | internal_error
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessV2ErrorBody/code`.
+            public var code: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2ErrorBody/message`.
+            public var message: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2ErrorBody/details`.
+            public struct detailsPayload: Codable, Hashable, Sendable {
+                /// A container of undocumented properties.
+                public var additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer
+                /// Creates a new `detailsPayload`.
+                ///
+                /// - Parameters:
+                ///   - additionalProperties: A container of undocumented properties.
+                public init(additionalProperties: OpenAPIRuntime.OpenAPIObjectContainer = .init()) {
+                    self.additionalProperties = additionalProperties
+                }
+                public init(from decoder: any Decoder) throws {
+                    additionalProperties = try decoder.decodeAdditionalProperties(knownKeys: [])
+                }
+                public func encode(to encoder: any Encoder) throws {
+                    try encoder.encodeAdditionalProperties(additionalProperties)
+                }
+            }
+            /// - Remark: Generated from `#/components/schemas/GaslessV2ErrorBody/details`.
+            public var details: Components.Schemas.GaslessV2ErrorBody.detailsPayload?
+            /// Creates a new `GaslessV2ErrorBody`.
+            ///
+            /// - Parameters:
+            ///   - code: unsupported_chain | unsupported_asset | unsupported_payload | insufficient_funds | emulation_failed | emulation_expired | payload_mismatch | invalid_signature | broadcast_failed | operation_not_found | already_sent | bad_request | unauthorized | not_implemented | internal_error
+            ///   - message:
+            ///   - details:
+            public init(
+                code: Swift.String,
+                message: Swift.String,
+                details: Components.Schemas.GaslessV2ErrorBody.detailsPayload? = nil
+            ) {
+                self.code = code
+                self.message = message
+                self.details = details
+            }
+            public enum CodingKeys: String, CodingKey {
+                case code
+                case message
+                case details
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2Chain`.
+        public struct GaslessV2Chain: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Chain/chain_id`.
+            public var chain_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Chain/payload_types`.
+            public var payload_types: [Swift.String]
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Chain/assets`.
+            public var assets: [Components.Schemas.GaslessV2Asset]
+            /// Creates a new `GaslessV2Chain`.
+            ///
+            /// - Parameters:
+            ///   - chain_id:
+            ///   - payload_types:
+            ///   - assets:
+            public init(
+                chain_id: Swift.String,
+                payload_types: [Swift.String],
+                assets: [Components.Schemas.GaslessV2Asset]
+            ) {
+                self.chain_id = chain_id
+                self.payload_types = payload_types
+                self.assets = assets
+            }
+            public enum CodingKeys: String, CodingKey {
+                case chain_id
+                case payload_types
+                case assets
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2Config`.
+        public struct GaslessV2Config: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Config/chains`.
+            public var chains: [Components.Schemas.GaslessV2Chain]
+            /// Creates a new `GaslessV2Config`.
+            ///
+            /// - Parameters:
+            ///   - chains:
+            public init(chains: [Components.Schemas.GaslessV2Chain]) {
+                self.chains = chains
+            }
+            public enum CodingKeys: String, CodingKey {
+                case chains
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2Estimation`.
+        public struct GaslessV2Estimation: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Estimation/asset`.
+            public var asset: Components.Schemas.GaslessV2Asset
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Estimation/available`.
+            public var available: Swift.Bool
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Estimation/fee`.
+            public var fee: Components.Schemas.GaslessV2Fee?
+            /// - Remark: Generated from `#/components/schemas/GaslessV2Estimation/error`.
+            public var error: Components.Schemas.GaslessV2ErrorBody?
+            /// Creates a new `GaslessV2Estimation`.
+            ///
+            /// - Parameters:
+            ///   - asset:
+            ///   - available:
+            ///   - fee:
+            ///   - error:
+            public init(
+                asset: Components.Schemas.GaslessV2Asset,
+                available: Swift.Bool,
+                fee: Components.Schemas.GaslessV2Fee? = nil,
+                error: Components.Schemas.GaslessV2ErrorBody? = nil
+            ) {
+                self.asset = asset
+                self.available = available
+                self.fee = fee
+                self.error = error
+            }
+            public enum CodingKeys: String, CodingKey {
+                case asset
+                case available
+                case fee
+                case error
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateRequest`.
+        public struct GaslessV2EstimateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateRequest/chain_id`.
+            public var chain_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateRequest/sender_address`.
+            public var sender_address: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateRequest/payload`.
+            public var payload: Components.Schemas.GaslessV2Payload
+            /// Creates a new `GaslessV2EstimateRequest`.
+            ///
+            /// - Parameters:
+            ///   - chain_id:
+            ///   - sender_address:
+            ///   - payload:
+            public init(
+                chain_id: Swift.String,
+                sender_address: Swift.String,
+                payload: Components.Schemas.GaslessV2Payload
+            ) {
+                self.chain_id = chain_id
+                self.sender_address = sender_address
+                self.payload = payload
+            }
+            public enum CodingKeys: String, CodingKey {
+                case chain_id
+                case sender_address
+                case payload
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateResponse`.
+        public struct GaslessV2EstimateResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateResponse/chain_id`.
+            public var chain_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateResponse/sender_address`.
+            public var sender_address: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateResponse/created_at`.
+            public var created_at: Foundation.Date
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateResponse/expires_at`.
+            public var expires_at: Foundation.Date
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EstimateResponse/estimations`.
+            public var estimations: [Components.Schemas.GaslessV2Estimation]
+            /// Creates a new `GaslessV2EstimateResponse`.
+            ///
+            /// - Parameters:
+            ///   - chain_id:
+            ///   - sender_address:
+            ///   - created_at:
+            ///   - expires_at:
+            ///   - estimations:
+            public init(
+                chain_id: Swift.String,
+                sender_address: Swift.String,
+                created_at: Foundation.Date,
+                expires_at: Foundation.Date,
+                estimations: [Components.Schemas.GaslessV2Estimation]
+            ) {
+                self.chain_id = chain_id
+                self.sender_address = sender_address
+                self.created_at = created_at
+                self.expires_at = expires_at
+                self.estimations = estimations
+            }
+            public enum CodingKeys: String, CodingKey {
+                case chain_id
+                case sender_address
+                case created_at
+                case expires_at
+                case estimations
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateRequest`.
+        public struct GaslessV2EmulateRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateRequest/chain_id`.
+            public var chain_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateRequest/sender_address`.
+            public var sender_address: Swift.String
+            /// The operation type, echoed back in operation.type.
+            ///
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateRequest/type`.
+            public var _type: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateRequest/gasless_asset`.
+            public var gasless_asset: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateRequest/payloads`.
+            public var payloads: [Components.Schemas.GaslessV2Payload]
+            /// Creates a new `GaslessV2EmulateRequest`.
+            ///
+            /// - Parameters:
+            ///   - chain_id:
+            ///   - sender_address:
+            ///   - _type: The operation type, echoed back in operation.type.
+            ///   - gasless_asset:
+            ///   - payloads:
+            public init(
+                chain_id: Swift.String,
+                sender_address: Swift.String,
+                _type: Swift.String,
+                gasless_asset: Swift.String,
+                payloads: [Components.Schemas.GaslessV2Payload]
+            ) {
+                self.chain_id = chain_id
+                self.sender_address = sender_address
+                self._type = _type
+                self.gasless_asset = gasless_asset
+                self.payloads = payloads
+            }
+            public enum CodingKeys: String, CodingKey {
+                case chain_id
+                case sender_address
+                case _type = "type"
+                case gasless_asset
+                case payloads
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse`.
+        public struct GaslessV2EmulateResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse/chain_id`.
+            public var chain_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse/sender_address`.
+            public var sender_address: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse/created_at`.
+            public var created_at: Foundation.Date
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse/expires_at`.
+            public var expires_at: Foundation.Date
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse/asset_id`.
+            public var asset_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse/fee`.
+            public var fee: Components.Schemas.GaslessV2Fee
+            /// - Remark: Generated from `#/components/schemas/GaslessV2EmulateResponse/operation`.
+            public var operation: Components.Schemas.GaslessV2Operation
+            /// Creates a new `GaslessV2EmulateResponse`.
+            ///
+            /// - Parameters:
+            ///   - chain_id:
+            ///   - sender_address:
+            ///   - created_at:
+            ///   - expires_at:
+            ///   - asset_id:
+            ///   - fee:
+            ///   - operation:
+            public init(
+                chain_id: Swift.String,
+                sender_address: Swift.String,
+                created_at: Foundation.Date,
+                expires_at: Foundation.Date,
+                asset_id: Swift.String,
+                fee: Components.Schemas.GaslessV2Fee,
+                operation: Components.Schemas.GaslessV2Operation
+            ) {
+                self.chain_id = chain_id
+                self.sender_address = sender_address
+                self.created_at = created_at
+                self.expires_at = expires_at
+                self.asset_id = asset_id
+                self.fee = fee
+                self.operation = operation
+            }
+            public enum CodingKeys: String, CodingKey {
+                case chain_id
+                case sender_address
+                case created_at
+                case expires_at
+                case asset_id
+                case fee
+                case operation
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2SendRequest`.
+        public struct GaslessV2SendRequest: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SendRequest/operation`.
+            public var operation: Components.Schemas.GaslessV2SignedOperation
+            /// Creates a new `GaslessV2SendRequest`.
+            ///
+            /// - Parameters:
+            ///   - operation:
+            public init(operation: Components.Schemas.GaslessV2SignedOperation) {
+                self.operation = operation
+            }
+            public enum CodingKeys: String, CodingKey {
+                case operation
+            }
+        }
+        /// - Remark: Generated from `#/components/schemas/GaslessV2SendResponse`.
+        public struct GaslessV2SendResponse: Codable, Hashable, Sendable {
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SendResponse/operation_id`.
+            public var operation_id: Swift.String
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SendResponse/status`.
+            @frozen public enum statusPayload: String, Codable, Hashable, Sendable {
+                case ok = "ok"
+                case failed = "failed"
+            }
+            /// - Remark: Generated from `#/components/schemas/GaslessV2SendResponse/status`.
+            public var status: Components.Schemas.GaslessV2SendResponse.statusPayload
+            /// Creates a new `GaslessV2SendResponse`.
+            ///
+            /// - Parameters:
+            ///   - operation_id:
+            ///   - status:
+            public init(
+                operation_id: Swift.String,
+                status: Components.Schemas.GaslessV2SendResponse.statusPayload
+            ) {
+                self.operation_id = operation_id
+                self.status = status
+            }
+            public enum CodingKeys: String, CodingKey {
+                case operation_id
+                case status
+            }
+        }
     }
     /// Types generated from the `#/components/parameters` section of the OpenAPI document.
     public enum Parameters {
@@ -2660,6 +3336,49 @@ public enum Components {
     }
     /// Types generated from the `#/components/responses` section of the OpenAPI document.
     public enum Responses {
+        public struct GaslessV2Error: Sendable, Hashable {
+            /// - Remark: Generated from `#/components/responses/GaslessV2Error/content`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/components/responses/GaslessV2Error/content/json`.
+                public struct jsonPayload: Codable, Hashable, Sendable {
+                    /// - Remark: Generated from `#/components/responses/GaslessV2Error/content/json/error`.
+                    public var error: Components.Schemas.GaslessV2ErrorBody
+                    /// Creates a new `jsonPayload`.
+                    ///
+                    /// - Parameters:
+                    ///   - error:
+                    public init(error: Components.Schemas.GaslessV2ErrorBody) {
+                        self.error = error
+                    }
+                    public enum CodingKeys: String, CodingKey {
+                        case error
+                    }
+                }
+                /// - Remark: Generated from `#/components/responses/GaslessV2Error/content/application\/json`.
+                case json(Components.Responses.GaslessV2Error.Body.jsonPayload)
+                /// The associated value of the enum case if `self` is `.json`.
+                ///
+                /// - Throws: An error if `self` is not `.json`.
+                /// - SeeAlso: `.json`.
+                public var json: Components.Responses.GaslessV2Error.Body.jsonPayload {
+                    get throws {
+                        switch self {
+                        case let .json(body):
+                            return body
+                        }
+                    }
+                }
+            }
+            /// Received HTTP response body
+            public var body: Components.Responses.GaslessV2Error.Body
+            /// Creates a new `GaslessV2Error`.
+            ///
+            /// - Parameters:
+            ///   - body: Received HTTP response body
+            public init(body: Components.Responses.GaslessV2Error.Body) {
+                self.body = body
+            }
+        }
         public struct _Error: Sendable, Hashable {
             /// - Remark: Generated from `#/components/responses/Error/content`.
             @frozen public enum Body: Sendable, Hashable {
@@ -3100,6 +3819,668 @@ public enum Operations {
             /// Some error during request processing
             ///
             /// - Remark: Generated from `#/paths//status/get(getStatus)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// What the gasless 2.0 flow serves: the chains, the payload types each of them accepts, and the assets that can pay the relayer there. "battery" is the user's charges.
+    ///
+    /// - Remark: HTTP `GET /gasless/battery/config`.
+    /// - Remark: Generated from `#/paths//gasless/battery/config/get(gaslessBatteryConfig)`.
+    public enum gaslessBatteryConfig {
+        public static let id: Swift.String = "gaslessBatteryConfig"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/gasless/battery/config/GET/header`.
+            public struct Headers: Sendable, Hashable {
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessBatteryConfig.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - accept:
+                public init(accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessBatteryConfig.AcceptableContentType>] = .defaultValues()) {
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.gaslessBatteryConfig.Input.Headers
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            public init(headers: Operations.gaslessBatteryConfig.Input.Headers = .init()) {
+                self.headers = headers
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/battery/config/GET/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/gasless/battery/config/GET/responses/200/content/application\/json`.
+                    case json(Components.Schemas.GaslessV2Config)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.GaslessV2Config {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.gaslessBatteryConfig.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.gaslessBatteryConfig.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// The chains and assets served.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/battery/config/get(gaslessBatteryConfig)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.gaslessBatteryConfig.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.gaslessBatteryConfig.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// An error in the gasless 2.0 format. Declared under 4XX only, but server-side failures (5xx) come in the same shape.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/battery/config/get(gaslessBatteryConfig)/responses/4XX`.
+            ///
+            /// HTTP response code: `400...499 clientError`.
+            case clientError(statusCode: Swift.Int, Components.Responses.GaslessV2Error)
+            /// The associated value of the enum case if `self` is `.clientError`.
+            ///
+            /// - Throws: An error if `self` is not `.clientError`.
+            /// - SeeAlso: `.clientError`.
+            public var clientError: Components.Responses.GaslessV2Error {
+                get throws {
+                    switch self {
+                    case let .clientError(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "clientError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//gasless/battery/config/get(gaslessBatteryConfig)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Prices one payload in every asset that can pay the relayer on its chain, and says which of them the sender can afford.
+    ///
+    /// - Remark: HTTP `POST /gasless/estimate`.
+    /// - Remark: Generated from `#/paths//gasless/estimate/post(gaslessEstimate)`.
+    public enum gaslessEstimate {
+        public static let id: Swift.String = "gaslessEstimate"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/gasless/estimate/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/estimate/POST/header/Accept-Language`.
+                public var Accept_hyphen_Language: Components.Parameters.i18n?
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessEstimate.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - Accept_hyphen_Language:
+                ///   - accept:
+                public init(
+                    Accept_hyphen_Language: Components.Parameters.i18n? = nil,
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessEstimate.AcceptableContentType>] = .defaultValues()
+                ) {
+                    self.Accept_hyphen_Language = Accept_hyphen_Language
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.gaslessEstimate.Input.Headers
+            /// - Remark: Generated from `#/paths/gasless/estimate/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/estimate/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.GaslessV2EstimateRequest)
+            }
+            public var body: Operations.gaslessEstimate.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.gaslessEstimate.Input.Headers = .init(),
+                body: Operations.gaslessEstimate.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/estimate/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/gasless/estimate/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.GaslessV2EstimateResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.GaslessV2EstimateResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.gaslessEstimate.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.gaslessEstimate.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// One estimation per asset.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/estimate/post(gaslessEstimate)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.gaslessEstimate.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.gaslessEstimate.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// An error in the gasless 2.0 format. Declared under 4XX only, but server-side failures (5xx) come in the same shape.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/estimate/post(gaslessEstimate)/responses/4XX`.
+            ///
+            /// HTTP response code: `400...499 clientError`.
+            case clientError(statusCode: Swift.Int, Components.Responses.GaslessV2Error)
+            /// The associated value of the enum case if `self` is `.clientError`.
+            ///
+            /// - Throws: An error if `self` is not `.clientError`.
+            /// - SeeAlso: `.clientError`.
+            public var clientError: Components.Responses.GaslessV2Error {
+                get throws {
+                    switch self {
+                    case let .clientError(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "clientError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//gasless/estimate/post(gaslessEstimate)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Builds the operation to sign from unsigned payloads and the asset chosen to pay the relayer, and emulates it. The operation is kept until expires_at and /gasless/send checks the signatures against it.
+    ///
+    /// - Remark: HTTP `POST /gasless/emulate`.
+    /// - Remark: Generated from `#/paths//gasless/emulate/post(gaslessEmulate)`.
+    public enum gaslessEmulate {
+        public static let id: Swift.String = "gaslessEmulate"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/gasless/emulate/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/emulate/POST/header/Accept-Language`.
+                public var Accept_hyphen_Language: Components.Parameters.i18n?
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessEmulate.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - Accept_hyphen_Language:
+                ///   - accept:
+                public init(
+                    Accept_hyphen_Language: Components.Parameters.i18n? = nil,
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessEmulate.AcceptableContentType>] = .defaultValues()
+                ) {
+                    self.Accept_hyphen_Language = Accept_hyphen_Language
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.gaslessEmulate.Input.Headers
+            /// - Remark: Generated from `#/paths/gasless/emulate/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/emulate/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.GaslessV2EmulateRequest)
+            }
+            public var body: Operations.gaslessEmulate.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.gaslessEmulate.Input.Headers = .init(),
+                body: Operations.gaslessEmulate.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/emulate/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/gasless/emulate/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.GaslessV2EmulateResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.GaslessV2EmulateResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.gaslessEmulate.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.gaslessEmulate.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// The operation to sign.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/emulate/post(gaslessEmulate)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.gaslessEmulate.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.gaslessEmulate.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// An error in the gasless 2.0 format. Declared under 4XX only, but server-side failures (5xx) come in the same shape.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/emulate/post(gaslessEmulate)/responses/4XX`.
+            ///
+            /// HTTP response code: `400...499 clientError`.
+            case clientError(statusCode: Swift.Int, Components.Responses.GaslessV2Error)
+            /// The associated value of the enum case if `self` is `.clientError`.
+            ///
+            /// - Throws: An error if `self` is not `.clientError`.
+            /// - SeeAlso: `.clientError`.
+            public var clientError: Components.Responses.GaslessV2Error {
+                get throws {
+                    switch self {
+                    case let .clientError(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "clientError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//gasless/emulate/post(gaslessEmulate)/responses/default`.
+            ///
+            /// HTTP response code: `default`.
+            case `default`(statusCode: Swift.Int, Components.Responses._Error)
+            /// The associated value of the enum case if `self` is `.`default``.
+            ///
+            /// - Throws: An error if `self` is not `.`default``.
+            /// - SeeAlso: `.`default``.
+            public var `default`: Components.Responses._Error {
+                get throws {
+                    switch self {
+                    case let .`default`(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "default",
+                            response: self
+                        )
+                    }
+                }
+            }
+        }
+        @frozen public enum AcceptableContentType: AcceptableProtocol {
+            case json
+            case other(Swift.String)
+            public init?(rawValue: Swift.String) {
+                switch rawValue.lowercased() {
+                case "application/json":
+                    self = .json
+                default:
+                    self = .other(rawValue)
+                }
+            }
+            public var rawValue: Swift.String {
+                switch self {
+                case let .other(string):
+                    return string
+                case .json:
+                    return "application/json"
+                }
+            }
+            public static var allCases: [Self] {
+                [
+                    .json
+                ]
+            }
+        }
+    }
+    /// Takes the signed payloads of an emulated operation, checks them against it one to one, and broadcasts.
+    ///
+    /// - Remark: HTTP `POST /gasless/send`.
+    /// - Remark: Generated from `#/paths//gasless/send/post(gaslessSend)`.
+    public enum gaslessSend {
+        public static let id: Swift.String = "gaslessSend"
+        public struct Input: Sendable, Hashable {
+            /// - Remark: Generated from `#/paths/gasless/send/POST/header`.
+            public struct Headers: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/send/POST/header/Accept-Language`.
+                public var Accept_hyphen_Language: Components.Parameters.i18n?
+                public var accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessSend.AcceptableContentType>]
+                /// Creates a new `Headers`.
+                ///
+                /// - Parameters:
+                ///   - Accept_hyphen_Language:
+                ///   - accept:
+                public init(
+                    Accept_hyphen_Language: Components.Parameters.i18n? = nil,
+                    accept: [OpenAPIRuntime.AcceptHeaderContentType<Operations.gaslessSend.AcceptableContentType>] = .defaultValues()
+                ) {
+                    self.Accept_hyphen_Language = Accept_hyphen_Language
+                    self.accept = accept
+                }
+            }
+            public var headers: Operations.gaslessSend.Input.Headers
+            /// - Remark: Generated from `#/paths/gasless/send/POST/requestBody`.
+            @frozen public enum Body: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/send/POST/requestBody/content/application\/json`.
+                case json(Components.Schemas.GaslessV2SendRequest)
+            }
+            public var body: Operations.gaslessSend.Input.Body
+            /// Creates a new `Input`.
+            ///
+            /// - Parameters:
+            ///   - headers:
+            ///   - body:
+            public init(
+                headers: Operations.gaslessSend.Input.Headers = .init(),
+                body: Operations.gaslessSend.Input.Body
+            ) {
+                self.headers = headers
+                self.body = body
+            }
+        }
+        @frozen public enum Output: Sendable, Hashable {
+            public struct Ok: Sendable, Hashable {
+                /// - Remark: Generated from `#/paths/gasless/send/POST/responses/200/content`.
+                @frozen public enum Body: Sendable, Hashable {
+                    /// - Remark: Generated from `#/paths/gasless/send/POST/responses/200/content/application\/json`.
+                    case json(Components.Schemas.GaslessV2SendResponse)
+                    /// The associated value of the enum case if `self` is `.json`.
+                    ///
+                    /// - Throws: An error if `self` is not `.json`.
+                    /// - SeeAlso: `.json`.
+                    public var json: Components.Schemas.GaslessV2SendResponse {
+                        get throws {
+                            switch self {
+                            case let .json(body):
+                                return body
+                            }
+                        }
+                    }
+                }
+                /// Received HTTP response body
+                public var body: Operations.gaslessSend.Output.Ok.Body
+                /// Creates a new `Ok`.
+                ///
+                /// - Parameters:
+                ///   - body: Received HTTP response body
+                public init(body: Operations.gaslessSend.Output.Ok.Body) {
+                    self.body = body
+                }
+            }
+            /// The operation was broadcast.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/send/post(gaslessSend)/responses/200`.
+            ///
+            /// HTTP response code: `200 ok`.
+            case ok(Operations.gaslessSend.Output.Ok)
+            /// The associated value of the enum case if `self` is `.ok`.
+            ///
+            /// - Throws: An error if `self` is not `.ok`.
+            /// - SeeAlso: `.ok`.
+            public var ok: Operations.gaslessSend.Output.Ok {
+                get throws {
+                    switch self {
+                    case let .ok(response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "ok",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// An error in the gasless 2.0 format. Declared under 4XX only, but server-side failures (5xx) come in the same shape.
+            ///
+            /// - Remark: Generated from `#/paths//gasless/send/post(gaslessSend)/responses/4XX`.
+            ///
+            /// HTTP response code: `400...499 clientError`.
+            case clientError(statusCode: Swift.Int, Components.Responses.GaslessV2Error)
+            /// The associated value of the enum case if `self` is `.clientError`.
+            ///
+            /// - Throws: An error if `self` is not `.clientError`.
+            /// - SeeAlso: `.clientError`.
+            public var clientError: Components.Responses.GaslessV2Error {
+                get throws {
+                    switch self {
+                    case let .clientError(_, response):
+                        return response
+                    default:
+                        try throwUnexpectedResponseStatus(
+                            expectedStatus: "clientError",
+                            response: self
+                        )
+                    }
+                }
+            }
+            /// Some error during request processing
+            ///
+            /// - Remark: Generated from `#/paths//gasless/send/post(gaslessSend)/responses/default`.
             ///
             /// HTTP response code: `default`.
             case `default`(statusCode: Swift.Int, Components.Responses._Error)
