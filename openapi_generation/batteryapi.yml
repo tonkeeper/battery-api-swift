@@ -73,6 +73,119 @@ paths:
                 $ref: '#/components/schemas/Status'
         'default':
           $ref: '#/components/responses/Error'
+  /gasless/battery/config:
+    get:
+      description: >-
+        What the gasless 2.0 flow serves: the chains, the payload types each of them accepts, and
+        the assets that can pay the relayer there. "battery" is the user's charges.
+      operationId: gaslessBatteryConfig
+      tags:
+        - Gasless
+      responses:
+        '200':
+          description: The chains and assets served.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GaslessV2Config'
+        '4XX':
+          $ref: '#/components/responses/GaslessV2Error'
+        'default':
+          $ref: '#/components/responses/Error'
+  /gasless/estimate:
+    post:
+      description: >-
+        Prices one payload in every asset that can pay the relayer on its chain, and says which of
+        them the sender can afford.
+      operationId: gaslessEstimate
+      tags:
+        - Gasless
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+      parameters:
+        - $ref: '#/components/parameters/i18n'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GaslessV2EstimateRequest'
+      responses:
+        '200':
+          description: One estimation per asset.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GaslessV2EstimateResponse'
+        '4XX':
+          $ref: '#/components/responses/GaslessV2Error'
+        'default':
+          $ref: '#/components/responses/Error'
+  /gasless/emulate:
+    post:
+      description: >-
+        Builds the operation to sign from unsigned payloads and the asset chosen to pay the relayer,
+        and emulates it. The operation is kept until expires_at and /gasless/send checks the
+        signatures against it.
+      operationId: gaslessEmulate
+      tags:
+        - Gasless
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+      parameters:
+        - $ref: '#/components/parameters/i18n'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GaslessV2EmulateRequest'
+      responses:
+        '200':
+          description: The operation to sign.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GaslessV2EmulateResponse'
+        '4XX':
+          $ref: '#/components/responses/GaslessV2Error'
+        'default':
+          $ref: '#/components/responses/Error'
+  /gasless/send:
+    post:
+      description: >-
+        Takes the signed payloads of an emulated operation, checks them against it one to one, and
+        broadcasts.
+      operationId: gaslessSend
+      tags:
+        - Gasless
+      security:
+        - deviceJWT: [ ]
+          walletAuth: [ ]
+          xWalletId: [ ]
+      parameters:
+        - $ref: '#/components/parameters/i18n'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GaslessV2SendRequest'
+      responses:
+        '200':
+          description: The operation was broadcast.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GaslessV2SendResponse'
+        '4XX':
+          $ref: '#/components/responses/GaslessV2Error'
+        'default':
+          $ref: '#/components/responses/Error'
   /config:
     get:
       description: This method returns information about Battery Service.
@@ -2305,7 +2418,266 @@ components:
               created_at:
                 type: string
                 example: "2006-01-02T15:04:05Z07:00"
+    # Gasless 2.0 (docs/generic payload). Payload and signed-payload "meta" depend on chain_id and
+    # type, so they are free-form objects here and checked in code.
+    GaslessV2Fee:
+      type: object
+      required: [ type, asset_id, data ]
+      properties:
+        type:
+          type: string
+          description: value
+          example: value
+        asset_id:
+          type: string
+          example: battery
+        data:
+          type: object
+          required: [ amount ]
+          properties:
+            amount:
+              type: string
+              description: In the asset's smallest units; charges for "battery".
+
+    GaslessV2Payload:
+      type: object
+      required: [ id, type, chain_id, version, meta ]
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          description: main | prebuild | batch | eip7702/authorization | eip7821/hermes/delegate
+        chain_id:
+          type: string
+          example: ton/mainnet
+        version:
+          type: integer
+        fee:
+          $ref: '#/components/schemas/GaslessV2Fee'
+        meta:
+          type: object
+          additionalProperties: true
+
+    GaslessV2Operation:
+      x-operation: true
+      type: object
+      required: [ id, type, payloads ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          description: transfer | swap | call | message | auth | stake | unstake
+        payloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/GaslessV2Payload'
+
+    GaslessV2SignedPayload:
+      type: object
+      required: [ type, chain_id, payload_id, meta ]
+      properties:
+        type:
+          type: string
+          description: signed | eip7702/authorization/signed | eip7821/hermes/1/signed
+        chain_id:
+          type: string
+        payload_id:
+          type: string
+        meta:
+          type: object
+          additionalProperties: true
+
+    GaslessV2SignedOperation:
+      x-operation: true
+      type: object
+      required: [ id, payloads ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        payloads:
+          type: array
+          items:
+            $ref: '#/components/schemas/GaslessV2SignedPayload'
+
+    GaslessV2Asset:
+      type: object
+      required: [ id, name, symbol, decimals ]
+      properties:
+        id:
+          type: string
+          example: ton/mainnet/jetton/0:b113a994b5024a16719f69139328eb759596c38a25f59028b146fecdc3621dfe
+        name:
+          type: string
+        symbol:
+          type: string
+        decimals:
+          type: integer
+        image:
+          type: string
+        chain:
+          type: string
+          nullable: true
+          description: null for battery, which is not chain-scoped
+
+    GaslessV2ErrorBody:
+      type: object
+      required: [ code, message ]
+      properties:
+        code:
+          type: string
+          description: >-
+            unsupported_chain | unsupported_asset | unsupported_payload | insufficient_funds |
+            emulation_failed | emulation_expired | payload_mismatch | invalid_signature |
+            broadcast_failed | operation_not_found | already_sent | bad_request | unauthorized |
+            not_implemented | internal_error
+        message:
+          type: string
+        details:
+          type: object
+          additionalProperties: true
+
+    GaslessV2Chain:
+      type: object
+      required: [ chain_id, payload_types, assets ]
+      properties:
+        chain_id:
+          type: string
+        payload_types:
+          type: array
+          items:
+            type: string
+        assets:
+          type: array
+          items:
+            $ref: '#/components/schemas/GaslessV2Asset'
+
+    GaslessV2Config:
+      type: object
+      required: [ chains ]
+      properties:
+        chains:
+          type: array
+          items:
+            $ref: '#/components/schemas/GaslessV2Chain'
+
+    GaslessV2Estimation:
+      type: object
+      required: [ asset, available ]
+      properties:
+        asset:
+          $ref: '#/components/schemas/GaslessV2Asset'
+        available:
+          type: boolean
+        fee:
+          $ref: '#/components/schemas/GaslessV2Fee'
+        error:
+          $ref: '#/components/schemas/GaslessV2ErrorBody'
+
+    GaslessV2EstimateRequest:
+      type: object
+      required: [ chain_id, sender_address, payload ]
+      properties:
+        chain_id:
+          type: string
+        sender_address:
+          type: string
+        payload:
+          $ref: '#/components/schemas/GaslessV2Payload'
+
+    GaslessV2EstimateResponse:
+      type: object
+      required: [ chain_id, sender_address, created_at, expires_at, estimations ]
+      properties:
+        chain_id:
+          type: string
+        sender_address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        estimations:
+          type: array
+          items:
+            $ref: '#/components/schemas/GaslessV2Estimation'
+
+    GaslessV2EmulateRequest:
+      type: object
+      required: [ chain_id, sender_address, type, gasless_asset, payloads ]
+      properties:
+        chain_id:
+          type: string
+        sender_address:
+          type: string
+        type:
+          type: string
+          description: The operation type, echoed back in operation.type.
+        gasless_asset:
+          type: string
+          example: battery
+        payloads:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/GaslessV2Payload'
+
+    GaslessV2EmulateResponse:
+      type: object
+      required: [ chain_id, sender_address, created_at, expires_at, asset_id, fee, operation ]
+      properties:
+        chain_id:
+          type: string
+        sender_address:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        asset_id:
+          type: string
+        fee:
+          $ref: '#/components/schemas/GaslessV2Fee'
+        operation:
+          $ref: '#/components/schemas/GaslessV2Operation'
+
+    GaslessV2SendRequest:
+      type: object
+      required: [ operation ]
+      properties:
+        operation:
+          $ref: '#/components/schemas/GaslessV2SignedOperation'
+
+    GaslessV2SendResponse:
+      type: object
+      required: [ operation_id, status ]
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [ ok, failed ]
   responses:
+    GaslessV2Error:
+      description: >-
+        An error in the gasless 2.0 format. Declared under 4XX only, but server-side failures (5xx)
+        come in the same shape.
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [ error ]
+            properties:
+              error:
+                $ref: '#/components/schemas/GaslessV2ErrorBody'
     Error:
       description: Some error during request processing
       content:
